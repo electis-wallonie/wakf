@@ -173,7 +173,7 @@
       if (v == null || v === false) continue;
       if (k === 'on') for (const e in v) el.addEventListener(e, v[e]);
       else if (k === 'html') el.innerHTML = v;
-      else if (k === 'style' && typeof v === 'object') Object.assign(el.style, v);
+      else if (k === 'style' && typeof v === 'object') { for (const sk in v) sk.startsWith('--') ? el.style.setProperty(sk, v[sk]) : (el.style[sk] = v[sk]); }
       else if (k in el && k !== 'list' && typeof v !== 'string') el[k] = v;
       else el.setAttribute(k, v === true ? '' : v);
     }
