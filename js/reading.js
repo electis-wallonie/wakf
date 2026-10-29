@@ -1,202 +1,182 @@
-/* Wakf — "Learn How to Read": faithful book rendering (list tab) + gamified reading (game tab) */
+/* Wakf — "Learn How to Read": the book, page by page, in the book's exact order (pure learning, no games) */
 (function () {
   'use strict';
-  const { h, t, ar, shuffle, icon } = W;
+  const { h, t, ar } = W;
   const L = () => (W.lang === 'en' ? 'en' : 'fr');
   const tx = (o, k) => (o ? o[k + '_' + L()] || o[k + '_fr'] || o[k + '_en'] || '' : '');
+  const tr2 = (fr, en) => (W.lang === 'en' ? en : fr);
 
-  /* ---------- build the ordered list of nodes from the book ---------- */
-  W.readingNodes = (book) => {
-    const P = book.pages; const by = {}; P.forEach((p) => (by[p.page] = p));
-    const nodes = [];
-    nodes.push({ id: 'rd-intro', unit: 1, kind: 'intro', pages: P.filter((p) => p.page >= 5 && p.page <= 7), label: t('readIntro'), glyph: 'أ ب' });
-    P.filter((p) => p.kind === 'lesson').forEach((p) => {
-      const wp = by[p.page + 1] && by[p.page + 1].kind === 'writing' ? by[p.page + 1] : null;
-      nodes.push({ id: 'rd-l' + p.lesson, unit: 1, kind: 'lesson', page: p, writing: wp, label: t('lessonN', { n: p.lesson }), glyph: p.letter || 'ال' });
+  /* ---------- book structure ---------- */
+  W.bookPages = (book) => book.pages.slice().sort((a, b) => a.page - b.page);
+  W.bookSections = (book) => {
+    const P = W.bookPages(book);
+    const by = {}; P.forEach((p) => (by[p.page] = p));
+    const S = [
+      { key: 'basics', title: tr2('Les bases : signes, alphabet, formes', 'The basics: signs, alphabet, forms'), items: [] },
+      { key: 'part1', title: tr2('1ʳᵉ partie — les 29 leçons', 'Part 1 — the 29 lessons'), items: [] },
+      { key: 'part2', title: tr2('2ᵉ partie — textes de lecture', 'Part 2 — reading texts'), items: [] },
+      { key: 'surahs', title: tr2('Sourates et invocations', 'Surahs and invocations'), items: [] },
+    ];
+    P.forEach((p) => {
+      const sec = p.page <= 7 ? 0 : p.page <= 68 ? 1 : p.page <= 90 ? 2 : 3;
+      if (p.kind === 'writing') return; // listed with its lesson
+      const it = { page: p.page, label: W.pageLabel(p), glyph: p.kind === 'lesson' ? p.letter || 'ال' : null };
+      if (p.kind === 'lesson' && by[p.page + 1] && by[p.page + 1].kind === 'writing') it.writing = p.page + 1;
+      S[sec].items.push(it);
     });
-    P.filter((p) => p.kind === 'text').forEach((p) => nodes.push({ id: 'rd-p' + p.page, unit: 2, kind: 'text', page: p, label: p.title_ar, glyph: '📖' }));
-    const sur = P.filter((p) => p.kind === 'surah' || p.kind === 'adhkar');
-    if (sur.length) nodes.push({ id: 'rd-surahs', unit: 3, kind: 'surahs', pages: sur, label: t('readSurahs'), glyph: '۞' });
-    return nodes;
+    return S.filter((s) => s.items.length);
   };
-
-  /* ---------- items (for games) ---------- */
-  const toks = (b) => (b.lines || []).flat().filter(Boolean);
-  const splitSentences = (s) => s.split(/(?<=[\.،؛؟!:])\s+/).map((x) => x.trim()).filter(Boolean);
-  W.readingItems = (node) => {
-    const out = [];
-    const add = (s) => { s = String(s).trim(); if (s && !out.some((o) => o.ar === s)) out.push({ ar: s, t: '' }); };
-    if (node.kind === 'lesson') node.page.blocks.forEach((b) => { if (['letters', 'syllables', 'words'].includes(b.type)) toks(b).forEach(add); });
-    else if (node.kind === 'intro') { const a = node.pages.find((p) => p.kind === 'alphabet'); if (a) a.letters.forEach((l) => add(l.letter)); }
-    else if (node.kind === 'text') node.page.paragraphs.forEach((p) => p.replace(/[\.،؛؟!:"«»()]/g, ' ').split(/\s+/).filter((w) => w.length > 2).forEach(add));
-    else if (node.kind === 'surahs') node.pages.forEach((p) => (p.items || []).forEach((it) => (it.ayat ? it.ayat.forEach(add) : it.ar && add(it.ar))));
-    return out;
+  W.pageLabel = (p) => {
+    switch (p.kind) {
+      case 'cover': return tr2('Couverture', 'Cover');
+      case 'calligraphy': return tr2('Basmala', 'Basmala');
+      case 'preface': return p.title_fr ? tx(p, 'title') : tr2('Préface (suite)', 'Preface (continued)');
+      case 'info': return tr2('Les signes', 'The signs');
+      case 'alphabet': return tr2('L’alphabet', 'The alphabet');
+      case 'forms_table': return tr2('Les formes des lettres', 'Letter forms');
+      case 'part_title': return tx(p, 'title');
+      case 'lesson': return tx(p, 'title');
+      case 'writing': return tr2('Page d’écriture', 'Writing page');
+      case 'text': return p.title_ar;
+      case 'surah': return p.items.map((i) => i.name_ar).join(' · ');
+      case 'adhkar': return p.title_ar;
+      case 'toc': return tr2('Sommaire du livre', 'Book contents');
+      case 'blank': return tr2('Page blanche', 'Blank page');
+      default: return tr2('Page', 'Page') + ' ' + p.page;
+    }
   };
+  // pages that count for progress (blank pages excluded)
+  W.bookCountable = (book) => W.bookPages(book).filter((p) => p.kind !== 'blank');
 
-  /* ---------- rendering primitives ---------- */
-  const tok = (s, cls) => {
-    const b = h('button.tok' + (cls ? '.' + cls : ''), { lang: 'ar', dir: 'rtl' }, s);
-    b.addEventListener('click', () => { document.querySelectorAll('.tok.on,.s.on').forEach((x) => x.classList.remove('on')); b.classList.add('on'); W.speak(s, 'ar'); b.dispatchEvent(new CustomEvent('heard', { bubbles: true })); });
+  /* ---------- touchable items (audio) ---------- */
+  const pad = (n, k) => String(n).padStart(k || 2, '0');
+  const tok = (s, key, cls) => {
+    const b = h('button.tok' + (cls ? '.' + cls : ''), { lang: 'ar', dir: 'rtl', 'data-audio': key }, s);
+    b.addEventListener('click', () => { document.querySelectorAll('.tok.on,.s.on').forEach((x) => x.classList.remove('on')); b.classList.add('on'); W.say(s, key); });
     return b;
   };
-  const noteEl = (txt) => h('div.rd-note', { dir: W.lang === 'ar' ? 'rtl' : 'ltr' }, txt);
-  const tableEl = (b) => {
+  const noteEl = (txt) => h('div.rd-note', { dir: 'ltr' }, txt);
+  const blockTitle = { letters: ['Les voyelles', 'The vowels'], syllables: ['Syllabes', 'Syllables'], words: ['Mots', 'Words'], sentences: ['Phrases', 'Sentences'], forms: ['Les formes', 'Letter forms'], table: ['Tableau', 'Table'], other: ['Remarque', 'Note'] };
+  const tableEl = (b, kp) => {
     const cols = b['columns_' + L()] || b.columns_fr || [];
     const rows = (L() === 'en' && b.rows_en) || b.rows || [];
-    return h('div', null, b['title_' + L()] ? h('h3', { style: { margin: '2px 0 8px', fontSize: '15px' } }, b['title_' + L()]) : null,
+    return h('div', null, b['title_' + L()] || b.title_fr ? h('h3', { style: { margin: '2px 0 8px', fontSize: '16px' } }, b['title_' + L()] || b.title_fr) : null,
       h('table.ftable', null, h('thead', null, h('tr', null, cols.map((c) => h('th', null, c)))),
-        h('tbody', null, rows.map((r) => h('tr', null, r.map((c) => (/[؀-ۿ]/.test(c) && !/[a-z]/i.test(c) ? h('td.ar', { lang: 'ar' }, c) : h('td', null, c))))))));
+        h('tbody', null, rows.map((r, ri) => h('tr', null, r.map((c, ci) => (/[؀-ۿ]/.test(c) && !/[a-z]/i.test(c) ? h('td', null, tok(c, kp + '-' + pad(ri) + pad(ci))) : h('td', null, c))))))));
   };
-  W.renderBlock = (b) => {
-    const label = { letters: 'b_letters', syllables: 'b_syllables', words: 'b_words', sentences: 'b_sentences', forms: 'b_forms', note: 'b_note', table: 'b_table', other: 'b_other' }[b.type];
-    if (b.type === 'heading') return h('div.rd-block', { style: { textAlign: 'center', background: '#fff1f6', borderColor: '#f6b6d3' } }, h('h2', null, b[L()] || b.fr), b.ar ? ar(b.ar) : null);
-    if (b.type === 'note') return h('div', { style: { margin: '10px 0', paddingInlineStart: b.level === 2 ? '22px' : 0 } }, noteEl((b.level === 2 ? '✺ ' : '') + (b[L()] || b.fr)));
-    const box = h('div.rd-block.' + b.type, null, h('div.bt', null, h('span', null, t(label))));
+  const renderBlock = (b, page, bi) => {
+    const kp = 'livre/p' + pad(page, 3) + '-' + pad(bi + 1);
+    if (b.type === 'heading') return h('div.rd-block.head', null, h('h2', null, b[L()] || b.fr), b.ar ? h('div', { style: { marginTop: '4px' } }, tok(b.ar, kp)) : null);
+    if (b.type === 'note') return h('div.rd-notewrap' + (b.level === 2 ? '.l2' : ''), null, noteEl(b[L()] || b.fr));
+    const bt = blockTitle[b.type] || ['', ''];
+    const box = h('div.rd-block.' + b.type, null, h('div.bt', null, h('span', null, tr2(bt[0], bt[1]))));
     if (b.lines) {
-      const all = toks(b);
-      box.firstChild.append(h('button.link', { on: { click: async (e) => { e.stopPropagation(); for (const s of all) await W.speak(s, 'ar', { queue: true }); } } }, '▶ ' + t('listenAll')));
-      b.lines.forEach((line) => box.append(h('div.rd-line', { dir: 'rtl' }, line.map((s) => tok(s)))));
+      let k = 0;
+      const items = [];
+      b.lines.forEach((line) => box.append(h('div.rd-line', { dir: 'rtl' }, line.map((s) => { k++; const key = kp + '-' + pad(k); items.push([s, key]); return tok(s, key); }))));
+      box.firstChild.append(h('button.link', { html: W.svg('speaker'), on: { click: async (e) => { e.stopPropagation(); for (const [s, key] of items) await W.say(s, key, { queue: true }); } } }, tr2('Tout écouter', 'Listen to all')));
     } else if (b.type === 'forms') {
-      const lbl = b['labels_' + L()] || t('formsLbl');
+      const lbl = b['labels_' + L()] || (W.lang === 'en' ? ['At the beginning', 'In the middle', 'At the end', 'On its own'] : ['Au début', 'Au milieu', 'À la fin', 'Tout seul']);
       box.append(noteEl(b['intro_' + L()] || b.intro_fr || ''),
-        h('div.forms', { style: { marginTop: '10px' } }, (b.items || []).map((it) => h('div.f', null, h('button.tok', { lang: 'ar', on: { click: () => W.speak(it.example, 'ar') } }, it.example), h('div.small.muted', null, '← ' + lbl.slice(0, 3).join(' · ')), h('div', null, ar(it.isolated), ' ', h('span.small.muted', null, lbl[3] || ''))))));
-    } else if (b.type === 'table') box.append(tableEl(b));
+        h('div.formsg', null, (b.items || []).map((it, i) => h('div.f', null, tok(it.example, kp + '-' + pad(i * 2 + 1)), h('div.small.muted', null, lbl.slice(0, 3).join(' · ')), h('div', null, tok(it.isolated, kp + '-' + pad(i * 2 + 2)), ' ', h('span.small.muted', null, lbl[3] || ''))))));
+    } else if (b.type === 'table') box.append(tableEl(b, kp));
     else if (b.type === 'other') {
       box.append(noteEl(b['desc_' + L()] || b.desc_fr || ''));
-      if (b.ar && b.ar.length) box.append(h('div.rd-line', { dir: 'rtl' }, b.ar.map((s) => tok(s))));
+      if (b.ar && b.ar.length) box.append(h('div.rd-line', { dir: 'rtl' }, b.ar.map((s, i) => tok(s, kp + '-' + pad(i + 1)))));
     }
     return box;
   };
-  const sentenceSpans = (para) => {
+  const splitSentences = (s) => s.split(/(?<=[\.،؛؟!:])\s+/).map((x) => x.trim()).filter(Boolean);
+  const sentenceSpans = (para, kp) => {
     const p = h('p.para', { lang: 'ar', dir: 'rtl' });
     splitSentences(para).forEach((s, i) => {
       if (i) p.append(' ');
-      const sp = h('span.s', null, s);
-      sp.addEventListener('click', () => { document.querySelectorAll('.s.on,.tok.on').forEach((x) => x.classList.remove('on')); sp.classList.add('on'); W.speak(s, 'ar'); sp.dispatchEvent(new CustomEvent('heard', { bubbles: true })); });
+      const key = kp + '-' + pad(i + 1);
+      const sp = h('span.s', { 'data-audio': key, role: 'button', tabindex: 0 }, s);
+      const go = () => { document.querySelectorAll('.s.on,.tok.on').forEach((x) => x.classList.remove('on')); sp.classList.add('on'); W.say(s, key); };
+      sp.addEventListener('click', go); sp.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
       p.append(sp);
     });
     return p;
   };
 
-  /* ---------- page renderers (list tab = faithful page) ---------- */
+  /* ---------- one book page ---------- */
   const lessonHead = (p) => h('div.rd-head', null,
     h('div.rd-box', null, h('div.ttl', null, tx(p, 'title')), ar(p.title_ar),
-      p.signs_box ? h('div.signs', { dir: 'rtl', style: { marginTop: '6px', borderTop: '2px solid var(--line)', paddingTop: '4px' } },
-        (p.signs_box.marks || []).map((m) => ar('ـ' + m)), (p.signs_box.letters || []).map((l) => ar(l))) : null),
-    h('div.rd-img', null, p.image ? h('img', { src: p.image, alt: tx(p, 'image_alt'), loading: 'lazy', decoding: 'async', width: 150, height: 150 }) : null),
+      p.signs_box ? h('div.signs', { dir: 'rtl' }, (p.signs_box.marks || []).map((m) => ar('ـ' + m)), (p.signs_box.letters || []).map((l) => ar(l))) : null),
+    h('div.rd-img', null, p.image ? h('img', { src: p.image, alt: tx(p, 'image_alt'), decoding: 'async', width: 150, height: 150 }) : null),
     h('div.rd-box.rd-letter', null,
-      p.letter ? h('button', { on: { click: () => W.speak(p.letter, 'ar') } }, ar([p.letter, p.letter_alt].filter(Boolean).join(' '), 'l')) : null,
-      h('button', { on: { click: () => W.speak(p.keyword, 'ar') } }, ar(p.keyword, 'k'))));
-  W.renderPage = (p) => {
-    const wrap = h('div.rd-page');
-    if (p.kind === 'lesson') { wrap.append(lessonHead(p)); p.blocks.forEach((b) => wrap.append(W.renderBlock(b))); }
-    else if (p.kind === 'writing') {
-      wrap.append(h('h3', { style: { margin: '22px 4px 8px' } }, '✏️ ' + t('writingPage') + ' · ' + t('page') + ' ' + p.page));
-      if (p.models && p.models.length) wrap.append(h('div.rd-block', null, h('div.rd-line', { dir: 'rtl' }, p.models.map((m) => tok(m)))));
-      const wl = p.word_lines || (p.words ? [p.words] : []);
-      if (wl.length) wrap.append(h('div.rd-block.words', null, wl.map((l) => h('div.rd-line', { dir: 'rtl' }, l.map((s) => tok(s))))));
-    } else if (p.kind === 'info') p.blocks.forEach((b) => wrap.append(W.renderBlock(b)));
-    else if (p.kind === 'alphabet') {
-      wrap.append(h('h3', { style: { margin: '22px 4px 10px' } }, t('readIntro')));
-      wrap.append(h('div.alpha', { dir: 'rtl' }, p.letters.map((l) => h('button', { on: { click: () => W.speak(l.name, 'ar') } }, h('span.l', { lang: 'ar' }, l.letter), h('span.n', { lang: 'ar' }, l.name)))));
-      if (p.note_fr) wrap.append(h('div', { style: { marginTop: '10px' } }, noteEl(p['note_' + L()] || p.note_fr)));
-    } else if (p.kind === 'forms_table') {
-      const cols = p['columns_' + L()] || p.columns_fr;
-      wrap.append(h('h3', { style: { margin: '22px 4px 10px' } }, cols.join(' · ')),
-        h('table.ftable', { dir: 'rtl' }, h('thead', null, h('tr', null, cols.map((c) => h('th', null, c)))),
-          h('tbody', null, p.rows.map((r) => h('tr' + (r.non_connecting ? '.nc' : ''), { on: { click: () => W.speak(r.name, 'ar') }, style: { cursor: 'pointer' } },
-            [r.name, r.initial, r.medial, r.final, r.isolated].map((c) => h('td.ar', { lang: 'ar' }, c)))))));
-      if (p.note_fr) wrap.append(h('div', { style: { marginTop: '10px' } }, noteEl(p['note_' + L()] || p.note_fr)));
-    } else if (p.kind === 'text') {
-      wrap.append(h('div.rd-block', null, h('h2.ar', { style: { textAlign: 'center', fontSize: '34px', color: 'var(--pink)', fontWeight: 700 } }, p.title_ar),
-        p.dialogue ? p.dialogue.map((d) => h('div', null, d.speaker ? h('b.ar', { style: { fontSize: '22px', color: 'var(--blue-t)', display: 'block', textAlign: 'right' } }, d.speaker + ' :') : null, sentenceSpans(d.ar)))
-          : p.verses ? [p.paragraphs.filter((x) => !p.verses.some((v) => x.startsWith(v[0]))).map(sentenceSpans), p.verses.map((v) => h('div.rd-line', { dir: 'rtl', style: { justifyContent: 'space-between', gap: '6px 22px' } }, v.map((s) => tok(s))))]
-          : p.paragraphs.map(sentenceSpans)));
-      if (p.note_fr) wrap.append(noteEl(p['note_' + L()] || p.note_fr));
-    } else if (p.kind === 'surah') {
-      p.items.forEach((it) => {
-        const nums = it.ayah_numbers || it.ayat.map((_, i) => i + 1);
-        wrap.append(h('div.rd-block.surah-card', null, h('h3', { lang: 'ar' }, it.name_ar),
-          it.basmala ? h('p.ayah', { style: { textAlign: 'center', cursor: 'pointer' }, on: { click: () => W.speak(it.basmala, 'ar') } }, it.basmala, it.basmala_ayah_number ? h('span.ayah-n', null, String(it.basmala_ayah_number)) : null) : null,
-          h('div', { dir: 'rtl', style: { textAlign: 'right' } }, it.ayat.map((a, i) => h('p.ayah', { style: { cursor: 'pointer' }, on: { click: () => W.speak(a, 'ar') } }, a, h('span.ayah-n', null, String(nums[i])))))));
-      });
-    } else if (p.kind === 'adhkar') {
-      wrap.append(h('div.rd-block', null, h('h3.ar', { style: { textAlign: 'center', fontSize: '28px' } }, p.title_ar),
-        p.items.map((it) => h('div', { style: { margin: '10px 0' } }, it.intro_ar ? h('div.ar', { style: { fontSize: '20px', color: 'var(--ink2)' } }, it.intro_ar) : null,
-          h('p.ayah', { style: { fontWeight: 700, cursor: 'pointer' }, on: { click: () => W.speak(it.ar, 'ar') } }, it.ar)))));
-      if (p.note_fr) wrap.append(noteEl(p['note_' + L()] || p.note_fr));
+      p.letter ? tok([p.letter, p.letter_alt].filter(Boolean).join(' '), 'livre/p' + pad(p.page, 3) + '-00-01', 'l') : null,
+      tok(p.keyword, 'livre/p' + pad(p.page, 3) + '-00-02', 'k')));
+  W.renderBookPage = (p) => {
+    const kp = 'livre/p' + pad(p.page, 3);
+    const wrap = h('article.bookpage.k-' + p.kind);
+    switch (p.kind) {
+      case 'cover':
+        wrap.append(h('div.cover', null, tok(p.title_ar, kp + '-01', 'cv'), tok(p.level_ar, kp + '-02', 'lv'))); break;
+      case 'calligraphy':
+        wrap.append(h('div.callig', null, h('img', { src: p.image, alt: tx(p, 'alt'), decoding: 'async' }), tok(p.ar, kp + '-01'))); break;
+      case 'preface':
+        if (p.basmala) wrap.append(h('div', { style: { textAlign: 'center' } }, tok(p.basmala, kp + '-01')));
+        if (p.title_fr) wrap.append(h('h2.pref-t', null, tx(p, 'title')));
+        (p['paras_' + L()] || p.paras_fr).forEach((s) => wrap.append(s.startsWith('##') ? h('h3.pref-h', null, s.slice(2)) : s.startsWith('@') ? h('p.pref-sign', null, s.slice(1)) : h('p.pref', null, s)));
+        break;
+      case 'part_title':
+        wrap.append(h('div.cover', null, tok(p.title_ar, kp + '-01', 'cv'), h('div.pt', null, tx(p, 'title')))); break;
+      case 'blank':
+        wrap.append(h('div.empty', null, h('p', null, tr2('Cette page est laissée blanche dans le livre.', 'This page is left blank in the book.')))); break;
+      case 'lesson':
+        wrap.append(lessonHead(p)); p.blocks.forEach((b, i) => wrap.append(renderBlock(b, p.page, i))); break;
+      case 'info':
+        p.blocks.forEach((b, i) => wrap.append(renderBlock(b, p.page, i))); break;
+      case 'writing': {
+        const lines = h('div.wlines');
+        (p.models || []).forEach((m, i) => lines.append(h('div.wl', null, tok(m, kp + '-m' + pad(i + 1)))));
+        (p.word_lines || (p.words ? [p.words] : [])).forEach((l, li) => lines.append(h('div.wl.words', { dir: 'rtl' }, l.map((s, i) => tok(s, kp + '-w' + pad(li + 1) + pad(i + 1))))));
+        lines.append(h('div.wl'), h('div.wl'));
+        wrap.append(h('p.muted.small', { style: { textAlign: 'center', margin: '0 0 10px' } }, tr2('Recopie chaque modèle sur ton cahier, de droite à gauche.', 'Copy each model into your notebook, from right to left.')), lines);
+        break;
+      }
+      case 'alphabet':
+        wrap.append(h('div.alpha', { dir: 'rtl' }, p.letters.map((l, i) => { const b = h('button', null, h('span.l', { lang: 'ar' }, l.letter), h('span.n', { lang: 'ar' }, l.name)); b.addEventListener('click', () => W.say(l.name, kp + '-' + pad(i + 1))); return b; })));
+        if (p.note_fr) wrap.append(h('div', { style: { marginTop: '12px' } }, noteEl(p['note_' + L()] || p.note_fr)));
+        break;
+      case 'forms_table': {
+        const cols = p['columns_' + L()] || p.columns_fr;
+        wrap.append(h('table.ftable', { dir: 'rtl' }, h('thead', null, h('tr', null, cols.map((c) => h('th', null, c)))),
+          h('tbody', null, p.rows.map((r, ri) => h('tr' + (r.non_connecting ? '.nc' : ''), null, [r.name, r.initial, r.medial, r.final, r.isolated].map((c, ci) => h('td', null, ci === 0 ? tok(c, kp + '-' + pad(ri + 1)) : h('span.ar', { lang: 'ar' }, c))))))));
+        if (p.note_fr) wrap.append(h('div', { style: { marginTop: '12px' } }, noteEl(p['note_' + L()] || p.note_fr)));
+        break;
+      }
+      case 'text': {
+        const box = h('div.rd-block.text', null, h('h2.ar.tt', { lang: 'ar' }, tok(p.title_ar, kp + '-00')));
+        if (p.dialogue) p.dialogue.forEach((d, i) => box.append(h('div', null, d.speaker ? h('b.ar.spk', { lang: 'ar' }, d.speaker + ' :') : null, sentenceSpans(d.ar, kp + '-' + pad(i + 1)))));
+        else if (p.verses) {
+          p.paragraphs.filter((x) => !p.verses.some((v) => x.startsWith(v[0]))).forEach((x, i) => box.append(sentenceSpans(x, kp + '-' + pad(i + 1))));
+          p.verses.forEach((v, i) => box.append(h('div.rd-line.verse', { dir: 'rtl' }, v.map((s, j) => tok(s, kp + '-v' + pad(i + 1) + pad(j + 1))))));
+        } else p.paragraphs.forEach((x, i) => box.append(sentenceSpans(x, kp + '-' + pad(i + 1))));
+        wrap.append(box);
+        if (p.note_fr) wrap.append(noteEl(p['note_' + L()] || p.note_fr));
+        break;
+      }
+      case 'surah':
+        p.items.forEach((it, si) => {
+          const nums = it.ayah_numbers || it.ayat.map((_, i) => i + 1);
+          wrap.append(h('div.rd-block.surah-card', null, h('h3', { lang: 'ar' }, it.name_ar),
+            it.basmala ? h('p.ayah.c', null, tok(it.basmala, kp + '-' + (si + 1) + '-00'), it.basmala_ayah_number ? h('span.ayah-n', null, String(it.basmala_ayah_number)) : null) : null,
+            h('div', { dir: 'rtl', style: { textAlign: 'right' } }, it.ayat.map((a, i) => h('p.ayah', null, tok(a, kp + '-' + (si + 1) + '-' + pad(nums[i])), h('span.ayah-n', null, String(nums[i])))))));
+        });
+        break;
+      case 'adhkar':
+        wrap.append(h('div.rd-block', null, h('h3.ar.tt', { lang: 'ar' }, p.title_ar),
+          p.items.map((it, i) => h('div.dhikr', null, it.intro_ar ? h('div.ar.intro', { lang: 'ar' }, it.intro_ar) : null, h('p.ayah', null, tok(it.ar, kp + '-' + pad(i + 1)))))));
+        if (p.note_fr) wrap.append(noteEl(p['note_' + L()] || p.note_fr));
+        break;
+      case 'toc':
+        wrap.append(h('div.rd-block', null, p.title_fr ? h('h3', null, tx(p, 'title')) : null,
+          h('div.toclist', null, p.entries.map((e) => h('a.tocrow', { href: '#/t/read/p/' + e.page }, h('span' + (/[؀-ۿ]/.test(e.label) ? '.ar' : ''), null, (L() === 'en' && e.label_en) || e.label), h('b', null, String(e.page)))))));
+        break;
     }
     return wrap;
   };
-
-  /* ---------- tracing (writing) ---------- */
-  const traceLine = (model, ghost) => {
-    const line = h('div.wline', null, h('div.model', { lang: 'ar' }, model), h('div.ghost', { lang: 'ar' }, Array(ghost || 4).fill(model).map((m) => h('span', null, m))));
-    const cv = h('canvas'); line.append(cv);
-    let ctx, drawing = false, last;
-    const fit = () => { const r = line.getBoundingClientRect(); const d = Math.min(2, devicePixelRatio || 1); cv.width = r.width * d; cv.height = r.height * d; ctx = cv.getContext('2d'); ctx.scale(d, d); ctx.lineCap = ctx.lineJoin = 'round'; ctx.lineWidth = 5; ctx.strokeStyle = '#1cb0f6'; };
-    const pos = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
-    cv.addEventListener('pointerdown', (e) => { if (!ctx) fit(); drawing = true; last = pos(e); cv.setPointerCapture(e.pointerId); });
-    cv.addEventListener('pointermove', (e) => { if (!drawing) return; const p = pos(e); ctx.beginPath(); ctx.moveTo(...last); ctx.lineTo(...p); ctx.stroke(); last = p; });
-    cv.addEventListener('pointerup', () => (drawing = false));
-    line._clear = () => ctx && ctx.clearRect(0, 0, cv.width, cv.height);
-    return line;
-  };
-
-  /* ---------- guided reading (game) ---------- */
-  const guided = (node) => async (P) => {
-    const pages = node.kind === 'lesson' ? [node.page] : node.pages || [node.page];
-    const steps = [];
-    pages.forEach((p) => {
-      if (p.kind === 'lesson') { steps.push({ head: p }); p.blocks.forEach((b) => steps.push({ block: b })); }
-      else if (p.kind === 'info') p.blocks.forEach((b) => steps.push({ block: b }));
-      else steps.push({ page: p });
-    });
-    for (let i = 0; i < steps.length; i++) {
-      P.progress(i / steps.length);
-      const s = steps[i];
-      let content, items = [];
-      if (s.head) content = lessonHead(s.head);
-      else if (s.block) { content = W.renderBlock(s.block); if (s.block.lines) items = toks(s.block); }
-      else content = W.renderPage(s.page);
-      const heard = new Set();
-      const node2 = h('div', null, h('div.muted.small', { style: { textAlign: 'center', marginBottom: '6px' } }, t('readTap')), content);
-      const btn = h('button.btn', { on: { click: () => P._next && P._next() } }, t('nextBlock'));
-      node2.addEventListener('heard', (e) => { heard.add(e.target.textContent); });
-      P.show(node2); P.footer(btn); P._keys = null;
-      await new Promise((r) => (P._next = r));
-      if (P.closed) return;
-      // listening check after a block of items
-      const uniq = [...new Set(items)].map((a) => ({ ar: a, t: '' }));
-      if (uniq.length >= 2 && ['letters', 'syllables', 'words'].includes(s.block && s.block.type)) {
-        const target = uniq[(Math.random() * uniq.length) | 0];
-        await W.qListen(P, target, uniq, Math.min(uniq.length, uniq.length > 4 ? 3 : 2));
-        if (P.closed) return;
-      }
-    }
-    return { xp: 15 };
-  };
-  const writing = (node) => async (P) => {
-    const wp = node.writing; if (!wp) return { xp: 0 };
-    const models = wp.models || [];
-    const lines = models.map((m) => traceLine(m, 4));
-    const words = (wp.word_lines || (wp.words ? [wp.words] : [])).flat();
-    const wl = words.map((w) => traceLine(w, 1));
-    const clear = h('button.btn.outline', { on: { click: () => [...lines, ...wl].forEach((l) => l._clear()) } }, t('clear'));
-    P.show(h('div', null, h('div.qtitle', null, '✏️ ' + t('g_write')), h('p.muted', null, t('traceTip')), h('div.writing', null, lines, wl)));
-    P.progress(0.5);
-    await new Promise((r) => P.footer(clear, h('button.btn', { on: { click: r } }, t('cont'))));
-    return { xp: 5 };
-  };
-
-  W.readingGames = (node) => {
-    const items = W.readingItems(node);
-    const list = [{ id: 'guided', run: guided(node) }];
-    if (items.length >= 2) list.push({ id: 'listen', run: (P) => W.GAMES.listen(P, items) });
-    if (items.length >= 3) list.push({ id: 'lpairs', run: (P) => W.GAMES.lpairs(P, items) });
-    if (node.writing) list.push({ id: 'write', run: writing(node), emoji: '✏️' });
-    return list;
-  };
-  W.gameMeta.write = ['✏️', '#ffe8f2'];
-  W.readingPagesOf = (node) => (node.kind === 'lesson' ? [node.page, node.writing].filter(Boolean) : node.pages || [node.page]);
 })();

@@ -7,7 +7,7 @@
 
   const wordEl = (w, opt) => {
     const b = h('button.w' + (opt && opt.hl ? '.hl' : ''), { lang: 'ar' }, ar(w.ar), h('span.gl', null, w[L()] || w.en || ''));
-    b.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.w.on').forEach((x) => x.classList.remove('on')); b.classList.add('on'); W.speak(w.ar, 'ar'); });
+    b.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.w.on').forEach((x) => x.classList.remove('on')); b.classList.add('on'); W.say(w.ar, null); });
     return b;
   };
   const refrainEl = (R, mini) => h('div.refrain' + (mini ? '.mini' : ''), { dir: 'rtl', title: R[L()] || R.en }, R.words.map((w) => wordEl(w)));
@@ -18,14 +18,15 @@
     const hlAll = n.highlight === true; const hl = new Set(Array.isArray(n.highlight) ? n.highlight : []);
     if (n.words && n.words.length) {
       const row = h('div.mm-row' + (n.boxed ? '.boxed' : ''), { dir: 'rtl' });
-      if (n.ayah) row.append(h('span.mm-n', { title: 'Ayah ' + n.ayah }, String(n.ayah)));
+      if (n.ayah) row.append(h('span.mm-n', { title: (W.lang === 'en' ? 'Verse ' : 'Verset ') + n.ayah }, String(n.ayah)));
       n.words.forEach((w, i) => row.append(wordEl(w, { hl: hlAll || hl.has(i) || hl.has(w.ar) })));
-      if (n.image) row.append(h('img.mm-img', { src: n.image, alt: '', loading: 'lazy', decoding: 'async', width: 64, height: 64 }));
-      if (n.refrain_marker) row.append(h('span.mm-ref', { title: t('refrainHint') }, '؟'));
-      const say = W.sayBtn(() => n.words.map((w) => w.ar).join(' '), 'ar', 'mm-speak');
+      if (n.art && W.MMART[n.art]) row.append(h('span.mm-img', { html: W.MMART[n.art] }));
+      if (n.refrain_marker) row.append(h('span.mm-ref', { title: t('refrainHint'), html: W.svg('refrain') }));
+      const say = W.sayBtn(() => n.words.map((w) => w.ar).join(' '), W.mmKey && n.ayah ? W.mmKey + '-' + String(n.ayah).padStart(3, '0') : null, 'mm-speak');
       row.append(say);
       wrap.append(row);
     }
+    if (n.art && W.MMART[n.art] && !(n.words && n.words.length)) wrap.prepend(h('span.mm-img', { html: W.MMART[n.art] }));
     if (n.label_en || n.label_fr) wrap.prepend(h('span.mm-label', null, '— ' + (n['label_' + L()] || n.label_en) + ' —'));
     const nt = n['note_' + L()] || n.note_en; if (nt && !n.words?.length) wrap.append(h('div.small.muted', { style: { margin: '2px 8px' } }, nt));
     if (n.children && n.children.length) wrap.append(h('div.mm-kids', null, n.children.map((c) => nodeEl(c, R))));
@@ -44,14 +45,24 @@
   };
 
   W.renderMindmap = (data, tab) => {
+    W.mmKey = 'sourates/' + String(data.surah.number).padStart(3, '0');
+    if (data.layout === 'single') {
+      const root = h('div');
+      root.append(h('div.mm-hero', null, h('div.small', { style: { textTransform: 'uppercase', letterSpacing: '.8px' } }, t('surahN', { n: data.surah.number })),
+        h('div.ar', { lang: 'ar' }, data.surah.name_ar), h('div', null, data.surah['name_' + L()] || data.surah.name_en)));
+      const grid = h('div.mm-grid');
+      data.sections.forEach((s) => { const el = sectionEl(s, null, {}); if (!s.title_en) el.classList.add('notitle'); grid.append(el); });
+      root.append(grid);
+      return root;
+    }
     const R = data.refrain; const S = {}; data.sections.forEach((s) => (S[s.id] = s));
     const root = h('div');
     root.append(h('div.mm-hero', null, h('div.small', { style: { textTransform: 'uppercase', letterSpacing: '.8px' } }, t('surahN', { n: data.surah.number })),
       h('div.ar', { lang: 'ar' }, data.surah.name_ar), h('div', null, data.surah['name_' + L()] || data.surah.name_en),
       h('div', { style: { marginTop: '10px' } }, h('div.small', null, t('refrain')), refrainEl(R)), h('div.small', null, R[L()] || R.en)));
     const seg = h('div.seg', { 'data-i': tab === 'mental' ? 1 : 0, role: 'tablist' }, h('span.thumb'),
-      h('button' + (tab !== 'mental' ? '.on' : ''), { role: 'tab', on: { click: () => switchTab('visual') } }, '👁 ' + t('mmVisual')),
-      h('button' + (tab === 'mental' ? '.on' : ''), { role: 'tab', on: { click: () => switchTab('mental') } }, '🧠 ' + t('mmMental')));
+      h('button' + (tab !== 'mental' ? '.on' : ''), { role: 'tab', on: { click: () => switchTab('visual') } }, h('span', { html: W.svg('eye') }), t('mmVisual')),
+      h('button' + (tab === 'mental' ? '.on' : ''), { role: 'tab', on: { click: () => switchTab('mental') } }, h('span', { html: W.svg('brain') }), t('mmMental')));
     const pane = h('div.tabpane');
     root.append(seg, pane);
     const draw = (which) => {

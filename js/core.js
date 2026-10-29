@@ -17,11 +17,11 @@
       th_w1000: 'Les 1000 mots arabes', th_w1000_d: 'Les mots les plus fréquents de l’arabe.',
       soon: 'Bientôt', lessons: 'leçons', lesson: 'Leçon', words: 'mots', start: 'Commencer', review: 'Réviser',
       tabGame: 'Jeux', tabList: 'Liste',
-      g_flash: 'Flashcards', g_flash_d: 'Retourne la carte et note ta mémoire.',
-      g_hear: 'Tape ce que tu entends', g_hear_d: 'Écoute puis reconstitue le mot.',
-      g_trans: 'Traduction', g_trans_d: 'Comment dit-on… ? Dans les deux sens.',
-      g_pairs: 'Appuie sur les paires', g_pairs_d: 'Relie chaque mot à sa traduction.',
-      g_exam: 'Examen final', g_exam_d: 'Valide la leçon (80 % requis).',
+      g_flash: 'Flashcards', g_flash_d: 'Retourne la carte et note si tu t’en souvenais.',
+      g_hear: 'Tape ce que tu entends', g_hear_d: 'Écoute 3 mots et remets-les dans l’ordre.',
+      g_trans: 'Comment dit-on ?', g_trans_d: 'Trouve le mot en arabe, puis son sens en français.',
+      g_pairs: 'Appuie sur les paires', g_pairs_d: 'Relie chaque mot arabe à son sens.',
+      g_exam: 'Examen final', g_exam_d: 'Tous les mots, tous les jeux. Réussi dès 80 %.',
       g_guided: 'Lecture guidée', g_guided_d: 'Toute la page, dans l’ordre du livre.',
       g_listen: 'Qu’entends-tu ?', g_listen_d: 'Écoute et choisis ce que tu entends.',
       g_lpairs: 'Son ↔ écriture', g_lpairs_d: 'Relie chaque son à son écriture.',
@@ -31,7 +31,7 @@
       howSay: 'Comment dit-on « {w} » ?', whatMeans: 'Que veut dire ce mot ?', whatHear: 'Qu’entends-tu ?', tapHear: 'Tape ce que tu entends', tapPairs: 'Appuie sur les paires',
       showAns: 'Retourner', tapToFlip: 'Touche pour retourner',
       r_fail: 'Échec', r_hard: 'Difficile', r_good: 'Bon', r_easy: 'Facile',
-      done: 'Leçon terminée !', examPass: 'Leçon validée !', examFail: 'Presque ! Réessaie pour valider.',
+      done: 'Partie terminée !', examPass: 'Leçon validée :', examFail: 'Pas encore validée :',
       totalXp: 'XP gagnés', accuracy: 'Précision', time: 'Temps',
       combo: 'combo', hearts: 'vies', outOfHearts: 'Plus de vies !',
       noVoice: 'Aucune voix arabe trouvée sur cet appareil : installe une voix « arabe » dans les réglages pour entendre la prononciation.',
@@ -53,11 +53,11 @@
       unitOf: 'Unité', lessonN: 'Leçon {n}', wordsN: '{n} mots',
       tags: { mg: 'masc.', fg: 'fém.', 'mg/fg': 'masc./fém.', dl: 'duel', 'for br.pl': 'pl. brisé' },
       rules: {
-        flash: ['Regarde le mot arabe et essaie de te souvenir de sa traduction.', 'Touche la carte pour la retourner.', 'Note-toi honnêtement : Échec, Difficile, Bon ou Facile.', 'Les cartes ratées reviennent plus vite.'],
-        hear: ['Écoute le mot en arabe (touche le haut-parleur pour réécouter).', 'Touche les morceaux dans l’ordre pour reconstituer ce que tu entends.', 'L’arabe se lit de droite à gauche.', 'Valide quand tu as fini.'],
-        trans: ['Une question sur deux : « Comment dit-on… ? » en arabe.', 'L’autre : trouve la traduction du mot arabe.', 'Choisis la bonne réponse puis valide.', 'Enchaîne les bonnes réponses pour faire un combo !'],
-        pairs: ['Touche un mot arabe puis sa traduction.', 'À chaque paire trouvée, tu entends le mot.', 'Une erreur ? Les deux cases tremblent, réessaie.', 'Trouve toutes les paires pour finir la manche.'],
-        exam: ['Toutes les épreuves mélangées sur les mots de la leçon.', 'Tu as 3 vies : chaque erreur en coûte une.', 'Il faut 80 % de bonnes réponses pour valider.', 'Une leçon validée gagne une couronne 👑.'],
+        flash: ['Regarde le mot arabe et essaie de te souvenir de son sens.', 'Touche la carte pour la retourner, puis note-toi honnêtement.', 'Échec : la carte revient tout de suite. Difficile : elle revient plus loin dans la partie.', 'Bon : à revoir dans 3 jours. Facile : dans 10 jours. Tu les retrouves dans « Réviser ».'],
+        hear: ['Écoute une courte suite de 2 ou 3 mots arabes de la leçon.', 'Touche les mots dans l’ordre où tu les entends : le premier se place à droite.', 'Les mots sont écrits en entier, avec leurs voyelles.', 'Haut-parleur : réécouter. Escargot : écouter plus lentement.'],
+        trans: ['Une question sur deux : « Comment dit-on… ? » : trouve le mot en arabe.', 'L’autre : un mot arabe s’affiche, trouve ce qu’il veut dire.', 'Choisis la bonne réponse puis valide.', 'Tous les mots de la leçon y passent.'],
+        pairs: ['Touche un mot arabe puis son sens.', 'À chaque paire trouvée, tu entends le mot.', 'Une erreur ? Les deux cases tremblent, réessaie.', 'Trouve toutes les paires pour finir la manche.'],
+        exam: ['Une question par mot de la leçon, tous les types mélangés.', 'Pas de vies : tu vas jusqu’au bout.', 'Règle unique : la leçon est validée à partir de 80 % de bonnes réponses (16 sur 20).', 'Ton dernier score reste affiché sur la leçon.'],
         guided: ['On suit la page du livre de haut en bas.', 'Touche chaque élément pour l’entendre, puis répète-le à voix haute.', 'Après chaque bloc : une petite question d’écoute.', 'Va jusqu’au bout de la page !'],
         listen: ['Écoute le son.', 'Choisis ce que tu as entendu.', 'Touche le haut-parleur pour réécouter.', 'Valide ta réponse.'],
         lpairs: ['Les cases bleues sont des sons : touche-les pour écouter.', 'Relie chaque son à son écriture.', 'Trouve toutes les paires pour finir.'],
@@ -77,10 +77,10 @@
       soon: 'Soon', lessons: 'lessons', lesson: 'Lesson', words: 'words', start: 'Start', review: 'Review',
       tabGame: 'Games', tabList: 'List',
       g_flash: 'Flashcards', g_flash_d: 'Flip the card and rate your memory.',
-      g_hear: 'Tap what you hear', g_hear_d: 'Listen, then rebuild the word.',
-      g_trans: 'Translation', g_trans_d: 'How do you say…? Both ways.',
-      g_pairs: 'Tap the pairs', g_pairs_d: 'Match each word with its translation.',
-      g_exam: 'Final exam', g_exam_d: 'Pass the lesson (80% needed).',
+      g_hear: 'Tap what you hear', g_hear_d: 'Hear 3 words and put them in order.',
+      g_trans: 'How do you say…?', g_trans_d: 'Find the word in Arabic, then its meaning in English.',
+      g_pairs: 'Tap the pairs', g_pairs_d: 'Match each Arabic word with its meaning.',
+      g_exam: 'Final exam', g_exam_d: 'All the words, all the games. Passed from 80%.',
       g_guided: 'Guided reading', g_guided_d: 'The whole page, in the book’s order.',
       g_listen: 'What do you hear?', g_listen_d: 'Listen and pick what you hear.',
       g_lpairs: 'Sound ↔ writing', g_lpairs_d: 'Match each sound with its writing.',
@@ -90,7 +90,7 @@
       howSay: 'How do you say “{w}”?', whatMeans: 'What does this word mean?', whatHear: 'What do you hear?', tapHear: 'Tap what you hear', tapPairs: 'Tap the pairs',
       showAns: 'Flip', tapToFlip: 'Tap to flip',
       r_fail: 'Fail', r_hard: 'Hard', r_good: 'Good', r_easy: 'Easy',
-      done: 'Lesson complete!', examPass: 'Lesson passed!', examFail: 'Almost! Try again to pass.',
+      done: 'Game complete!', examPass: 'Lesson passed:', examFail: 'Not passed yet:',
       totalXp: 'XP earned', accuracy: 'Accuracy', time: 'Time',
       combo: 'combo', hearts: 'lives', outOfHearts: 'Out of lives!',
       noVoice: 'No Arabic voice found on this device: install an “Arabic” voice in your settings to hear the pronunciation.',
@@ -112,11 +112,11 @@
       unitOf: 'Unit', lessonN: 'Lesson {n}', wordsN: '{n} words',
       tags: { mg: 'masc.', fg: 'fem.', 'mg/fg': 'masc./fem.', dl: 'dual', 'for br.pl': 'broken pl.' },
       rules: {
-        flash: ['Look at the Arabic word and try to recall its meaning.', 'Tap the card to flip it.', 'Rate yourself honestly: Fail, Hard, Good or Easy.', 'Missed cards come back sooner.'],
-        hear: ['Listen to the Arabic word (tap the speaker to replay).', 'Tap the pieces in order to rebuild what you hear.', 'Arabic reads from right to left.', 'Check when you are done.'],
-        trans: ['Every other question: “How do you say…?” in Arabic.', 'The other: find the meaning of the Arabic word.', 'Pick the right answer, then check.', 'Chain right answers for a combo!'],
-        pairs: ['Tap an Arabic word, then its translation.', 'Each time you match a pair, you hear the word.', 'A mistake? Both tiles shake — try again.', 'Find all the pairs to finish the round.'],
-        exam: ['All the challenges mixed, on this lesson’s words.', 'You have 3 lives: each mistake costs one.', 'You need 80% right answers to pass.', 'A passed lesson earns a crown 👑.'],
+        flash: ['Look at the Arabic word and try to recall its meaning.', 'Tap the card to flip it, then rate yourself honestly.', 'Fail: the card comes back right away. Hard: it comes back later in the game.', 'Good: review in 3 days. Easy: in 10 days. You will find them in “Review”.'],
+        hear: ['Listen to a short sequence of 2 or 3 Arabic words from the lesson.', 'Tap the words in the order you hear them: the first one goes on the right.', 'Words are written in full, with their vowels.', 'Speaker: replay. Snail: listen more slowly.'],
+        trans: ['Every other question: “How do you say…?”: find the word in Arabic.', 'The other: an Arabic word appears, find what it means.', 'Pick the right answer, then check.', 'Every word of the lesson comes up.'],
+        pairs: ['Tap an Arabic word, then its meaning.', 'Each time you match a pair, you hear the word.', 'A mistake? Both tiles shake — try again.', 'Find all the pairs to finish the round.'],
+        exam: ['One question per word of the lesson, all types mixed.', 'No lives: you go all the way to the end.', 'One rule: the lesson is passed from 80% right answers (16 out of 20).', 'Your last score stays on the lesson.'],
         guided: ['We follow the book page from top to bottom.', 'Tap each item to hear it, then repeat it out loud.', 'After each block: a short listening question.', 'Go all the way to the end of the page!'],
         listen: ['Listen to the sound.', 'Pick what you heard.', 'Tap the speaker to replay.', 'Check your answer.'],
         lpairs: ['Blue tiles are sounds: tap them to listen.', 'Match each sound with its writing.', 'Find all the pairs to finish.'],
@@ -124,6 +124,44 @@
       },
     },
   };
+
+  const STR2 = {
+    fr: {
+      tab_learn: 'Apprendre', tab_review: 'Réviser', tab_lexicon: 'Lexique',
+      hello: 'Salam !', homeSub: 'Que veux-tu apprendre aujourd’hui ?',
+      resume: 'Reprendre', welcome: 'Bienvenue sur Wakf', welcomeSub: 'Débutant ? Commence par apprendre les lettres.', startReading: 'Commencer à lire',
+      rubrics: 'Les rubriques', ctaStart: 'Commencer', ctaContinue: 'Continuer {x}', soonAvail: 'Bientôt disponible',
+      progLessons: '{a} / {b} leçons terminées', progSurah: '{a} / {b} sourates ouvertes', progRead: '{a} / {b} pages lues',
+      chip_surah: 'Sourates', chip_w85: 'Coran', chip_read: 'Lecture', chip_w1000: 'Vocabulaire',
+      settings: 'Réglages', language: 'Langue', languageSub: 'Langue de tout le site', install: 'Installer l’application', installSub: 'Sur l’écran d’accueil, utilisable hors-ligne', installed: 'Application installée',
+      resetProgress: 'Réinitialiser la progression', resetSub: 'Efface les leçons terminées et les mots à réviser', resetTitle: 'Réinitialiser la progression ?', resetText: 'Les leçons terminées, les derniers scores et les mots à réviser seront effacés de ce navigateur.', erase: 'Effacer', cancel: 'Annuler', close: 'Fermer', done2: 'C’est fait',
+      installHelp: 'iPhone : Partager puis « Sur l’écran d’accueil ». Android ou PC : menu du navigateur puis « Installer l’application ».',
+      quitTitle: 'Quitter le jeu ?', quitText: 'Ta progression dans ce jeu sera perdue.', stay: 'Rester', quit: 'Quitter',
+      reviewTitle: 'Réviser', reviewDue: 'mots à revoir aujourd’hui', reviewStart: 'Réviser {n} mots', reviewStart1: 'Réviser 1 mot', reviewEmpty: 'Rien à réviser pour l’instant', reviewEmptySub: 'Les mots ratés dans les jeux et ceux que tu notes dans les flashcards apparaîtront ici, au bon moment.', reviewLater: 'Prochaines révisions', reviewSoon: 'Plus tard : {n} mots',
+      lexTitle: 'Lexique', lexPh: 'Chercher un mot (français ou arabe)…', lexHint: 'Cherche dans tous les mots du site, en arabe ou en français.', lexNone: 'Aucun mot trouvé pour « {q} ».', lexCount: '{n} résultats', lexCount1: '1 résultat', lexTry: 'Essaie :',
+      inLesson: '{r} · leçon {n}', right: 'Bonnes réponses', accuracy: 'Précision', time: 'Temps', streakN: '{n} d’affilée',
+      backLbl: 'Retour', settingsLbl: 'Ouvrir les réglages', listen: 'Écouter', listenSlow: 'Écouter lentement',
+      surahSections: '{n} sections', unitOf: 'Unité', lessonsWord: 'leçons', short_w85: '85 %', short_w1000: '1000 mots',
+    },
+    en: {
+      tab_learn: 'Learn', tab_review: 'Review', tab_lexicon: 'Lexicon',
+      hello: 'Salam!', homeSub: 'What do you want to learn today?',
+      resume: 'Continue', welcome: 'Welcome to Wakf', welcomeSub: 'New to Arabic? Start by learning the letters.', startReading: 'Start reading',
+      rubrics: 'Sections', ctaStart: 'Start', ctaContinue: 'Continue {x}', soonAvail: 'Coming soon',
+      progLessons: '{a} / {b} lessons completed', progSurah: '{a} / {b} surahs opened', progRead: '{a} / {b} pages read',
+      chip_surah: 'Surahs', chip_w85: 'Quran', chip_read: 'Reading', chip_w1000: 'Vocabulary',
+      settings: 'Settings', language: 'Language', languageSub: 'Language of the whole site', install: 'Install the app', installSub: 'On your home screen, works offline', installed: 'App installed',
+      resetProgress: 'Reset progress', resetSub: 'Erases completed lessons and words to review', resetTitle: 'Reset your progress?', resetText: 'Completed lessons, last scores and words to review will be erased from this browser.', erase: 'Erase', cancel: 'Cancel', close: 'Close', done2: 'Done',
+      installHelp: 'iPhone: Share then “Add to Home Screen”. Android or PC: browser menu then “Install app”.',
+      quitTitle: 'Quit the game?', quitText: 'Your progress in this game will be lost.', stay: 'Stay', quit: 'Quit',
+      reviewTitle: 'Review', reviewDue: 'words to review today', reviewStart: 'Review {n} words', reviewStart1: 'Review 1 word', reviewEmpty: 'Nothing to review yet', reviewEmptySub: 'Words you miss in games and the ones you rate in flashcards will show up here, at the right time.', reviewLater: 'Upcoming reviews', reviewSoon: 'Later: {n} words',
+      lexTitle: 'Lexicon', lexPh: 'Search a word (English or Arabic)…', lexHint: 'Search every word on the site, in Arabic or in English.', lexNone: 'No word found for “{q}”.', lexCount: '{n} results', lexCount1: '1 result', lexTry: 'Try:',
+      inLesson: '{r} · lesson {n}', right: 'Right answers', accuracy: 'Accuracy', time: 'Time', streakN: '{n} in a row',
+      backLbl: 'Back', settingsLbl: 'Open settings', listen: 'Listen', listenSlow: 'Listen slowly',
+      surahSections: '{n} sections', unitOf: 'Unit', lessonsWord: 'lessons', short_w85: '85%', short_w1000: '1000 words',
+    },
+  };
+  for (const l in STR2) Object.assign(STR[l], STR2[l]);
   W.lang = null;
   W.t = (k, vars) => {
     let s = (STR[W.lang || 'fr'] || STR.fr)[k];
@@ -136,32 +174,32 @@
 
   /* ---------------- storage ---------------- */
   const KEY = 'wakf.v1';
-  const DEF = { lang: null, xp: 0, daily: { d: '', xp: 0 }, streak: { last: '', n: 0, best: 0 }, lessons: {}, srs: {}, seen: 0 };
+  const DEF = { lang: null, lessons: {}, srs: {}, last: {}, opened: {}, readPages: {} };
   let S;
   try { S = Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { S = Object.assign({}, DEF); }
+  // drop the old gamification fields (XP, streak, daily goal…)
+  ['xp', 'daily', 'streak', 'seen'].forEach((k) => delete S[k]);
+  for (const id in S.srs) { const r = S.srs[id]; if (r && r.due == null) S.srs[id] = { b: r.b || 0, due: r.t || Date.now() }; }
   W.state = S;
   W.save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
-  const today = () => { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
-  W.addXP = (n) => {
-    const d = today();
-    if (S.daily.d !== d) S.daily = { d, xp: 0 };
-    S.daily.xp += n; S.xp += n;
-    if (S.streak.last !== d) {
-      const y = new Date(); y.setDate(y.getDate() - 1);
-      const yd = y.getFullYear() + '-' + (y.getMonth() + 1) + '-' + y.getDate();
-      S.streak.n = S.streak.last === yd ? S.streak.n + 1 : 1;
-      S.streak.last = d; S.streak.best = Math.max(S.streak.best || 0, S.streak.n);
-    }
+  W.save();
+  W.lessonState = (id) => (S.lessons[id] = S.lessons[id] || { games: {}, exam: null });
+  W.markGame = (id, g, score) => { const L = W.lessonState(id); if (g === 'exam') { L.exam = score; L.examBest = Math.max(L.examBest || 0, score); } else L.games[g] = 1; W.save(); };
+  W.setLast = (theme, rec) => { S.last[theme] = Object.assign({ at: Date.now() }, rec); S.last._ = theme; W.save(); };
+  W.markOpened = (key) => { if (!S.opened[key]) { S.opened[key] = Date.now(); W.save(); } };
+  const DAY = 864e5;
+  // spaced repetition: b = box, due = timestamp
+  W.srsRate = (id, r) => {
+    const now = Date.now(), prev = S.srs[id] || { b: 0 };
+    if (r === 0) S.srs[id] = { b: 0, due: now };
+    else if (r === 1) S.srs[id] = { b: Math.max(1, prev.b), due: now + DAY };
+    else if (r === 2) S.srs[id] = { b: prev.b + 1, due: now + [3, 3, 7, 14, 30, 60][Math.min(prev.b, 5)] * DAY };
+    else S.srs[id] = { b: prev.b + 2, due: now + [10, 10, 21, 45, 90, 180][Math.min(prev.b, 5)] * DAY };
     W.save();
   };
-  W.dailyXP = () => (S.daily.d === today() ? S.daily.xp : 0);
-  W.streakN = () => {
-    const d = today(); const y = new Date(); y.setDate(y.getDate() - 1);
-    const yd = y.getFullYear() + '-' + (y.getMonth() + 1) + '-' + y.getDate();
-    return S.streak.last === d || S.streak.last === yd ? S.streak.n : 0;
-  };
-  W.lessonState = (id) => (S.lessons[id] = S.lessons[id] || { games: {}, exam: 0 });
-  W.markGame = (id, g, score) => { const L = W.lessonState(id); L.games[g] = Math.max(L.games[g] || 0, score || 1); if (g === 'exam') L.exam = Math.max(L.exam || 0, score); W.save(); };
+  W.srsMiss = (id) => { if (id) { S.srs[id] = { b: 0, due: Date.now() }; W.save(); } };
+  W.dueIds = () => { const now = Date.now(); return Object.keys(S.srs).filter((k) => S.srs[k].due <= now); };
+  W.resetAll = () => { const l = S.lang; for (const k in S) delete S[k]; Object.assign(S, JSON.parse(JSON.stringify(DEF)), { lang: l }); W.save(); };
 
   /* ---------------- DOM helpers ---------------- */
   W.h = function h(tag, attrs, ...kids) {
@@ -184,19 +222,26 @@
   W.shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
   W.pick = (a, n) => W.shuffle(a).slice(0, n);
   W.$ = (s, r) => (r || document).querySelector(s);
-  W.icon = {
-    speaker: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 9.5C4 8.67 4.67 8 5.5 8H8l4.2-3.36A1.1 1.1 0 0 1 14 5.5v13a1.1 1.1 0 0 1-1.8.86L8 16H5.5A1.5 1.5 0 0 1 4 14.5v-5Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M18.8 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>',
-    turtle: '<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="11" cy="13" rx="7" ry="5"/><circle cx="19.5" cy="12" r="2.5"/><rect x="5" y="16" width="3" height="4" rx="1.5"/><rect x="13" y="16" width="3" height="4" rx="1.5"/></svg>',
-    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
-    back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
-    logo: '<svg viewBox="0 0 64 64"><defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fdc1f"/><stop offset="1" stop-color="#46a302"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="18" fill="url(#lg)"/><path d="M14 22c6-3 12-3 18 1 6-4 12-4 18-1v24c-6-3-12-3-18 1-6-4-12-4-18-1z" fill="#fff"/><path d="M32 23v24" stroke="#46a302" stroke-width="2.5"/><path d="M45 9a8 8 0 1 0 6 13 6.5 6.5 0 1 1-6-13z" fill="#ffc800"/></svg>',
-  };
+  W.icon = new Proxy({}, { get: (_, k) => W.svg(k === 'turtle' ? 'slow' : k) });
   W.html = (s) => { const d = document.createElement('div'); d.innerHTML = s; return d.firstChild; };
-  W.sayBtn = (getText, lang, cls) => {
-    const b = W.h('button.say' + (cls ? '.' + cls : ''), { 'aria-label': W.t('listenAyah'), html: W.icon.speaker });
-    b.addEventListener('click', (e) => { e.stopPropagation(); W.speak(typeof getText === 'function' ? getText() : getText, lang || 'ar', { el: b }); });
+  W.sayBtn = (getText, key, cls) => {
+    const b = W.h('button.say' + (cls ? '.' + cls : ''), { 'aria-label': W.t('listen'), html: W.svg('speaker') });
+    b.addEventListener('click', (e) => { e.stopPropagation(); W.say(typeof getText === 'function' ? getText() : getText, key && key !== 'ar' ? key : null, { el: b }); });
     return b;
   };
+  // In-app dialog (replaces confirm()). Resolves true/false.
+  W.dialog = ({ title, text, icon, ok, cancel, danger, color }) => new Promise((res) => {
+    const prev = document.activeElement;
+    const close = (v) => { scrim.remove(); document.removeEventListener('keydown', onKey, true); prev && prev.focus && prev.focus(); res(v); };
+    const onKey = (e) => { if (e.key === 'Escape') { e.stopPropagation(); close(false); } };
+    const okB = W.h('button.btn' + (danger ? '.red' : ''), { on: { click: () => close(true) } }, ok || W.t('cont'));
+    const box = W.h('div.dialog', { role: 'alertdialog', 'aria-modal': 'true', style: color ? { '--c': 'var(--' + color + ')', '--l': 'var(--' + color + '-l)' } : null },
+      icon ? W.h('div.di', { html: W.svg(icon) }) : null, W.h('h2', null, title), text ? W.h('p', null, text) : null,
+      W.h('div.acts', null, cancel !== false ? W.h('button.btn.outline', { on: { click: () => close(false) } }, cancel || W.t('cancel')) : null, okB));
+    const scrim = W.h('div.scrim', { on: { click: (e) => { if (e.target === scrim) close(false); } } }, box);
+    document.body.append(scrim); document.addEventListener('keydown', onKey, true);
+    setTimeout(() => okB.focus(), 50);
+  });
   W.toast = (msg, ms) => {
     const t = W.$('#toast'); t.textContent = msg; t.classList.add('on');
     clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), ms || 3200);
@@ -228,12 +273,12 @@
     lang = lang || 'ar';
     if (!synth || !text) return Promise.resolve();
     const v = voiceFor(lang);
-    if (!v && lang === 'ar' && !warned) { warned = true; W.toast(W.t('noVoice'), 6000); }
+    if (!v && lang === 'ar' && !warned) { warned = true; let seen = false; try { seen = sessionStorage.getItem('wakf.novoice') === '1'; sessionStorage.setItem('wakf.novoice', '1'); } catch (e) {} if (!seen) W.toast(W.t('noVoice'), 4500); }
     if (!opt.queue) synth.cancel();
     if (curBtn) curBtn.classList.remove('playing');
     const u = new SpeechSynthesisUtterance(lang === 'ar' ? W.speakable(text) : String(text).replace(/\([^)]*\)/g, ' ').replace(/[\[\]]/g, ''));
     u.lang = v ? v.lang : (LANGS[lang] || [lang])[0];
-    if (v) u.voice = v;
+    if (v) { try { u.voice = v; } catch (e) {} }
     u.rate = opt.rate || (lang === 'ar' ? 0.8 : 0.95);
     const el = opt.el; if (el) { el.classList.add('playing'); curBtn = el; }
     return new Promise((res) => {
@@ -245,7 +290,24 @@
       setTimeout(() => synth.speak(u), 30);
     });
   };
-  W.stopSpeak = () => { if (synth) synth.cancel(); };
+  W.stopSpeak = () => { if (synth) synth.cancel(); if (curAudio) { curAudio.pause(); curAudio = null; } };
+  /* Recorded audio first (audio/<key>.mp3, listed in data/audio.json), speech synthesis as fallback */
+  let audioIndex = null, curAudio = null;
+  const loadAudioIndex = () => audioIndex || (audioIndex = fetch('data/audio.json').then((r) => (r.ok ? r.json() : { files: [] })).then((j) => new Set(j.files || [])).catch(() => new Set()));
+  W.say = async (text, key, opt) => {
+    opt = opt || {};
+    const idx = await loadAudioIndex();
+    if (key && idx.has(key)) {
+      if (synth) synth.cancel();
+      if (curAudio && !opt.queue) curAudio.pause();
+      const a = new Audio('audio/' + key + '.mp3'); curAudio = a;
+      if (opt.rate) a.playbackRate = opt.rate;
+      const el = opt.el; if (el) el.classList.add('playing');
+      return new Promise((res) => { const end = () => { if (el) el.classList.remove('playing'); res(); }; a.onended = end; a.onerror = () => { end(); }; a.play().catch(() => { end(); W.speak(text, 'ar', opt); }); });
+    }
+    return W.speak(text, 'ar', opt);
+  };
+  W.hasAudio = async (key) => (await loadAudioIndex()).has(key);
 
   /* ---------------- SFX (WebAudio, no files) ---------------- */
   let actx = null;
@@ -290,18 +352,24 @@
   const routes = [];
   W.route = (re, fn) => routes.push([re, fn]);
   W.go = (hash) => { if (location.hash === hash) W.render(); else location.hash = hash; };
+  W._seq = 0;
   W.render = () => {
     const hash = location.hash.slice(1) || '/';
+    const tok = ++W._seq;
+    document.querySelectorAll('.scrim').forEach((x) => x.remove());
     for (const [re, fn] of routes) {
       const m = re.exec(hash);
-      if (m) { W.stopSpeak(); fn(...m.slice(1)); return; }
+      if (m) { W.stopSpeak(); fn(tok, ...m.slice(1)); return; }
     }
     W.go('#/');
   };
-  W.mount = (node, opt) => {
+  // Mount a page; ignored if the user already navigated elsewhere (stale async render)
+  W.mount = (node, tok) => {
+    if (tok !== undefined && tok !== W._seq) return false;
     const v = W.$('#view');
     v.replaceChildren(node);
-    if (!(opt && opt.keepScroll)) window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     W.updateNav && W.updateNav();
+    return true;
   };
 })();
