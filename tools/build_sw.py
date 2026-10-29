@@ -19,13 +19,15 @@ const VERSION = 'wakf-{ver}';
 const PRECACHE = {json.dumps(['./'] + files, indent=0)};
 self.addEventListener('install', (e) => {{
   // the new version waits until the page asks for it ("Nouvelle version disponible — Recharger")
-  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(PRECACHE.map((u) => new Request(u, {{ cache: 'reload' }})))));
+  // pages from the first version have no update banner: upgrade them directly once (marker cache 'wakf-meta-v2')
+  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(PRECACHE.map((u) => new Request(u, {{ cache: 'reload' }}))))
+    .then(() => caches.has('wakf-meta-v2')).then((has) => {{ if (!has) {{ caches.open('wakf-meta-v2'); return self.skipWaiting(); }} }}));
 }});
 self.addEventListener('message', (e) => {{
   if (e.data && e.data.type === 'skip') self.skipWaiting();
 }});
 self.addEventListener('activate', (e) => {{
-  e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== VERSION).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== VERSION && k !== 'wakf-meta-v2').map((k) => caches.delete(k)))).then(() => self.clients.claim()));
 }});
 self.addEventListener('fetch', (e) => {{
   const req = e.request;
