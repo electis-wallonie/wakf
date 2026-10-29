@@ -1,0 +1,2678 @@
+{
+ "surah": {
+  "number": 55,
+  "name_ar": "الرَّحْمٰن",
+  "name_en": "Ar-Rahman",
+  "name_fr": "Ar-Rahman (Le Tout Miséricordieux)",
+  "basmala_ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+ },
+ "refrain": {
+  "ar": "فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ",
+  "words": [
+   {
+    "ar": "فَبِأَيِّ",
+    "tr": "fabi-ayyi",
+    "en": "So which",
+    "fr": "Alors lequel"
+   },
+   {
+    "ar": "ءَالَآءِ",
+    "tr": "alai",
+    "en": "(of the) favors",
+    "fr": "(des) bienfaits"
+   },
+   {
+    "ar": "رَبِّكُمَا",
+    "tr": "rabbikuma",
+    "en": "(of) your Lord",
+    "fr": "(de) votre Seigneur"
+   },
+   {
+    "ar": "تُكَذِّبَانِ",
+    "tr": "tukadhibani",
+    "en": "will you both deny?",
+    "fr": "nierez-vous tous deux ?"
+   }
+  ],
+  "en": "So which of the favors of your Lord will you both deny?",
+  "fr": "Alors, lequel des bienfaits de votre Seigneur nierez-vous tous deux ?",
+  "marker_note_en": "In the Reward panels the refrain is not written out; a small grey '?' circle beside the ayah number stands for it (refrain_marker: true)."
+ },
+ "sections": [
+  {
+   "id": "mercy-creation",
+   "title_en": "His Mercy in Our Creation",
+   "title_fr": "Sa miséricorde dans notre création",
+   "group": "visual",
+   "marker": "",
+   "nodes": [
+    {
+     "ayah": 1,
+     "words": [
+      {
+       "ar": "ٱلرَّحْمَٰنُ",
+       "tr": "al-rahmanu",
+       "en": "The Most Gracious",
+       "fr": "Le Tout Miséricordieux"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 2,
+       "words": [
+        {
+         "ar": "عَلَّمَ",
+         "tr": "allama",
+         "en": "He taught",
+         "fr": "Il a enseigné"
+        },
+        {
+         "ar": "ٱلْقُرْءَانَ",
+         "tr": "al-qur'ana",
+         "en": "the Quran",
+         "fr": "le Coran"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-creation-1.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": 3,
+       "words": [
+        {
+         "ar": "خَلَقَ",
+         "tr": "khalaqa",
+         "en": "He created",
+         "fr": "Il a créé"
+        },
+        {
+         "ar": "ٱلْإِنسَٰنَ",
+         "tr": "al-insana",
+         "en": "[the] man",
+         "fr": "[l']homme"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-creation-2.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": 4,
+       "words": [
+        {
+         "ar": "عَلَّمَهُ",
+         "tr": "allamahu",
+         "en": "He taught him",
+         "fr": "Il lui a enseigné"
+        },
+        {
+         "ar": "ٱلْبَيَانَ",
+         "tr": "al-bayana",
+         "en": "[the] speech",
+         "fr": "[l']expression claire"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-creation-3.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    }
+   ]
+  },
+  {
+   "id": "mercy-heavens",
+   "title_en": "His Mercy in the Heavens",
+   "title_fr": "Sa miséricorde dans les cieux",
+   "group": "visual",
+   "marker": "",
+   "nodes": [
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "ٱلشَّمْسُ",
+       "tr": "al-shamsu",
+       "en": "The sun",
+       "fr": "Le soleil"
+      },
+      {
+       "ar": "وَٱلْقَمَرُ",
+       "tr": "wal-qamaru",
+       "en": "and the moon",
+       "fr": "et la lune"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 5,
+       "words": [
+        {
+         "ar": "بِحُسْبَانٍ",
+         "tr": "bihus'banin",
+         "en": "by (precise) calculation",
+         "fr": "selon un calcul (précis)"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-heavens-2.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/mercy-heavens-1.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "وَٱلنَّجْمُ",
+       "tr": "wal-najmu",
+       "en": "And the stars",
+       "fr": "Et les étoiles"
+      },
+      {
+       "ar": "وَٱلشَّجَرُ",
+       "tr": "wal-shajaru",
+       "en": "and the trees",
+       "fr": "et les arbres"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 6,
+       "words": [
+        {
+         "ar": "يَسْجُدَانِ",
+         "tr": "yasjudani",
+         "en": "both prostrate",
+         "fr": "se prosternent tous deux"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-heavens-4.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/mercy-heavens-3.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "وَٱلسَّمَآءَ",
+       "tr": "wal-samaa",
+       "en": "And the heaven",
+       "fr": "Et le ciel"
+      },
+      {
+       "ar": "رَفَعَهَا",
+       "tr": "rafa'aha",
+       "en": "He raised it",
+       "fr": "Il l'a élevé"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 7,
+       "words": [
+        {
+         "ar": "وَوَضَعَ",
+         "tr": "wawada'a",
+         "en": "and He has set up",
+         "fr": "et Il a établi"
+        },
+        {
+         "ar": "ٱلْمِيزَانَ",
+         "tr": "al-mizana",
+         "en": "the balance",
+         "fr": "la balance"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-heavens-6.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/mercy-heavens-5.webp",
+     "label_en": "",
+     "is_refrain": false
+    }
+   ]
+  },
+  {
+   "id": "mercy-balance",
+   "title_en": "His Mercy in Divine Balance",
+   "title_fr": "Sa miséricorde dans la balance divine",
+   "group": "visual",
+   "marker": "",
+   "nodes": [
+    {
+     "ayah": 8,
+     "words": [
+      {
+       "ar": "أَلَّا",
+       "tr": "alla",
+       "en": "That not",
+       "fr": "Afin de ne pas"
+      },
+      {
+       "ar": "تَطْغَوْا۟",
+       "tr": "tatghaw",
+       "en": "you may transgress",
+       "fr": "transgresser"
+      },
+      {
+       "ar": "فِى",
+       "tr": "fi",
+       "en": "in",
+       "fr": "dans"
+      },
+      {
+       "ar": "ٱلْمِيزَانِ",
+       "tr": "al-mizani",
+       "en": "the balance",
+       "fr": "la balance"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/mercy-balance-1.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "وَأَقِيمُوا۟",
+       "tr": "wa-aqimu",
+       "en": "And establish",
+       "fr": "Et établissez"
+      },
+      {
+       "ar": "ٱلْوَزْنَ",
+       "tr": "al-wazna",
+       "en": "the weight",
+       "fr": "la pesée"
+      },
+      {
+       "ar": "بِٱلْقِسْطِ",
+       "tr": "bil-qis'ti",
+       "en": "in justice",
+       "fr": "avec justice"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/mercy-balance-2.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": 9,
+     "words": [
+      {
+       "ar": "وَلَا",
+       "tr": "wala",
+       "en": "and (do) not",
+       "fr": "et ne (faites) pas"
+      },
+      {
+       "ar": "تُخْسِرُوا۟",
+       "tr": "tukh'siru",
+       "en": "make deficient",
+       "fr": "rendre déficiente"
+      },
+      {
+       "ar": "ٱلْمِيزَانَ",
+       "tr": "al-mizana",
+       "en": "the balance",
+       "fr": "la balance"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/mercy-balance-3.webp",
+     "label_en": "",
+     "is_refrain": false
+    }
+   ]
+  },
+  {
+   "id": "mercy-earth",
+   "title_en": "His Mercy in The Earth",
+   "title_fr": "Sa miséricorde sur la Terre",
+   "group": "visual",
+   "marker": "",
+   "nodes": [
+    {
+     "ayah": 10,
+     "words": [
+      {
+       "ar": "وَٱلْأَرْضَ",
+       "tr": "wal-arda",
+       "en": "And the earth",
+       "fr": "Et la terre"
+      },
+      {
+       "ar": "وَضَعَهَا",
+       "tr": "wada'aha",
+       "en": "He laid it",
+       "fr": "Il l'a étendue"
+      },
+      {
+       "ar": "لِلْأَنَامِ",
+       "tr": "lil'anami",
+       "en": "for the creatures",
+       "fr": "pour les créatures"
+      }
+     ],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "فِيهَا",
+         "tr": "fiha",
+         "en": "Therein",
+         "fr": "On y trouve"
+        },
+        {
+         "ar": "فَٰكِهَةٌ",
+         "tr": "fakihatun",
+         "en": "(is) fruit",
+         "fr": "(des) fruits"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-earth-2.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "وَٱلنَّخْلُ",
+         "tr": "wal-nakhlu",
+         "en": "and datepalms",
+         "fr": "et les palmiers-dattiers"
+        }
+       ],
+       "children": [
+        {
+         "ayah": 11,
+         "words": [
+          {
+           "ar": "ذَاتُ",
+           "tr": "dhatu",
+           "en": "having",
+           "fr": "aux"
+          },
+          {
+           "ar": "ٱلْأَكْمَامِ",
+           "tr": "al-akmami",
+           "en": "sheaths",
+           "fr": "spathes"
+          }
+         ],
+         "children": [],
+         "image": null,
+         "label_en": "",
+         "is_refrain": false
+        }
+       ],
+       "image": "assets/rahman/mercy-earth-3.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "note_en": "Palm leaf sheath",
+       "note_fr": "Spathe de palmier"
+      },
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "وَٱلْحَبُّ",
+         "tr": "wal-habu",
+         "en": "And the grain",
+         "fr": "Et le grain"
+        }
+       ],
+       "children": [
+        {
+         "ayah": null,
+         "words": [
+          {
+           "ar": "ذُو",
+           "tr": "dhu",
+           "en": "having",
+           "fr": "ayant"
+          },
+          {
+           "ar": "ٱلْعَصْفِ",
+           "tr": "al-'asfi",
+           "en": "husk",
+           "fr": "la balle"
+          }
+         ],
+         "children": [],
+         "image": "assets/rahman/mercy-earth-4.webp",
+         "label_en": "",
+         "is_refrain": false
+        },
+        {
+         "ayah": 12,
+         "words": [
+          {
+           "ar": "وَٱلرَّيْحَانُ",
+           "tr": "wal-rayhanu",
+           "en": "and scented plants",
+           "fr": "et les plantes parfumées"
+          }
+         ],
+         "children": [],
+         "image": "assets/rahman/mercy-earth-5.webp",
+         "label_en": "",
+         "is_refrain": false
+        }
+       ],
+       "image": null,
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/mercy-earth-1.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 13
+    }
+   ]
+  },
+  {
+   "id": "majesty-creation",
+   "title_en": "His Majesty in Our Creation",
+   "title_fr": "Sa majesté dans notre création",
+   "group": "visual",
+   "marker": "",
+   "nodes": [
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "خَلَقَ",
+       "tr": "khalaqa",
+       "en": "He created",
+       "fr": "Il a créé"
+      },
+      {
+       "ar": "ٱلْإِنسَٰنَ",
+       "tr": "al-insana",
+       "en": "the man",
+       "fr": "l'homme"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 14,
+       "words": [
+        {
+         "ar": "مِن",
+         "tr": "min",
+         "en": "from",
+         "fr": "d'"
+        },
+        {
+         "ar": "صَلْصَٰلٍ",
+         "tr": "salsalin",
+         "en": "clay",
+         "fr": "argile"
+        },
+        {
+         "ar": "كَٱلْفَخَّارِ",
+         "tr": "kal-fakhari",
+         "en": "like the pottery",
+         "fr": "comme la poterie"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/majesty-creation-2.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/majesty-creation-1.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "وَخَلَقَ",
+       "tr": "wakhalaqa",
+       "en": "And He created",
+       "fr": "Et Il a créé"
+      },
+      {
+       "ar": "ٱلْجَآنَّ",
+       "tr": "al-jana",
+       "en": "the jinn",
+       "fr": "les djinns"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 15,
+       "words": [
+        {
+         "ar": "مِن",
+         "tr": "min",
+         "en": "from",
+         "fr": "d'"
+        },
+        {
+         "ar": "مَّارِجٍ",
+         "tr": "marijin",
+         "en": "a smokeless flame",
+         "fr": "une flamme sans fumée"
+        },
+        {
+         "ar": "مِّن",
+         "tr": "min",
+         "en": "of",
+         "fr": "de"
+        },
+        {
+         "ar": "نَّارٍ",
+         "tr": "narin",
+         "en": "fire",
+         "fr": "feu"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/majesty-creation-4.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/majesty-creation-3.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 16
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "رَبُّ",
+       "tr": "rabbu",
+       "en": "Lord",
+       "fr": "Seigneur"
+      },
+      {
+       "ar": "ٱلْمَشْرِقَيْنِ",
+       "tr": "al-mashriqayni",
+       "en": "(of) the two Easts",
+       "fr": "(des) deux Levants"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/majesty-creation-5.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": 17,
+     "words": [
+      {
+       "ar": "وَرَبُّ",
+       "tr": "warabbu",
+       "en": "and Lord",
+       "fr": "et Seigneur"
+      },
+      {
+       "ar": "ٱلْمَغْرِبَيْنِ",
+       "tr": "al-maghribayni",
+       "en": "(of) the two Wests",
+       "fr": "(des) deux Couchants"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/majesty-creation-6.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 18
+    }
+   ]
+  },
+  {
+   "id": "mercy-seas",
+   "title_en": "His Mercy in The Seas",
+   "title_fr": "Sa miséricorde dans les mers",
+   "group": "visual",
+   "marker": "",
+   "nodes": [
+    {
+     "ayah": 19,
+     "words": [
+      {
+       "ar": "مَرَجَ",
+       "tr": "maraja",
+       "en": "He released",
+       "fr": "Il a laissé couler"
+      },
+      {
+       "ar": "ٱلْبَحْرَيْنِ",
+       "tr": "al-bahrayni",
+       "en": "the two seas",
+       "fr": "les deux mers"
+      },
+      {
+       "ar": "يَلْتَقِيَانِ",
+       "tr": "yaltaqiyani",
+       "en": "meeting",
+       "fr": "qui se rencontrent"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/mercy-seas-1.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": 20,
+     "words": [
+      {
+       "ar": "بَيْنَهُمَا",
+       "tr": "baynahuma",
+       "en": "Between both of them",
+       "fr": "Entre les deux"
+      },
+      {
+       "ar": "بَرْزَخٌ",
+       "tr": "barzakhun",
+       "en": "(is) a barrier",
+       "fr": "(il y a) une barrière"
+      },
+      {
+       "ar": "لَّا",
+       "tr": "la",
+       "en": "not",
+       "fr": "ne… pas"
+      },
+      {
+       "ar": "يَبْغِيَانِ",
+       "tr": "yabghiyani",
+       "en": "they transgress",
+       "fr": "ils (ne) la dépassent"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 21
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "يَخْرُجُ",
+       "tr": "yakhruju",
+       "en": "Come forth",
+       "fr": "Sortent"
+      },
+      {
+       "ar": "مِنْهُمَا",
+       "tr": "min'huma",
+       "en": "from both of them",
+       "fr": "des deux"
+      }
+     ],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "ٱللُّؤْلُؤُ",
+         "tr": "al-u'lu-u",
+         "en": "the pearl",
+         "fr": "la perle"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-seas-2.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": 22,
+       "words": [
+        {
+         "ar": "وَٱلْمَرْجَانُ",
+         "tr": "wal-marjanu",
+         "en": "and the coral",
+         "fr": "et le corail"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-seas-3.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    }
+   ]
+  },
+  {
+   "id": "center",
+   "title_en": "",
+   "title_fr": "",
+   "center_ar": "ٱللَّهُ",
+   "group": "visual",
+   "marker": "",
+   "note_en": "Central panel (no title pill): the refrain at the top and the name of Allah in large calligraphy.",
+   "nodes": [
+    {
+     "is_refrain": true,
+     "ayah": 23
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "وَلَهُ",
+       "tr": "walahu",
+       "en": "And for Him",
+       "fr": "Et à Lui"
+      },
+      {
+       "ar": "ٱلْجَوَارِ",
+       "tr": "al-jawari",
+       "en": "(are) the ships",
+       "fr": "(sont) les navires"
+      },
+      {
+       "ar": "ٱلْمُنشَـَٔاتُ",
+       "tr": "al-munshaatu",
+       "en": "elevated",
+       "fr": "élevés"
+      },
+      {
+       "ar": "فِى",
+       "tr": "fi",
+       "en": "in",
+       "fr": "sur"
+      },
+      {
+       "ar": "ٱلْبَحْرِ",
+       "tr": "al-bahri",
+       "en": "the sea",
+       "fr": "la mer"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 24,
+       "words": [
+        {
+         "ar": "كَٱلْأَعْلَٰمِ",
+         "tr": "kal-a'lami",
+         "en": "like mountains",
+         "fr": "comme des montagnes"
+        }
+       ],
+       "children": [],
+       "image": null,
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/center-1.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 25
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "كُلُّ",
+       "tr": "kullu",
+       "en": "Everyone",
+       "fr": "Tout"
+      },
+      {
+       "ar": "مَنْ",
+       "tr": "man",
+       "en": "who",
+       "fr": "ce qui"
+      },
+      {
+       "ar": "عَلَيْهَا",
+       "tr": "alayha",
+       "en": "(is) on it",
+       "fr": "(est) sur elle"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 26,
+       "words": [
+        {
+         "ar": "فَانٍ",
+         "tr": "fanin",
+         "en": "(will) perish",
+         "fr": "(va) périr"
+        }
+       ],
+       "children": [],
+       "image": null,
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "وَيَبْقَىٰ",
+       "tr": "wayabqa",
+       "en": "But will remain",
+       "fr": "Mais demeurera"
+      },
+      {
+       "ar": "وَجْهُ",
+       "tr": "wajhu",
+       "en": "(the) Face",
+       "fr": "(le) Visage"
+      },
+      {
+       "ar": "رَبِّكَ",
+       "tr": "rabbika",
+       "en": "(of) your Lord",
+       "fr": "(de) ton Seigneur"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 27,
+       "words": [
+        {
+         "ar": "ذُو",
+         "tr": "dhu",
+         "en": "(the) Owner",
+         "fr": "(le) Détenteur"
+        },
+        {
+         "ar": "ٱلْجَلَٰلِ",
+         "tr": "al-jalali",
+         "en": "(of) Majesty",
+         "fr": "(de) la Majesté"
+        },
+        {
+         "ar": "وَٱلْإِكْرَامِ",
+         "tr": "wal-ik'rami",
+         "en": "and Honor",
+         "fr": "et de la Générosité"
+        }
+       ],
+       "children": [],
+       "image": null,
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 28
+    }
+   ]
+  },
+  {
+   "id": "mercy",
+   "title_en": "Mercy",
+   "title_fr": "Miséricorde",
+   "group": "mental",
+   "marker": "",
+   "links_to": "accountability",
+   "nodes": [
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "يَسْـَٔلُهُۥ",
+       "tr": "yasaluhu",
+       "en": "Asks Him",
+       "fr": "Le sollicite"
+      },
+      {
+       "ar": "مَن",
+       "tr": "man",
+       "en": "whoever",
+       "fr": "quiconque"
+      },
+      {
+       "ar": "فِى",
+       "tr": "fi",
+       "en": "(is) in",
+       "fr": "(est) dans"
+      }
+     ],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "ٱلسَّمَٰوَٰتِ",
+         "tr": "al-samawati",
+         "en": "the heavens",
+         "fr": "les cieux"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-1.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "وَٱلْأَرْضِ",
+         "tr": "wal-ardi",
+         "en": "and the earth",
+         "fr": "et la terre"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/mercy-2.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false,
+     "icon": "question"
+    },
+    {
+     "ayah": 29,
+     "words": [
+      {
+       "ar": "كُلَّ",
+       "tr": "kulla",
+       "en": "Every",
+       "fr": "Chaque"
+      },
+      {
+       "ar": "يَوْمٍ",
+       "tr": "yawmin",
+       "en": "day",
+       "fr": "jour"
+      },
+      {
+       "ar": "هُوَ",
+       "tr": "huwa",
+       "en": "He",
+       "fr": "Il"
+      },
+      {
+       "ar": "فِى",
+       "tr": "fi",
+       "en": "(is) in",
+       "fr": "(est) dans"
+      },
+      {
+       "ar": "شَأْنٍ",
+       "tr": "shanin",
+       "en": "a matter",
+       "fr": "une affaire"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 30
+    }
+   ]
+  },
+  {
+   "id": "accountability",
+   "title_en": "Accountability",
+   "title_fr": "Reddition des comptes",
+   "group": "mental",
+   "marker": "",
+   "nodes": [
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "سَنَفْرُغُ",
+       "tr": "sanafrughu",
+       "en": "Soon We will attend",
+       "fr": "Bientôt Nous Nous occuperons"
+      },
+      {
+       "ar": "لَكُمْ",
+       "tr": "lakum",
+       "en": "to you",
+       "fr": "de vous"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 31,
+       "words": [
+        {
+         "ar": "أَيُّهَ",
+         "tr": "ayyuha",
+         "en": "O you",
+         "fr": "Ô vous"
+        },
+        {
+         "ar": "ٱلثَّقَلَانِ",
+         "tr": "al-thaqalani",
+         "en": "two classes!",
+         "fr": "deux catégories !"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/accountability-2.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/accountability-1.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 32
+    }
+   ]
+  },
+  {
+   "id": "challenge",
+   "title_en": "Challenge",
+   "title_fr": "Défi",
+   "group": "mental",
+   "marker": "ي - ي",
+   "nodes": [
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "يَٰمَعْشَرَ",
+       "tr": "yama'shara",
+       "en": "O assembly",
+       "fr": "Ô assemblée"
+      }
+     ],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "ٱلْجِنِّ",
+         "tr": "al-jini",
+         "en": "(of) the jinn",
+         "fr": "(des) djinns"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/challenge-1.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "وَٱلْإِنسِ",
+         "tr": "wal-insi",
+         "en": "and the men!",
+         "fr": "et des hommes !"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/challenge-2.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "إِنِ",
+       "tr": "ini",
+       "en": "If",
+       "fr": "Si"
+      },
+      {
+       "ar": "ٱسْتَطَعْتُمْ",
+       "tr": "is'tata'tum",
+       "en": "you are able",
+       "fr": "vous pouvez"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "أَن",
+       "tr": "an",
+       "en": "to",
+       "fr": "de",
+       "highlight": true
+      },
+      {
+       "ar": "تَنفُذُوا۟",
+       "tr": "tanfudhu",
+       "en": "pass beyond",
+       "fr": "franchir",
+       "highlight": true
+      },
+      {
+       "ar": "مِنْ",
+       "tr": "min",
+       "en": "[of]",
+       "fr": "[de]"
+      },
+      {
+       "ar": "أَقْطَارِ",
+       "tr": "aqtari",
+       "en": "(the) regions",
+       "fr": "(les) régions"
+      }
+     ],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "ٱلسَّمَٰوَٰتِ",
+         "tr": "al-samawati",
+         "en": "(of) the heavens",
+         "fr": "(des) cieux"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/challenge-3.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "وَٱلْأَرْضِ",
+         "tr": "wal-ardi",
+         "en": "and the earth",
+         "fr": "et (de) la terre"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/challenge-4.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "فَٱنفُذُوا۟",
+       "tr": "fa-unfudhu",
+       "en": "then pass",
+       "fr": "alors franchissez"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false,
+     "highlight": true
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "لَا",
+       "tr": "la",
+       "en": "Not",
+       "fr": "Ne… pas"
+      },
+      {
+       "ar": "تَنفُذُونَ",
+       "tr": "tanfudhuna",
+       "en": "you (can) pass",
+       "fr": "vous (ne pourrez) franchir"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false,
+     "highlight": true
+    },
+    {
+     "ayah": 33,
+     "words": [
+      {
+       "ar": "إِلَّا",
+       "tr": "illa",
+       "en": "except",
+       "fr": "sauf"
+      },
+      {
+       "ar": "بِسُلْطَٰنٍ",
+       "tr": "bisul'tanin",
+       "en": "by authority",
+       "fr": "par un pouvoir"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/challenge-5.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 34
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "يُرْسَلُ",
+       "tr": "yur'salu",
+       "en": "Will be sent",
+       "fr": "Sera lâché"
+      },
+      {
+       "ar": "عَلَيْكُمَا",
+       "tr": "alaykuma",
+       "en": "against both of you",
+       "fr": "contre vous deux"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "شُوَاظٌ",
+       "tr": "shuwazun",
+       "en": "a flame",
+       "fr": "une flamme"
+      },
+      {
+       "ar": "مِّن",
+       "tr": "min",
+       "en": "of",
+       "fr": "de"
+      }
+     ],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "نَّارٍ",
+         "tr": "narin",
+         "en": "fire",
+         "fr": "feu"
+        }
+       ],
+       "children": [],
+       "image": null,
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "وَنُحَاسٌ",
+         "tr": "wanuhasun",
+         "en": "and smoke",
+         "fr": "et de la fumée"
+        }
+       ],
+       "children": [],
+       "image": null,
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/challenge-6.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": 35,
+     "words": [
+      {
+       "ar": "فَلَا",
+       "tr": "fala",
+       "en": "and not",
+       "fr": "et ne… pas"
+      },
+      {
+       "ar": "تَنتَصِرَانِ",
+       "tr": "tantasirani",
+       "en": "you will (be able to) defend yourselves",
+       "fr": "vous (ne pourrez) vous défendre"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/challenge-7.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 36
+    }
+   ]
+  },
+  {
+   "id": "judgment-day",
+   "title_en": "Judgment Day",
+   "title_fr": "Le Jour du Jugement",
+   "group": "mental",
+   "marker": "ف - ف",
+   "nodes": [
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "فَإِذَا",
+       "tr": "fa-idha",
+       "en": "Then when",
+       "fr": "Puis lorsque"
+      },
+      {
+       "ar": "ٱنشَقَّتِ",
+       "tr": "inshaqqati",
+       "en": "is split",
+       "fr": "se fendra"
+      },
+      {
+       "ar": "ٱلسَّمَآءُ",
+       "tr": "al-samau",
+       "en": "the heaven",
+       "fr": "le ciel"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/judgment-day-1.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": 37,
+     "words": [
+      {
+       "ar": "فَكَانَتْ",
+       "tr": "fakanat",
+       "en": "and it becomes",
+       "fr": "et il deviendra"
+      },
+      {
+       "ar": "وَرْدَةً",
+       "tr": "wardatan",
+       "en": "rosecolored",
+       "fr": "couleur de rose"
+      },
+      {
+       "ar": "كَٱلدِّهَانِ",
+       "tr": "kal-dihani",
+       "en": "like murky oil",
+       "fr": "comme de l'huile trouble"
+      }
+     ],
+     "children": [],
+     "image": "assets/rahman/judgment-day-2.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 38
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "فَيَوْمَئِذٍ",
+       "tr": "fayawma-idhin",
+       "en": "Then (on) that Day",
+       "fr": "Alors (en) ce Jour"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "لَّا",
+       "tr": "la",
+       "en": "not",
+       "fr": "ne… pas"
+      },
+      {
+       "ar": "يُسْـَٔلُ",
+       "tr": "yus'alu",
+       "en": "will be asked",
+       "fr": "sera interrogé"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false,
+     "icons": [
+      "cross",
+      "question"
+     ]
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "عَن",
+       "tr": "an",
+       "en": "about",
+       "fr": "sur"
+      },
+      {
+       "ar": "ذَنۢبِهِۦٓ",
+       "tr": "dhanbihi",
+       "en": "his sin",
+       "fr": "son péché"
+      }
+     ],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "إِنسٌ",
+         "tr": "insun",
+         "en": "any man",
+         "fr": "aucun homme"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/judgment-day-3.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": 39,
+       "words": [
+        {
+         "ar": "وَلَا",
+         "tr": "wala",
+         "en": "and not",
+         "fr": "ni"
+        },
+        {
+         "ar": "جَآنٌّ",
+         "tr": "jannun",
+         "en": "any jinn",
+         "fr": "aucun djinn"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/judgment-day-4.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 40
+    }
+   ]
+  },
+  {
+   "id": "punishment",
+   "title_en": "Punishment",
+   "title_fr": "Châtiment",
+   "group": "mental",
+   "marker": "",
+   "nodes": [
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "يُعْرَفُ",
+       "tr": "yu'rafu",
+       "en": "Will be known",
+       "fr": "Seront reconnus"
+      },
+      {
+       "ar": "ٱلْمُجْرِمُونَ",
+       "tr": "al-muj'rimuna",
+       "en": "the criminals",
+       "fr": "les criminels",
+       "highlight": true
+      },
+      {
+       "ar": "بِسِيمَٰهُمْ",
+       "tr": "bisimahum",
+       "en": "by their marks",
+       "fr": "à leurs marques"
+      }
+     ],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "فَيُؤْخَذُ",
+         "tr": "fayu'khadhu",
+         "en": "and will be seized",
+         "fr": "et ils seront saisis"
+        }
+       ],
+       "children": [
+        {
+         "ayah": null,
+         "words": [
+          {
+           "ar": "بِٱلنَّوَٰصِى",
+           "tr": "bil-nawasi",
+           "en": "by the forelocks",
+           "fr": "par les toupets"
+          }
+         ],
+         "children": [],
+         "image": null,
+         "label_en": "",
+         "is_refrain": false
+        },
+        {
+         "ayah": 41,
+         "words": [
+          {
+           "ar": "وَٱلْأَقْدَامِ",
+           "tr": "wal-aqdami",
+           "en": "and the feet",
+           "fr": "et les pieds"
+          }
+         ],
+         "children": [],
+         "image": null,
+         "label_en": "",
+         "is_refrain": false
+        }
+       ],
+       "image": "assets/rahman/punishment-2.webp",
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/punishment-1.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 42
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "هَٰذِهِۦ",
+       "tr": "hadhihi",
+       "en": "This",
+       "fr": "Voici"
+      },
+      {
+       "ar": "جَهَنَّمُ",
+       "tr": "jahannamu",
+       "en": "(is) Hell",
+       "fr": "l'Enfer"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 43,
+       "words": [
+        {
+         "ar": "ٱلَّتِى",
+         "tr": "allati",
+         "en": "which",
+         "fr": "que"
+        },
+        {
+         "ar": "يُكَذِّبُ",
+         "tr": "yukadhibu",
+         "en": "deny",
+         "fr": "nient"
+        },
+        {
+         "ar": "بِهَا",
+         "tr": "biha",
+         "en": "[of it]",
+         "fr": "[le]"
+        },
+        {
+         "ar": "ٱلْمُجْرِمُونَ",
+         "tr": "al-muj'rimuna",
+         "en": "the criminals",
+         "fr": "les criminels",
+         "highlight": true
+        }
+       ],
+       "children": [],
+       "image": null,
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/punishment-3.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "ayah": null,
+     "words": [
+      {
+       "ar": "يَطُوفُونَ",
+       "tr": "yatufuna",
+       "en": "They will go around",
+       "fr": "Ils circuleront"
+      }
+     ],
+     "children": [
+      {
+       "ayah": 44,
+       "words": [
+        {
+         "ar": "بَيْنَهَا",
+         "tr": "baynaha",
+         "en": "between it",
+         "fr": "entre lui"
+        },
+        {
+         "ar": "وَبَيْنَ",
+         "tr": "wabayna",
+         "en": "and between",
+         "fr": "et entre"
+        },
+        {
+         "ar": "حَمِيمٍ",
+         "tr": "hamimin",
+         "en": "scalding water",
+         "fr": "une eau bouillante"
+        },
+        {
+         "ar": "ءَانٍ",
+         "tr": "anin",
+         "en": "heated",
+         "fr": "brûlante"
+        }
+       ],
+       "children": [],
+       "image": null,
+       "label_en": "",
+       "is_refrain": false
+      }
+     ],
+     "image": "assets/rahman/punishment-4.webp",
+     "label_en": "",
+     "is_refrain": false
+    },
+    {
+     "is_refrain": true,
+     "ayah": 45
+    }
+   ]
+  },
+  {
+   "id": "reward",
+   "title_en": "Reward",
+   "title_fr": "Récompense",
+   "group": "mental",
+   "marker": "",
+   "subsections": [
+    "the-foremost",
+    "who-follow-after"
+   ],
+   "note_en": "Title pill only; it is linked by lines to the two panels 'The Foremost' and 'Who Follow after'.",
+   "nodes": []
+  },
+  {
+   "id": "the-foremost",
+   "title_en": "The Foremost",
+   "title_fr": "Les devanciers",
+   "group": "mental",
+   "marker": "",
+   "parent": "reward",
+   "nodes": [
+    {
+     "ayah": 46,
+     "words": [
+      {
+       "ar": "وَلِمَنْ",
+       "tr": "waliman",
+       "en": "But for (him) who",
+       "fr": "Et pour celui qui"
+      },
+      {
+       "ar": "خَافَ",
+       "tr": "khafa",
+       "en": "fears",
+       "fr": "craint"
+      },
+      {
+       "ar": "مَقَامَ",
+       "tr": "maqama",
+       "en": "(the) standing",
+       "fr": "(la) comparution"
+      },
+      {
+       "ar": "رَبِّهِۦ",
+       "tr": "rabbihi",
+       "en": "(before) his Lord",
+       "fr": "(devant) son Seigneur"
+      },
+      {
+       "ar": "جَنَّتَانِ",
+       "tr": "jannatani",
+       "en": "(are) two gardens",
+       "fr": "(il y a) deux jardins"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false,
+     "boxed": true,
+     "refrain_marker": true
+    },
+    {
+     "ayah": null,
+     "words": [],
+     "children": [
+      {
+       "ayah": 48,
+       "words": [
+        {
+         "ar": "ذَوَاتَآ",
+         "tr": "dhawata",
+         "en": "Having",
+         "fr": "Aux"
+        },
+        {
+         "ar": "أَفْنَانٍ",
+         "tr": "afnanin",
+         "en": "branches",
+         "fr": "branches"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/the-foremost-1.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      },
+      {
+       "ayah": 50,
+       "words": [
+        {
+         "ar": "فِيهِمَا",
+         "tr": "fihima",
+         "en": "In both of them",
+         "fr": "En tous deux"
+        },
+        {
+         "ar": "عَيْنَانِ",
+         "tr": "aynani",
+         "en": "(are) two springs",
+         "fr": "(il y a) deux sources"
+        },
+        {
+         "ar": "تَجْرِيَانِ",
+         "tr": "tajriyani",
+         "en": "flowing",
+         "fr": "qui coulent"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/the-foremost-2.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      },
+      {
+       "ayah": 52,
+       "words": [
+        {
+         "ar": "فِيهِمَا",
+         "tr": "fihima",
+         "en": "In both of them",
+         "fr": "En tous deux"
+        },
+        {
+         "ar": "مِن",
+         "tr": "min",
+         "en": "[of]",
+         "fr": "[de]"
+        },
+        {
+         "ar": "كُلِّ",
+         "tr": "kulli",
+         "en": "(are) every",
+         "fr": "(il y a) de chaque"
+        },
+        {
+         "ar": "فَٰكِهَةٍ",
+         "tr": "fakihatin",
+         "en": "fruits",
+         "fr": "fruits"
+        },
+        {
+         "ar": "زَوْجَانِ",
+         "tr": "zawjani",
+         "en": "(in) pairs",
+         "fr": "(en) couples"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/the-foremost-3.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      }
+     ],
+     "image": null,
+     "label_en": "Jannahs",
+     "label_fr": "Les Jardins",
+     "is_refrain": false,
+     "is_group": true
+    },
+    {
+     "ayah": null,
+     "words": [],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "مُتَّكِـِٔينَ",
+         "tr": "muttakiina",
+         "en": "Reclining",
+         "fr": "Accoudés"
+        },
+        {
+         "ar": "عَلَىٰ",
+         "tr": "ala",
+         "en": "on",
+         "fr": "sur"
+        },
+        {
+         "ar": "فُرُشٍۭ",
+         "tr": "furushin",
+         "en": "couches",
+         "fr": "des lits"
+        },
+        {
+         "ar": "بَطَآئِنُهَا",
+         "tr": "batainuha",
+         "en": "(whose) inner linings",
+         "fr": "(dont) les doublures"
+        },
+        {
+         "ar": "مِنْ",
+         "tr": "min",
+         "en": "(are) of",
+         "fr": "(sont) de"
+        },
+        {
+         "ar": "إِسْتَبْرَقٍ",
+         "tr": "is'tabraqin",
+         "en": "brocade",
+         "fr": "brocart"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/the-foremost-4.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": 54,
+       "words": [
+        {
+         "ar": "وَجَنَى",
+         "tr": "wajana",
+         "en": "and (the) fruit",
+         "fr": "et (les) fruits"
+        },
+        {
+         "ar": "ٱلْجَنَّتَيْنِ",
+         "tr": "al-janatayni",
+         "en": "(of) both the gardens",
+         "fr": "(des) deux jardins"
+        },
+        {
+         "ar": "دَانٍ",
+         "tr": "danin",
+         "en": "(is) near",
+         "fr": "(sont) à portée"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/the-foremost-5.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      }
+     ],
+     "image": null,
+     "label_en": "The Foremost",
+     "label_fr": "Les devanciers",
+     "is_refrain": false,
+     "is_group": true
+    },
+    {
+     "ayah": null,
+     "words": [],
+     "children": [
+      {
+       "ayah": null,
+       "words": [
+        {
+         "ar": "فِيهِنَّ",
+         "tr": "fihinna",
+         "en": "In them",
+         "fr": "En eux"
+        },
+        {
+         "ar": "قَٰصِرَٰتُ",
+         "tr": "qasiratu",
+         "en": "(will be) companions of modest gaze",
+         "fr": "(seront) des compagnes au regard chaste"
+        },
+        {
+         "ar": "ٱلطَّرْفِ",
+         "tr": "al-tarfi",
+         "en": "(will be) companions of modest gaze",
+         "fr": "(seront) des compagnes au regard chaste"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/the-foremost-6.webp",
+       "label_en": "",
+       "is_refrain": false
+      },
+      {
+       "ayah": 56,
+       "words": [
+        {
+         "ar": "لَمْ",
+         "tr": "lam",
+         "en": "not",
+         "fr": "ne… pas"
+        },
+        {
+         "ar": "يَطْمِثْهُنَّ",
+         "tr": "yatmith'hunna",
+         "en": "has touched them",
+         "fr": "les a touchées"
+        },
+        {
+         "ar": "إِنسٌ",
+         "tr": "insun",
+         "en": "any man",
+         "fr": "aucun homme"
+        },
+        {
+         "ar": "قَبْلَهُمْ",
+         "tr": "qablahum",
+         "en": "before them",
+         "fr": "avant eux"
+        },
+        {
+         "ar": "وَلَا",
+         "tr": "wala",
+         "en": "and not",
+         "fr": "et ni"
+        },
+        {
+         "ar": "جَآنٌّ",
+         "tr": "jannun",
+         "en": "any jinn",
+         "fr": "aucun djinn"
+        }
+       ],
+       "children": [],
+       "image": null,
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      },
+      {
+       "ayah": 58,
+       "words": [
+        {
+         "ar": "كَأَنَّهُنَّ",
+         "tr": "ka-annahunna",
+         "en": "As if they were",
+         "fr": "Comme si elles étaient"
+        },
+        {
+         "ar": "ٱلْيَاقُوتُ",
+         "tr": "al-yaqutu",
+         "en": "rubies",
+         "fr": "des rubis"
+        },
+        {
+         "ar": "وَٱلْمَرْجَانُ",
+         "tr": "wal-marjanu",
+         "en": "and coral",
+         "fr": "et du corail"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/the-foremost-7.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      }
+     ],
+     "image": null,
+     "label_en": "Their wives",
+     "label_fr": "Leurs épouses",
+     "is_refrain": false,
+     "is_group": true
+    },
+    {
+     "ayah": 60,
+     "words": [
+      {
+       "ar": "هَلْ",
+       "tr": "hal",
+       "en": "Is",
+       "fr": "Est-ce que"
+      },
+      {
+       "ar": "جَزَآءُ",
+       "tr": "jazau",
+       "en": "(the) reward",
+       "fr": "(la) récompense"
+      },
+      {
+       "ar": "ٱلْإِحْسَٰنِ",
+       "tr": "al-ih'sani",
+       "en": "for the good",
+       "fr": "du bien"
+      },
+      {
+       "ar": "إِلَّا",
+       "tr": "illa",
+       "en": "but",
+       "fr": "sinon"
+      },
+      {
+       "ar": "ٱلْإِحْسَٰنُ",
+       "tr": "al-ih'sanu",
+       "en": "good?",
+       "fr": "le bien ?"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false,
+     "boxed": true,
+     "refrain_marker": true
+    }
+   ]
+  },
+  {
+   "id": "who-follow-after",
+   "title_en": "Who Follow after",
+   "title_fr": "Ceux qui suivent",
+   "group": "mental",
+   "marker": "",
+   "parent": "reward",
+   "nodes": [
+    {
+     "ayah": 62,
+     "words": [
+      {
+       "ar": "وَمِن",
+       "tr": "wamin",
+       "en": "Besides these two",
+       "fr": "En deçà de ces deux"
+      },
+      {
+       "ar": "دُونِهِمَا",
+       "tr": "dunihima",
+       "en": "Besides these two",
+       "fr": "En deçà de ces deux"
+      },
+      {
+       "ar": "جَنَّتَانِ",
+       "tr": "jannatani",
+       "en": "(are) two gardens",
+       "fr": "(il y a) deux jardins"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false,
+     "boxed": true,
+     "refrain_marker": true
+    },
+    {
+     "ayah": null,
+     "words": [],
+     "children": [
+      {
+       "ayah": 64,
+       "words": [
+        {
+         "ar": "مُدْهَآمَّتَانِ",
+         "tr": "mud'hammatani",
+         "en": "Dark green",
+         "fr": "D'un vert sombre"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/who-follow-after-1.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      },
+      {
+       "ayah": 66,
+       "words": [
+        {
+         "ar": "فِيهِمَا",
+         "tr": "fihima",
+         "en": "In both of them",
+         "fr": "En tous deux"
+        },
+        {
+         "ar": "عَيْنَانِ",
+         "tr": "aynani",
+         "en": "(are) two springs",
+         "fr": "(il y a) deux sources"
+        },
+        {
+         "ar": "نَضَّاخَتَانِ",
+         "tr": "naddakhatani",
+         "en": "gushing forth",
+         "fr": "jaillissantes"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/who-follow-after-2.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      },
+      {
+       "ayah": 68,
+       "words": [
+        {
+         "ar": "فِيهِمَا",
+         "tr": "fihima",
+         "en": "In both of them",
+         "fr": "En tous deux"
+        },
+        {
+         "ar": "فَٰكِهَةٌ",
+         "tr": "fakihatun",
+         "en": "(are) fruits",
+         "fr": "(il y a) des fruits"
+        },
+        {
+         "ar": "وَنَخْلٌ",
+         "tr": "wanakhlun",
+         "en": "and datepalms",
+         "fr": "et des palmiers-dattiers"
+        },
+        {
+         "ar": "وَرُمَّانٌ",
+         "tr": "warummanun",
+         "en": "and pomegranates",
+         "fr": "et des grenades"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/who-follow-after-3.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      }
+     ],
+     "image": null,
+     "label_en": "Jannahs",
+     "label_fr": "Les Jardins",
+     "is_refrain": false,
+     "is_group": true
+    },
+    {
+     "ayah": null,
+     "words": [],
+     "children": [
+      {
+       "ayah": 70,
+       "words": [
+        {
+         "ar": "فِيهِنَّ",
+         "tr": "fihinna",
+         "en": "In them",
+         "fr": "En eux"
+        },
+        {
+         "ar": "خَيْرَٰتٌ",
+         "tr": "khayratun",
+         "en": "(are) good",
+         "fr": "(il y a) des bonnes"
+        },
+        {
+         "ar": "حِسَانٌ",
+         "tr": "hisanun",
+         "en": "and beautiful ones",
+         "fr": "et des belles"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/who-follow-after-4.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      },
+      {
+       "ayah": 72,
+       "words": [
+        {
+         "ar": "حُورٌ",
+         "tr": "hurun",
+         "en": "Fair ones",
+         "fr": "Des houris"
+        },
+        {
+         "ar": "مَّقْصُورَٰتٌ",
+         "tr": "maqsuratun",
+         "en": "restrained",
+         "fr": "cloîtrées"
+        },
+        {
+         "ar": "فِى",
+         "tr": "fi",
+         "en": "in",
+         "fr": "dans"
+        },
+        {
+         "ar": "ٱلْخِيَامِ",
+         "tr": "al-khiyami",
+         "en": "the pavilions",
+         "fr": "les tentes"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/who-follow-after-5.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      },
+      {
+       "ayah": 74,
+       "words": [
+        {
+         "ar": "لَمْ",
+         "tr": "lam",
+         "en": "Not",
+         "fr": "Ne… pas"
+        },
+        {
+         "ar": "يَطْمِثْهُنَّ",
+         "tr": "yatmith'hunna",
+         "en": "has touched them",
+         "fr": "les a touchées"
+        },
+        {
+         "ar": "إِنسٌ",
+         "tr": "insun",
+         "en": "any man",
+         "fr": "aucun homme"
+        },
+        {
+         "ar": "قَبْلَهُمْ",
+         "tr": "qablahum",
+         "en": "before them",
+         "fr": "avant eux"
+        },
+        {
+         "ar": "وَلَا",
+         "tr": "wala",
+         "en": "and not",
+         "fr": "et ni"
+        },
+        {
+         "ar": "جَآنٌّ",
+         "tr": "jannun",
+         "en": "any jinn",
+         "fr": "aucun djinn"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/who-follow-after-6.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      },
+      {
+       "ayah": 76,
+       "words": [
+        {
+         "ar": "مُتَّكِـِٔينَ",
+         "tr": "muttakiina",
+         "en": "Reclining",
+         "fr": "Accoudés"
+        },
+        {
+         "ar": "عَلَىٰ",
+         "tr": "ala",
+         "en": "on",
+         "fr": "sur"
+        },
+        {
+         "ar": "رَفْرَفٍ",
+         "tr": "rafrafin",
+         "en": "cushions",
+         "fr": "des coussins"
+        },
+        {
+         "ar": "خُضْرٍ",
+         "tr": "khud'rin",
+         "en": "green",
+         "fr": "verts"
+        },
+        {
+         "ar": "وَعَبْقَرِىٍّ",
+         "tr": "wa'abqariyyin",
+         "en": "and carpets",
+         "fr": "et des tapis"
+        },
+        {
+         "ar": "حِسَانٍ",
+         "tr": "hisanin",
+         "en": "beautiful",
+         "fr": "magnifiques"
+        }
+       ],
+       "children": [],
+       "image": "assets/rahman/who-follow-after-7.webp",
+       "label_en": "",
+       "is_refrain": false,
+       "refrain_marker": true
+      }
+     ],
+     "image": null,
+     "label_en": "Their wives",
+     "label_fr": "Leurs épouses",
+     "is_refrain": false,
+     "is_group": true
+    },
+    {
+     "ayah": 78,
+     "words": [
+      {
+       "ar": "تَبَٰرَكَ",
+       "tr": "tabaraka",
+       "en": "Blessed is",
+       "fr": "Béni soit"
+      },
+      {
+       "ar": "ٱسْمُ",
+       "tr": "us'mu",
+       "en": "(the) name",
+       "fr": "(le) nom"
+      },
+      {
+       "ar": "رَبِّكَ",
+       "tr": "rabbika",
+       "en": "(of) your Lord",
+       "fr": "(de) ton Seigneur"
+      },
+      {
+       "ar": "ذِى",
+       "tr": "dhi",
+       "en": "Owner",
+       "fr": "Détenteur"
+      },
+      {
+       "ar": "ٱلْجَلَٰلِ",
+       "tr": "al-jalali",
+       "en": "(of) Majesty",
+       "fr": "(de) la Majesté"
+      },
+      {
+       "ar": "وَٱلْإِكْرَامِ",
+       "tr": "wal-ik'rami",
+       "en": "and Honor",
+       "fr": "et de la Générosité"
+      }
+     ],
+     "children": [],
+     "image": null,
+     "label_en": "",
+     "is_refrain": false,
+     "boxed": true
+    }
+   ]
+  }
+ ],
+ "mental_links": {
+  "title_en": "MENTAL LINKS",
+  "title_fr": "LIENS MENTAUX",
+  "name_ar": "الرَّحِيم",
+  "text_en": "Refers to Allah’s special mercy that is reserved for the believers, especially in the Hereafter.",
+  "text_fr": "Désigne la miséricorde particulière d’Allah, réservée aux croyants, surtout dans l’au-delà.",
+  "flow_direction": "Mercy → Accountability → Challange → Judgment Day → Punishment → Reward → (The Foremost | Those who follow After); drawn right-to-left with arrows",
+  "flow": [
+   {
+    "id": "mercy",
+    "title_en": "Mercy",
+    "title_fr": "Miséricorde",
+    "ayat_en": "Ayah 29",
+    "ayat_fr": "Verset 29"
+   },
+   {
+    "id": "accountability",
+    "title_en": "Accountability",
+    "title_fr": "Reddition des comptes",
+    "ayat_en": "Ayah 31",
+    "ayat_fr": "Verset 31"
+   },
+   {
+    "id": "challenge",
+    "title_en": "Challange",
+    "title_fr": "Défi",
+    "ayat_en": "Ayah 33 & 35",
+    "ayat_fr": "Versets 33 et 35"
+   },
+   {
+    "id": "judgment-day",
+    "title_en": "Judgment Day",
+    "title_fr": "Le Jour du Jugement",
+    "ayat_en": "Ayah 37 & 39",
+    "ayat_fr": "Versets 37 et 39"
+   },
+   {
+    "id": "punishment",
+    "title_en": "Punishment",
+    "title_fr": "Châtiment",
+    "ayat_en": "Ayah 41&43&44",
+    "ayat_fr": "Versets 41, 43 et 44"
+   },
+   {
+    "id": "reward",
+    "title_en": "Reward",
+    "title_fr": "Récompense",
+    "ayat_en": "Ayah 46 to 78",
+    "ayat_fr": "Versets 46 à 78",
+    "branches": [
+     {
+      "id": "the-foremost",
+      "title_en": "The Foremost",
+      "title_fr": "Les devanciers",
+      "ayat_en": "Ayah 46 to 60",
+      "ayat_fr": "Versets 46 à 60"
+     },
+     {
+      "id": "who-follow-after",
+      "title_en": "Those who follow After",
+      "title_fr": "Ceux qui suivent",
+      "ayat_en": "Ayah 60 to 78",
+      "ayat_fr": "Versets 60 à 78"
+     }
+    ]
+   }
+  ]
+ },
+ "visual_links": {
+  "title_en": "VISUAL LINKS",
+  "title_fr": "LIENS VISUELS",
+  "name_ar": "الرَّحْمٰن",
+  "text_en": "It is general and universal, encompassing all beings in this world—believers, non-believers, animals, and everything else.",
+  "text_fr": "Elle est générale et universelle, englobant tous les êtres de ce monde — croyants, non-croyants, animaux et tout le reste.",
+  "header_ayat": [
+   26,
+   27
+  ],
+  "illustration_en": "A single landscape drawn left to right: sea waves (with a ship, coral and pearls) rising into a beige hill and plain. Ayah fragments with their glosses are placed on it: over the sea the seas ayat; on the middle hill the sun, a jinn over a flame and a man over a clay block; on the right plain basil, wheat, a date palm and a fruit. Ayat 26–27 are written above the landscape.",
+  "groups": [
+   {
+    "title_en": "His Mercy in The seas",
+    "title_fr": "Sa miséricorde dans les mers",
+    "section": "mercy-seas",
+    "ayat": [
+     19,
+     20,
+     22,
+     24
+    ],
+    "items_en": [
+     "ship",
+     "coral",
+     "pearls",
+     "two seas with barrier"
+    ]
+   },
+   {
+    "title_en": "His Majesty in Our Creation",
+    "title_fr": "Sa majesté dans notre création",
+    "section": "majesty-creation",
+    "ayat": [
+     14,
+     15,
+     17
+    ],
+    "items_en": [
+     "sun (two Easts / two Wests)",
+     "jinn from flame",
+     "man from clay"
+    ]
+   },
+   {
+    "title_en": "His Mercy in The Earth",
+    "title_fr": "Sa miséricorde sur la Terre",
+    "section": "mercy-earth",
+    "ayat": [
+     10,
+     11,
+     12
+    ],
+    "items_en": [
+     "scented plants",
+     "grain with husk",
+     "date palm with sheaths",
+     "fruit"
+    ]
+   }
+  ]
+ }
+}
