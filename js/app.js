@@ -52,7 +52,7 @@
     const badge = () => (due ? h('span.badge', { 'aria-label': due + ' ' + t('reviewDue') }, due > 99 ? '99+' : String(due)) : null);
     rail.replaceChildren(h('a.brand', { href: '#/', html: '<span class="lg">' + W.LOGO + '</span>wakf' }),
       ...NAV.map(([href, ic, k]) => h('a' + (isOn(href) ? '.on' : ''), { href, 'aria-current': isOn(href) ? 'page' : null, html: svg(ic) }, t(k), k === 'tab_review' ? badge() : null)),
-      h('span.sp'), isDemo() ? h('button.demo', { on: { click: newVisitor }, html: svg('demo') }, W.lang === 'en' ? 'New visitor' : 'Nouveau visiteur') : null, h('button', { on: { click: openSettings }, html: svg('settings') }, t('settings')));
+      h('span.sp'), ...(isDemo() ? [h('button.demo', { on: { click: newVisitor }, html: svg('demo') }, W.lang === 'en' ? 'New visitor' : 'Nouveau visiteur')] : []), h('button', { on: { click: openSettings }, html: svg('settings') }, t('settings')));
     if (!tabbar) { tabbar = h('nav.tabbar', { 'aria-label': 'Navigation' }); document.body.append(tabbar); new ResizeObserver(() => document.documentElement.style.setProperty('--tabh', (getComputedStyle(tabbar).display === 'none' ? 0 : tabbar.offsetHeight) + 'px')).observe(tabbar); }
     tabbar.replaceChildren(...NAV.map(([href, ic, k]) => h('a' + (isOn(href) ? '.on' : ''), { href, 'aria-current': isOn(href) ? 'page' : null, html: svg(ic) }, t(k), k === 'tab_review' ? badge() : null)));
   };
