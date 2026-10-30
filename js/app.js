@@ -202,7 +202,7 @@
   };
   const FORM_LBL = { fr: ['Passé', 'Présent', 'Impératif', 'Participe actif', 'Participe passif', 'Nom verbal'], en: ['Past', 'Present', 'Imperative', 'Active participle', 'Passive participle', 'Verbal noun'] };
   const formsGrid = (w) => h('div.vforms', { dir: 'rtl' }, ['past', 'present', 'imperative', 'active_participle', 'passive_participle', 'verbal_noun'].map((k, i) => w.forms[k] && w.forms[k] !== '-' ?
-    h('button.vf', { on: { click: () => W.say(w.forms[k], null) } }, h('span.ar', { lang: 'ar' }, w.forms[k]), h('small', { dir: 'ltr' }, FORM_LBL[L()][i])) : null));
+    h('button.vf', { on: { click: () => W.say(w.forms[k], w.audio + '/' + k) } }, h('span.ar', { lang: 'ar' }, w.forms[k]), h('small', { dir: 'ltr' }, FORM_LBL[L()][i])) : null));
   const GICON = { flash: 'flash', pairs: 'pairs', trans: 'trans', hear: 'hear', guided: 'pageRead', listen: 'speaker', lpairs: 'pairs', write: 'read' };
   const gameCard = (g, done, onClick) => h('button.card.press.game', { on: { click: onClick } },
     (W.BADGE[g] ? h('span.gb', { html: W.BADGE[g] }) : h('span.gi.g-' + g, { html: svg(GICON[g]) })), h('span', null, h('h3', null, t('g_' + g)), h('p', null, t('g_' + g + '_d'))), done ? h('span.chk', { html: svg('ok') }) : null);
@@ -320,7 +320,7 @@
       const d = await W.load(s.data); if (!d) continue;
       page.append(h('a.card.press', { href: '#/mm/' + s.n, style: { display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' } },
         h('span', { style: { width: '64px', height: '64px', borderRadius: '20px', background: 'var(--lapis)', color: '#fff', display: 'grid', placeItems: 'center', fontFamily: 'var(--title)', fontWeight: 800, fontSize: '22px', boxShadow: '0 4px 0 var(--lapis-d)', flex: 'none' } }, String(s.n)),
-        h('span', { style: { flex: 1 } }, h('h3', null, d.surah['name_' + L()] || d.surah.name_en), h('span.muted.small', null, t('surahSections', { n: d.sections.length }))),
+        h('span', { style: { flex: 1 } }, h('h3', null, d.surah['name_' + L()] || d.surah.name_en), h('span.muted.small', null, (d.surah.verses || '') + ' ' + (W.lang === 'en' ? 'verses' : 'versets'))),
         h('span.ar', { lang: 'ar', style: { fontSize: '34px' } }, d.surah.name_ar)));
     }
     page.append(emptyState('surah', t('surahsTitle'), t('mmSoon')));

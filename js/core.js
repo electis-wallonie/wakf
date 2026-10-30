@@ -317,8 +317,23 @@
   /* Recorded audio first (audio/<key>.mp3, listed in data/audio.json), speech synthesis as fallback */
   let audioIndex = null, curAudio = null;
   const loadAudioIndex = () => audioIndex || (audioIndex = fetch('data/audio.json').then((r) => (r.ok ? r.json() : { files: [] })).then((j) => new Set(j.files || [])).catch(() => new Set()));
+  /* words of the 85 % / 1000 lists found in the Quran: official quran.com word recordings (data/qaudio.json) */
+  let qmap = null;
+  const loadQmap = () => (qmap = qmap || fetch('data/qaudio.json').then((r) => (r.ok ? r.json() : [])).catch(() => []).then((rows) => {
+    const m = new Map(); rows.forEach((r) => { const ps = []; for (let i = 1; i + 2 < r.length; i += 3) ps.push([r[i], r[i + 1], r[i + 2]]); m.set(r[0], ps); }); return m;
+  }));
+  const FORMS_IDX = { past: 1, present: 2, imperative: 3, active_participle: 4, passive_participle: 5, verbal_noun: 6 };
+  const qid = (key) => {
+    const m = /^mots(85|1000)\/(\d+)(?:\/([a-z_]+))?$/.exec(key || ''); if (!m) return null;
+    return m[1] === '85' ? +m[2] * 10 + (m[3] ? FORMS_IDX[m[3]] || 0 : 0) : (m[3] ? null : 100000 + +m[2]);
+  };
   W.say = async (text, key, opt) => {
     opt = opt || {};
+    const id = qid(key);
+    if (id != null) {
+      const ps = (await loadQmap()).get(id);
+      if (ps && ps.length) return W.playUrls(ps.map((p) => W.wordAudio(p[0], p[1], p[2])), { el: opt.el, rate: opt.rate, fallback: () => W.speak(text, 'ar', opt) });
+    }
     const idx = await loadAudioIndex();
     if (key && idx.has(key)) {
       if (synth) synth.cancel();
@@ -350,7 +365,7 @@
       const next = () => {
         if (tok !== qToken) return res();
         if (i >= list.length) return done();
-        const a = new Audio(list[i++]); curAudio = a;
+        const a = new Audio(list[i++]); curAudio = a; if (opt.rate) a.playbackRate = opt.rate;
         a.onended = next;
         a.onerror = () => { if (!played && opt.fallback) { done(); opt.fallback(); } else next(); };
         a.play().then(() => { played = true; }).catch(() => { if (!played && opt.fallback) { done(); opt.fallback(); } else next(); });
