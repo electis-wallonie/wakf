@@ -198,25 +198,16 @@
   const headerEl = (data, R, secs, S) => {
     const ay = allAyat(secs, S);
     const total = ay.length ? ay[ay.length - 1] : 0;
-    const [main, sub] = splitName(data.surah['name_' + L()] || data.surah.name_en);
+    const [main] = splitName(data.surah['name_' + L()] || data.surah.name_en);
     const top = h('section.mm2-top.c-lapis', { 'data-mm2-ayat': ay.join(',') },
       h('div.mm2-top-panel', null,
         h('span.mm2-top-n', null, t('surahN', { n: data.surah.number })),
         h('span.ar', { lang: 'ar' }, data.surah.name_ar)),
       h('div.mm2-top-info', null,
         h('h1', null, main),
-        sub ? h('p', null, sub) : null,
         h('div.mm2-chips', null,
           total ? h('span', null, total + ' ' + tx('verses').toLowerCase()) : null,
-          h('span', null, secs.length + ' ' + tx('themes').replace(/^Les /, '').toLowerCase())),
-        h('div.mm2-top-prog', null, h('span.mm2-track', null, h('span.mm2-bar')), h('small', null, h('span.mm2-heard')))));
-    if (R && R.words && R.words.length) {
-      top.append(h('div.mm2-top-refrain.c-safran', null,
-        h('div.mm2-top-rlab', null, h('span', { html: W.svg('refrain') }), t('refrain')),
-        h('div.mm2-top-rwords', { dir: 'rtl' }, R.words.map((w) => wordEl(w)), sayEl(R.words, null)),
-        h('div.mm2-top-rtr', null, R[L()] || R.en)));
-    }
-    refreshBar(top);
+          h('span', null, secs.length + ' ' + tx('themes').replace(/^Les /, '').toLowerCase()))));
     return top;
   };
 
