@@ -178,7 +178,7 @@
       sec.classList.toggle('open', on); head.setAttribute('aria-expanded', String(on)); setOpen(s.id, on);
     });
 
-    const body = h('div.mm2-body');
+    const body = h('div.mm2-body'); let loadTrIn = null;
     if (s.center_ar && title) body.append(h('div.mm-center', { lang: 'ar' }, s.center_ar));
     s.nodes.forEach((n) => body.append(nodeEl(n, R)));
     (s.subsections || []).forEach((id, i) => S[id] && body.append(sectionEl(S[id], R, S, idx + i + 1, { sub: true })));
@@ -193,25 +193,17 @@
       }
       const trId = CUR && CUR.translation && CUR.translation[L()];
       if (trId) {
-        const n0 = surahN, panel = h('div.mm2-trtext', { hidden: true });
-        const tog = h('button.btn.lapis.block.mm2-trbtn', null, h('span', { html: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="2"/></svg>' }), h('span', null, tx('trShow')));
-        tog.addEventListener('click', () => {
-          const show = panel.hidden;
-          panel.hidden = !show; tog.lastChild.textContent = show ? tx('trHide') : tx('trShow');
-          if (show && !panel.childNodes.length) {
-            panel.append(h('p.mm2-trnote', null, '…'));
-            loadTr(n0, trId).then((list) => {
-              panel.replaceChildren(...ayat.map((a) => h('p', null, badge(a), h('span', null, list[a - 1] || ''))), h('p.mm2-trnote', null, tx('trName')));
-            }).catch(() => panel.replaceChildren(h('p.mm2-trnote', null, tx('trErr'))));
-          }
-        });
-        body.append(tog, panel);
-        const rng = ayat.length > 1 ? ayat[0] + '-' + ayat[ayat.length - 1] : String(ayat[0]);
-        body.append(h('a.btn.outline.block.mm2-tr', { href: 'https://quran.com/' + surahN + '/' + rng + '?translations=' + trId, target: '_blank', rel: 'noopener' },
-          h('span', { html: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="2"/></svg>' }), tx('trLink')));
+        const n0 = surahN, panel = h('div.mm2-trtext');
+        body.append(panel);
+        loadTrIn = () => {
+          if (panel.childNodes.length) return;
+          loadTr(n0, trId).then((list) => panel.replaceChildren(...ayat.map((a) => h('p', null, badge(a), h('span', null, list[a - 1] || '')))))
+            .catch(() => panel.replaceChildren());
+        };
       }
     }
     sec.append(head, body);
+    if (loadTrIn) { if (isOpen) loadTrIn(); head.addEventListener('click', () => { if (sec.classList.contains('open')) loadTrIn(); }); }
     refreshBar(sec);
     return sec;
   };

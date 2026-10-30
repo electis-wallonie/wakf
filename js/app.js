@@ -145,7 +145,7 @@
       grid.append(card);
     });
     page.append(appbar({}), h('div.hello', null, h('h1', null, t('hello')), h('p', null, t('homeSub'))), resume,
-      h('div.sect', null, h('h2', null, t('rubrics'))), grid, h('p.foot-note', null, t('sourcesText')));
+      h('div.sect', null, h('h2', null, t('rubrics'))), grid);
     if (!W.mount(page, tok)) return;
     for (const k of ORDER) {
       const st = await themeStatus(k); const sl = slots[k];
@@ -189,8 +189,7 @@
       path.append(pathNode({ href: '#/t/' + th + '/l/' + (i + 1), label: t('lessonN', { n: i + 1 }), glyph: String(i + 1), done: lessonDone(lessonId(th, i + 1)), current: i === cur, color: T.color, i }));
     });
     page.append(h('p.muted.small', { style: { textAlign: 'center', margin: '0 0 6px' } }, t('wordsN', { n: d.items.length }) + ' · ' + d.lessons.length + ' ' + t('lessonsWord')), path,
-      d.src.conjugation ? h('a.card.press.conjlink', { href: '#/t/' + th + '/conj' }, h('span.gi', { html: svg('list') }), h('span', null, h('h3', null, W.lang === 'en' ? 'Conjugation tables' : 'Tableaux de conjugaison'), h('p', null, W.lang === 'en' ? 'Reference: the patterns of the verb فَعَلَ' : 'Référence : les modèles du verbe فَعَلَ'))) : null,
-      h('p.foot-note', null, t('sources') + ' : ' + d.src.source));
+      d.src.conjugation ? h('a.card.press.conjlink', { href: '#/t/' + th + '/conj' }, h('span.gi', { html: svg('list') }), h('span', null, h('h3', null, W.lang === 'en' ? 'Conjugation tables' : 'Tableaux de conjugaison'), h('p', null, W.lang === 'en' ? 'Reference: the patterns of the verb فَعَلَ' : 'Référence : les modèles du verbe فَعَلَ'))) : null);
     if (!W.mount(page, tok)) return;
     const c = page.querySelector('.node.current'); if (c && cur > 2) setTimeout(() => c.scrollIntoView({ block: 'center', behavior: 'smooth' }), 250);
   });
@@ -256,7 +255,6 @@
       const fr = pg.footer_rows || []; if (fr.length) card.append(h('div.conjfoot', null, pg.footer_label ? h('small.muted', null, pg.footer_label[L()] || pg.footer_label.en || '') : null, fr.map((r) => h('button.conjrow', { on: { click: () => W.say(r.ar, null) } }, h('span.ar', { lang: 'ar' }, r.ar), h('small', null, r[L()] || r.en)))));
       page.append(card);
     });
-    page.append(h('p.foot-note', null, t('sources') + ' : ' + d.source));
     W.mount(page, tok);
   });
 
@@ -282,7 +280,6 @@
       });
       page.append(h('div.tocsec', null, h('h3', null, sec.title), list));
     });
-    page.append(h('p.foot-note', null, t('sources') + ' : ' + book.source));
     W.mount(page, tok);
   });
   W.route(/^\/t\/read\/p\/(\d+)$/, async (tok, num) => {
@@ -336,8 +333,7 @@
     const name = d.surah['name_' + L()] || d.surah.name_en;
     W.setLast('surah', { href: '#/mm/' + n, label: name.split(' (')[0], sub: t('surahN', { n }) });
     let tab = 'visual'; try { tab = sessionStorage.getItem('wakf.mmtab') || 'visual'; } catch (e) {}
-    W.mount(h('div.page.wide', null, appbar({ back: '#/t/surah', title: name, sub: t('surahN', { n }) }), W.renderMindmap(d, tab),
-      h('p.foot-note', null, t('sources') + ' : ' + (d.source || 'Mind map « Surah Ar-Rahman »'))), tok);
+    W.mount(h('div.page.wide', null, appbar({ back: '#/t/surah', title: name, sub: t('surahN', { n }) }), W.renderMindmap(d, tab)), tok);
   });
 
   /* ---------- review ---------- */
