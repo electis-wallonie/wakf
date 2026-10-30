@@ -585,3 +585,22 @@ h1{font-size:30px}h2{font-size:22px}h3{font-size:18px}
 .conjfoot{margin-top:10px;padding-top:8px;border-top:2px solid var(--line);direction:rtl}
 .mm-row .say.mm-speak{width:36px;height:36px;border-radius:12px}
 .mm-row .say.mm-speak .ic{width:20px;height:20px}
+/* ---- compact rubric cards on phones: several visible at once ---- */
+@media (max-width:639px){
+  .hello{margin:2px 2px 10px}.hello h1{font-size:24px}.hello p{font-size:14px}
+  .resume{padding:12px 14px;margin-bottom:16px;border-radius:20px}
+  .resume .pl{width:44px;height:44px;border-radius:14px}.resume .pl .ic{width:24px;height:24px}
+  .resume b{font-size:17px}.resume span.s{font-size:13px}
+  .rubrics{gap:10px}
+  .rc{flex-direction:row;align-items:stretch;border-radius:20px;box-shadow:0 4px 0 var(--line)}
+  .rc .art{order:0;width:92px;height:auto;min-height:0;flex:none}
+  .rc .art svg{width:84px;height:84px}
+  .rc .art::before,.rc .art::after{width:60px;height:60px;border-radius:16px}
+  .rc .body{padding:10px 12px 12px;gap:3px;min-width:0}
+  .rc .rchip{display:none}
+  .rc h3{font-size:17px;line-height:1.15}
+  .rc p{display:none}
+  .rc .prog{padding-top:4px;gap:4px;font-size:12px}
+  .rc .bar{height:7px}
+  .rc .cta{margin-top:8px;min-height:38px;font-size:14px;padding:0 12px;border-radius:12px;box-shadow:0 3px 0 var(--cd)}
+}
