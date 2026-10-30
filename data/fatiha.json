@@ -1,0 +1,258 @@
+{
+ "surah": {
+  "number": 1,
+  "name_ar": "الفاتحة",
+  "name_en": "Al-Fatihah (The Opener)",
+  "name_fr": "Al-Fatiha (L’Ouverture)",
+  "verses": 7
+ },
+ "layout": "single",
+ "source": "quran.com (texte arabe) · thèmes et mot à mot : Wakf, à valider",
+ "translation": {
+  "fr": 31,
+  "en": 20
+ },
+ "fr_status": "a_valider",
+ "note_fr": "Texte arabe : quran.com. Découpage en thèmes et traductions mot à mot proposés par Wakf : à valider par un enseignant.",
+ "sections": [
+  {
+   "id": "basmala",
+   "title_fr": "La basmala",
+   "title_en": "The Basmala",
+   "nodes": [
+    {
+     "ayah": 1,
+     "words": [
+      {
+       "ar": "بِسْمِ",
+       "fr": "Au nom",
+       "en": "In the name"
+      },
+      {
+       "ar": "ٱللَّهِ",
+       "fr": "d’Allah",
+       "en": "of Allah"
+      },
+      {
+       "ar": "ٱلرَّحْمَـٰنِ",
+       "fr": "le Tout Miséricordieux",
+       "en": "the All-Merciful"
+      },
+      {
+       "ar": "ٱلرَّحِيمِ",
+       "fr": "le Très Miséricordieux",
+       "en": "the Especially Merciful"
+      }
+     ],
+     "art": "inkpen",
+     "children": []
+    }
+   ]
+  },
+  {
+   "id": "praise",
+   "title_fr": "La louange à Allah",
+   "title_en": "Praise to Allah",
+   "nodes": [
+    {
+     "ayah": 2,
+     "words": [
+      {
+       "ar": "ٱلْحَمْدُ",
+       "fr": "La louange",
+       "en": "Praise"
+      },
+      {
+       "ar": "لِلَّهِ",
+       "fr": "(est) à Allah",
+       "en": "(is) for Allah"
+      },
+      {
+       "ar": "رَبِّ",
+       "fr": "Seigneur",
+       "en": "Lord"
+      },
+      {
+       "ar": "ٱلْعَـٰلَمِينَ",
+       "fr": "des mondes",
+       "en": "of the worlds"
+      }
+     ],
+     "art": "worlds",
+     "children": [
+      {
+       "ayah": 3,
+       "words": [
+        {
+         "ar": "ٱلرَّحْمَـٰنِ",
+         "fr": "le Tout Miséricordieux",
+         "en": "the All-Merciful"
+        },
+        {
+         "ar": "ٱلرَّحِيمِ",
+         "fr": "le Très Miséricordieux",
+         "en": "the Especially Merciful"
+        }
+       ],
+       "art": "mercyrain",
+       "children": []
+      },
+      {
+       "ayah": 4,
+       "words": [
+        {
+         "ar": "مَـٰلِكِ",
+         "fr": "Maître",
+         "en": "Master"
+        },
+        {
+         "ar": "يَوْمِ",
+         "fr": "du Jour",
+         "en": "of the Day"
+        },
+        {
+         "ar": "ٱلدِّينِ",
+         "fr": "de la Rétribution",
+         "en": "of Recompense"
+        }
+       ],
+       "art": "hourglass",
+       "children": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "worship",
+   "title_fr": "L’adoration et la demande d’aide",
+   "title_en": "Worship and asking for help",
+   "nodes": [
+    {
+     "ayah": 5,
+     "words": [
+      {
+       "ar": "إِيَّاكَ",
+       "fr": "C’est Toi (seul)",
+       "en": "You alone"
+      },
+      {
+       "ar": "نَعْبُدُ",
+       "fr": "que nous adorons",
+       "en": "we worship"
+      },
+      {
+       "ar": "وَإِيَّاكَ",
+       "fr": "et c’est Toi (seul)",
+       "en": "and You alone"
+      },
+      {
+       "ar": "نَسْتَعِينُ",
+       "fr": "dont nous implorons l’aide",
+       "en": "we ask for help"
+      }
+     ],
+     "art": "mihrab",
+     "children": []
+    }
+   ]
+  },
+  {
+   "id": "guidance",
+   "title_fr": "La demande de guidance",
+   "title_en": "Asking for guidance",
+   "nodes": [
+    {
+     "ayah": 6,
+     "words": [
+      {
+       "ar": "ٱهْدِنَا",
+       "fr": "Guide-nous",
+       "en": "Guide us"
+      },
+      {
+       "ar": "ٱلصِّرَٰطَ",
+       "fr": "(vers) le chemin",
+       "en": "(to) the path"
+      },
+      {
+       "ar": "ٱلْمُسْتَقِيمَ",
+       "fr": "droit",
+       "en": "the straight"
+      }
+     ],
+     "art": "compass",
+     "children": [
+      {
+       "ayah": 7,
+       "words": [
+        {
+         "ar": "صِرَٰطَ",
+         "fr": "Le chemin",
+         "en": "The path"
+        },
+        {
+         "ar": "ٱلَّذِينَ",
+         "fr": "de ceux",
+         "en": "of those"
+        },
+        {
+         "ar": "أَنْعَمْتَ",
+         "fr": "que Tu as comblés",
+         "en": "You have favoured"
+        },
+        {
+         "ar": "عَلَيْهِمْ",
+         "fr": "(de Tes bienfaits)",
+         "en": "(with blessings)"
+        }
+       ],
+       "art": "litpath",
+       "children": [
+        {
+         "ayah": null,
+         "words": [
+          {
+           "ar": "غَيْرِ",
+           "fr": "non (celui)",
+           "en": "not (that)"
+          },
+          {
+           "ar": "ٱلْمَغْضُوبِ",
+           "fr": "de ceux qui ont encouru la colère",
+           "en": "of those who earned anger"
+          },
+          {
+           "ar": "عَلَيْهِمْ",
+           "fr": "contre eux",
+           "en": "upon them"
+          }
+         ],
+         "art": "stormcloud",
+         "children": []
+        },
+        {
+         "ayah": null,
+         "words": [
+          {
+           "ar": "وَلَا",
+           "fr": "ni (celui)",
+           "en": "nor (that)"
+          },
+          {
+           "ar": "ٱلضَّآلِّينَ",
+           "fr": "des égarés",
+           "en": "of those astray"
+          }
+         ],
+         "art": "maze",
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
