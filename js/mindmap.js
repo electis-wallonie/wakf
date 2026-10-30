@@ -7,8 +7,8 @@
   const L = () => (W.lang === 'en' ? 'en' : 'fr');
   const tt = (o, k) => (o ? o[k + '_' + L()] || o[k + '_en'] || o[k + '_fr'] || '' : '');
   const TXT = {
-    fr: { verse: 'Verset', verses: 'Versets', themes: 'Les thèmes', listen: 'Écouter et mémoriser', trLink: 'Traduction Hamidullah sur quran.com', themesN: (n, v) => n + ' thèmes ' + (v ? 'visuels' : 'mentaux'), heard: 'écoutés' },
-    en: { verse: 'Verse', verses: 'Verses', themes: 'Themes', listen: 'Listen & memorise', trLink: 'Translation on quran.com', themesN: (n, v) => n + (v ? ' visual' : ' mental') + ' themes', heard: 'heard' }
+    fr: { verse: 'Verset', verses: 'Versets', themes: 'Les thèmes', listen: 'Écouter et mémoriser', trLink: 'Traduction Hamidullah sur quran.com', trShow: 'Afficher la traduction', trHide: 'Masquer la traduction', trName: 'Traduction : Muhammad Hamidullah (quran.com)', trErr: 'Traduction indisponible hors connexion.', themesN: (n, v) => n + ' thèmes ' + (v ? 'visuels' : 'mentaux'), heard: 'écoutés' },
+    en: { verse: 'Verse', verses: 'Verses', themes: 'Themes', listen: 'Listen & memorise', trLink: 'Translation on quran.com', trShow: 'Show the translation', trHide: 'Hide the translation', trName: 'Translation: Saheeh International (quran.com)', trErr: 'Translation unavailable offline.', themesN: (n, v) => n + (v ? ' visual' : ' mental') + ' themes', heard: 'heard' }
   };
   const tx = (k) => TXT[L()][k];
 
@@ -56,6 +56,12 @@
     if (a.length === 1) return tx('verse') + ' ' + a[0];
     return tx('verses') + ' ' + a[0] + ' – ' + a[a.length - 1];
   };
+  /* traductions des versets, lues en direct sur l'API de quran.com (non recopiées dans l'app) */
+  const trCache = {};
+  const loadTr = (n, id) => (trCache[n + ':' + id] = trCache[n + ':' + id] || fetch('https://api.quran.com/api/v4/quran/translations/' + id + '?chapter_number=' + n)
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then((j) => (j.translations || []).map((x) => { const d = document.createElement('div'); d.innerHTML = String(x.text).replace(/<sup[^>]*>.*?<\/sup>/g, ''); return d.textContent.trim(); }))
+    .catch((e) => { delete trCache[n + ':' + id]; throw e; }));
   const audioKey = (ayah) => (W.mmKey && ayah ? W.mmKey + '-' + String(ayah).padStart(3, '0') : null);
 
   /* ---------- éléments ---------- */
@@ -187,6 +193,19 @@
       }
       const trId = CUR && CUR.translation && CUR.translation[L()];
       if (trId) {
+        const n0 = surahN, panel = h('div.mm2-trtext', { hidden: true });
+        const tog = h('button.btn.lapis.block.mm2-trbtn', null, h('span', { html: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="2"/></svg>' }), h('span', null, tx('trShow')));
+        tog.addEventListener('click', () => {
+          const show = panel.hidden;
+          panel.hidden = !show; tog.lastChild.textContent = show ? tx('trHide') : tx('trShow');
+          if (show && !panel.childNodes.length) {
+            panel.append(h('p.mm2-trnote', null, '…'));
+            loadTr(n0, trId).then((list) => {
+              panel.replaceChildren(...ayat.map((a) => h('p', null, badge(a), h('span', null, list[a - 1] || ''))), h('p.mm2-trnote', null, tx('trName')));
+            }).catch(() => panel.replaceChildren(h('p.mm2-trnote', null, tx('trErr'))));
+          }
+        });
+        body.append(tog, panel);
         const rng = ayat.length > 1 ? ayat[0] + '-' + ayat[ayat.length - 1] : String(ayat[0]);
         body.append(h('a.btn.outline.block.mm2-tr', { href: 'https://quran.com/' + surahN + '/' + rng + '?translations=' + trId, target: '_blank', rel: 'noopener' },
           h('span', { html: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="2"/></svg>' }), tx('trLink')));
