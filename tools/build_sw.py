@@ -31,7 +31,8 @@ self.addEventListener('activate', (e) => {{
 }});
 self.addEventListener('fetch', (e) => {{
   const req = e.request;
-  if (req.method === 'GET' && new URL(req.url).origin === 'https://api.quran.com') {{
+  const org = new URL(req.url).origin;
+  if (req.method === 'GET' && org === 'https://api.quran.com') {{
     // verse translations read live from quran.com: network first, last copy kept for offline use
     e.respondWith(fetch(req).then((res) => {{ if (res.ok) {{ const copy = res.clone(); caches.open('wakf-quran').then((c) => c.put(req, copy)); }} return res; }})
       .catch(() => caches.open('wakf-quran').then((c) => c.match(req))));
