@@ -16,7 +16,7 @@
   };
   const ORDER = ['w85', 'read', 'surah', 'w1000'];
   const cvar = (c, s) => 'var(--' + c + (s ? '-' + s : '') + ')';
-  const SURAHS = [{ n: 55, data: 'rahman' }, { n: 76, data: 'insan' }];
+  const SURAHS = [{ n: 1, data: 'fatiha' }, { n: 55, data: 'rahman' }, { n: 76, data: 'insan' }].sort((a, b) => a.n - b.n);
 
   /* ---------- word data ---------- */
   const wordsCache = {};
@@ -323,7 +323,7 @@
       const d = await W.load(s.data); if (!d) continue;
       page.append(h('a.card.press', { href: '#/mm/' + s.n, style: { display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' } },
         h('span', { style: { width: '64px', height: '64px', borderRadius: '20px', background: 'var(--lapis)', color: '#fff', display: 'grid', placeItems: 'center', fontFamily: 'var(--title)', fontWeight: 800, fontSize: '22px', boxShadow: '0 4px 0 var(--lapis-d)', flex: 'none' } }, String(s.n)),
-        h('span', { style: { flex: 1 } }, h('h3', null, d.surah['name_' + L()] || d.surah.name_en), h('span.muted.small', null, t('surahSections', { n: d.sections.length }) + (d.layout === 'single' ? '' : ' · ' + t('mmVisual') + ' & ' + t('mmMental')))),
+        h('span', { style: { flex: 1 } }, h('h3', null, d.surah['name_' + L()] || d.surah.name_en), h('span.muted.small', null, t('surahSections', { n: d.sections.length }))),
         h('span.ar', { lang: 'ar', style: { fontSize: '34px' } }, d.surah.name_ar)));
     }
     page.append(emptyState('surah', t('surahsTitle'), t('mmSoon')));

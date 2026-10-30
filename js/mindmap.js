@@ -7,8 +7,8 @@
   const L = () => (W.lang === 'en' ? 'en' : 'fr');
   const tt = (o, k) => (o ? o[k + '_' + L()] || o[k + '_en'] || o[k + '_fr'] || '' : '');
   const TXT = {
-    fr: { verse: 'Verset', verses: 'Versets', themes: 'Les thèmes', listen: 'Écouter et mémoriser', themesN: (n, v) => n + ' thèmes ' + (v ? 'visuels' : 'mentaux'), heard: 'écoutés' },
-    en: { verse: 'Verse', verses: 'Verses', themes: 'Themes', listen: 'Listen & memorise', themesN: (n, v) => n + (v ? ' visual' : ' mental') + ' themes', heard: 'heard' }
+    fr: { verse: 'Verset', verses: 'Versets', themes: 'Les thèmes', listen: 'Écouter et mémoriser', trLink: 'Traduction Hamidullah sur quran.com', themesN: (n, v) => n + ' thèmes ' + (v ? 'visuels' : 'mentaux'), heard: 'écoutés' },
+    en: { verse: 'Verse', verses: 'Verses', themes: 'Themes', listen: 'Listen & memorise', trLink: 'Translation on quran.com', themesN: (n, v) => n + (v ? ' visual' : ' mental') + ' themes', heard: 'heard' }
   };
   const tx = (k) => TXT[L()][k];
 
@@ -22,7 +22,7 @@
   const CYCLE = ['amethyste', 'lapis', 'safran', 'jade'];
 
   /* ---------- progression : versets écoutés (stockage local) ---------- */
-  let surahN = 0;
+  let surahN = 0, CUR = null;
   const heardKey = () => 'wakf.mm2.heard.' + surahN;
   const getHeard = () => { try { return new Set(JSON.parse(localStorage.getItem(heardKey()) || '[]')); } catch (e) { return new Set(); } };
   const markHeard = (ayah) => {
@@ -185,6 +185,12 @@
         });
         body.append(play);
       }
+      const trId = CUR && CUR.translation && CUR.translation[L()];
+      if (trId) {
+        const rng = ayat.length > 1 ? ayat[0] + '-' + ayat[ayat.length - 1] : String(ayat[0]);
+        body.append(h('a.btn.outline.block.mm2-tr', { href: 'https://quran.com/' + surahN + '/' + rng + '?translations=' + trId, target: '_blank', rel: 'noopener' },
+          h('span', { html: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="2"/></svg>' }), tx('trLink')));
+      }
     }
     sec.append(head, body);
     refreshBar(sec);
@@ -197,7 +203,7 @@
 
   const headerEl = (data, R, secs, S) => {
     const ay = allAyat(secs, S);
-    const total = ay.length ? ay[ay.length - 1] : 0;
+    const total = data.surah.verses || (ay.length ? ay[ay.length - 1] : 0);
     const [main] = splitName(data.surah['name_' + L()] || data.surah.name_en);
     const top = h('section.mm2-top.c-lapis', { 'data-mm2-ayat': ay.join(',') },
       h('div.mm2-top-panel', null,
@@ -213,7 +219,7 @@
 
   /* Tous les thèmes de la sourate, dans l'ordre des versets, sans séparation en onglets */
   W.renderMindmap = (data) => {
-    surahN = data.surah.number;
+    surahN = data.surah.number; CUR = data;
     W.mmKey = 'sourates/' + String(data.surah.number).padStart(3, '0');
     const R = data.refrain; const S = {}; data.sections.forEach((s) => (S[s.id] = s));
     const first = (s) => { const a = ayatOf(s, S); return a.length ? a[0] : 1e9; };
