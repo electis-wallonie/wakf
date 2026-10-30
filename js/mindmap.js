@@ -1,5 +1,5 @@
 /* Wakf — Surah mind maps · design A2 « Rubriques colorées »
-   Remplace l'ancien js/mindmap.js. Même API : W.renderMindmap(data, tab).
+   Remplace l'ancien js/mindmap.js. Même API : W.renderMindmap(data).
    Les données (data/rahman.json) ne changent pas. Styles : css/mindmap-a2.css (classes .mm2-*). */
 (function () {
   'use strict';
@@ -36,7 +36,7 @@
     const hs = getHeard(); const n = ay.filter((a) => hs.has(a)).length;
     const pct = ay.length ? Math.round((100 * n) / ay.length) : 0;
     const bar = el.querySelector('.mm2-bar'); if (bar) bar.style.width = pct + '%';
-    const lab = el.querySelector('.mm2-heard'); if (lab) lab.textContent = n ? n + ' / ' + ay.length + ' ' + tx('heard') : '';
+    const lab = el.querySelector('.mm2-heard'); if (lab) lab.textContent = !n ? '' : el.classList.contains('mm2-top') ? Math.max(1, pct) + ' % ' + tx('heard') : n + ' / ' + ay.length + ' ' + tx('heard');
   };
 
   /* ---------- helpers données ---------- */
@@ -192,69 +192,48 @@
   };
 
   /* ---------- page ---------- */
-  W.renderMindmap = (data, tab) => {
+  const splitName = (full) => { const m = /^(.*?)\s*\((.*)\)\s*$/.exec(full || ''); return m ? [m[1], m[2]] : [full || '', '']; };
+  const allAyat = (secs, S) => [...new Set(secs.flatMap((s) => ayatOf(s, S)))].sort((x, y) => x - y);
+
+  const headerEl = (data, R, secs, S) => {
+    const ay = allAyat(secs, S);
+    const total = ay.length ? ay[ay.length - 1] : 0;
+    const [main, sub] = splitName(data.surah['name_' + L()] || data.surah.name_en);
+    const top = h('section.mm2-top.c-lapis', { 'data-mm2-ayat': ay.join(',') },
+      h('div.mm2-top-panel', null,
+        h('span.mm2-top-n', null, t('surahN', { n: data.surah.number })),
+        h('span.ar', { lang: 'ar' }, data.surah.name_ar)),
+      h('div.mm2-top-info', null,
+        h('h1', null, main),
+        sub ? h('p', null, sub) : null,
+        h('div.mm2-chips', null,
+          total ? h('span', null, total + ' ' + tx('verses').toLowerCase()) : null,
+          h('span', null, secs.length + ' ' + tx('themes').replace(/^Les /, '').toLowerCase())),
+        h('div.mm2-top-prog', null, h('span.mm2-track', null, h('span.mm2-bar')), h('small', null, h('span.mm2-heard')))));
+    if (R && R.words && R.words.length) {
+      top.append(h('div.mm2-top-refrain.c-safran', null,
+        h('div.mm2-top-rlab', null, h('span', { html: W.svg('refrain') }), t('refrain')),
+        h('div.mm2-top-rwords', { dir: 'rtl' }, R.words.map((w) => wordEl(w)), sayEl(R.words, null)),
+        h('div.mm2-top-rtr', null, R[L()] || R.en)));
+    }
+    refreshBar(top);
+    return top;
+  };
+
+  /* Tous les thèmes de la sourate, dans l'ordre des versets, sans séparation en onglets */
+  W.renderMindmap = (data) => {
     surahN = data.surah.number;
     W.mmKey = 'sourates/' + String(data.surah.number).padStart(3, '0');
     const R = data.refrain; const S = {}; data.sections.forEach((s) => (S[s.id] = s));
+    const first = (s) => { const a = ayatOf(s, S); return a.length ? a[0] : 1e9; };
+    const secs = data.sections.filter((s) => !s.parent).map((s, i) => [first(s), i, s]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map((x) => x[2]);
     const root = h('div.mm2');
-
-    if (data.layout === 'single' || !R) {
-      root.append(h('div.mm-hero', null, h('div.small', { style: { textTransform: 'uppercase', letterSpacing: '.8px' } }, t('surahN', { n: data.surah.number })),
-        h('div.ar', { lang: 'ar' }, data.surah.name_ar), h('div', null, data.surah['name_' + L()] || data.surah.name_en)));
-      const grid = h('div.mm2-grid');
-      const opened = getOpen();
-      data.sections.forEach((s, i) => grid.append(sectionEl(s, R || { words: [] }, S, i, { open: i === 0 || opened.has(s.id) })));
-      root.append(grid);
-      return root;
-    }
-
-    root.append(h('div.mm-hero', null, h('div.small', { style: { textTransform: 'uppercase', letterSpacing: '.8px' } }, t('surahN', { n: data.surah.number })),
-      h('div.ar', { lang: 'ar' }, data.surah.name_ar), h('div', null, data.surah['name_' + L()] || data.surah.name_en),
-      h('div', { style: { marginTop: '10px' } }, h('div.small', null, t('refrain')), h('div.refrain', { dir: 'rtl' }, R.words.map((w) => wordEl(w)))), h('div.small', null, R[L()] || R.en)));
-
-    const seg = h('div.seg', { 'data-i': tab === 'mental' ? 1 : 0, role: 'tablist' }, h('span.thumb'),
-      h('button' + (tab !== 'mental' ? '.on' : ''), { role: 'tab', on: { click: () => switchTab('visual') } }, h('span', { html: W.svg('eye') }), t('mmVisual')),
-      h('button' + (tab === 'mental' ? '.on' : ''), { role: 'tab', on: { click: () => switchTab('mental') } }, h('span', { html: W.svg('brain') }), t('mmMental')));
-    const pane = h('div.tabpane');
-    root.append(seg, pane);
-
-    const draw = (which) => {
-      const info = which === 'mental' ? data.mental_links : data.visual_links;
-      let secs = data.sections.filter((s) => s.group === which && !s.parent);
-      if (which === 'mental' && info.flow) {
-        const order = info.flow.map((f) => f.id); const ix = (id) => { const i = order.indexOf(id); return i < 0 ? 99 : i; };
-        secs = secs.slice().sort((a, b) => ix(a.id) - ix(b.id));
-      }
-      const intro = h('div.mm2-intro.c-' + (which === 'mental' ? 'amethyste' : 'lapis'),
-        null, h('span.mm2-intro-ic', null, h('span.ar', { lang: 'ar' }, info.name_ar)),
-        h('div', null, h('b', null, tx('themesN')(secs.length, which !== 'mental')), h('span', null, tt(info, 'text'))));
-      const kids = [intro];
-      if (which === 'mental' && info.flow) {
-        const flow = h('div.flow');
-        info.flow.forEach((f, i) => {
-          if (i) flow.append(h('span.arr', null, '→'));
-          flow.append(h('button', { on: { click: () => {
-            const el = document.getElementById('mm-' + f.id);
-            if (el) { el.classList.add('open'); setOpen(f.id, true); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-          } } }, tt(f, 'title'), h('small', null, tt(f, 'ayat'))));
-        });
-        kids.push(flow);
-      }
-      kids.push(h('h2.mm2-h2', null, tx('themes')));
-      const grid = h('div.mm2-grid');
-      const opened = getOpen();
-      secs.forEach((s, i) => grid.append(sectionEl(s, R, S, i, { open: i === 0 || opened.has(s.id) })));
-      kids.push(grid);
-      pane.replaceChildren(...kids);
-      pane.style.animation = 'none'; void pane.offsetWidth; pane.style.animation = '';
-    };
-    const switchTab = (which) => {
-      seg.dataset.i = which === 'mental' ? 1 : 0;
-      seg.querySelectorAll('button').forEach((b, i) => b.classList.toggle('on', i === +seg.dataset.i));
-      try { sessionStorage.setItem('wakf.mmtab', which); } catch (e) {}
-      draw(which);
-    };
-    draw(tab === 'mental' ? 'mental' : 'visual');
+    root.append(headerEl(data, R, secs, S));
+    root.append(h('h2.mm2-h2', null, tx('themes')));
+    const grid = h('div.mm2-grid');
+    const opened = getOpen();
+    secs.forEach((s, i) => grid.append(sectionEl(s, R || { words: [] }, S, i, { open: i === 0 || opened.has(s.id) })));
+    root.append(grid);
     return root;
   };
 })();
