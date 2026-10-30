@@ -16,7 +16,7 @@
   };
   const ORDER = ['w85', 'read', 'surah', 'w1000'];
   const cvar = (c, s) => 'var(--' + c + (s ? '-' + s : '') + ')';
-  const SURAHS = [{ n: 1, data: 'fatiha' }, { n: 2, data: 'baqara' }, { n: 3, data: 'imran' }, { n: 4, data: 'nisa' }, { n: 5, data: 'maida' }, { n: 6, data: 'anam' }, { n: 7, data: 'araf' }, { n: 8, data: 'anfal' }, { n: 55, data: 'rahman' }, { n: 76, data: 'insan' }].sort((a, b) => a.n - b.n);
+  const SURAHS = [{ n: 1, data: 'fatiha' }, { n: 2, data: 'baqara' }, { n: 3, data: 'imran' }, { n: 4, data: 'nisa' }, { n: 5, data: 'maida' }, { n: 6, data: 'anam' }, { n: 7, data: 'araf' }, { n: 8, data: 'anfal' }, { n: 9, data: 'tawba' }, { n: 10, data: 'yunus' }, { n: 11, data: 'hud' }, { n: 55, data: 'rahman' }, { n: 76, data: 'insan' }].sort((a, b) => a.n - b.n);
 
   /* ---------- word data ---------- */
   const wordsCache = {};
