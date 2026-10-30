@@ -332,6 +332,33 @@
   };
   W.hasAudio = async (key) => (await loadAudioIndex()).has(key);
 
+  /* ---------------- Quran.com recitation (one reciter everywhere: Mishari al-Afasy) ---------------- */
+  const pad3 = (n) => String(n).padStart(3, '0');
+  W.QURAN_RECITER = 'Alafasy';
+  W.verseAudio = (s, a) => 'https://verses.quran.com/' + W.QURAN_RECITER + '/mp3/' + pad3(s) + pad3(a) + '.mp3';
+  W.wordAudio = (s, a, w) => 'https://audio.qurancdn.com/wbw/' + pad3(s) + '_' + pad3(a) + '_' + pad3(w) + '.mp3';
+  let qToken = 0, qBtn = null;
+  W.stopQuran = () => { qToken++; if (curAudio) curAudio.pause(); if (qBtn) qBtn.classList.remove('playing'); qBtn = null; };
+  // plays the urls one after the other; if the first file cannot be played (offline), runs fallback()
+  W.playUrls = (urls, opt) => {
+    opt = opt || {};
+    W.stopQuran(); if (synth) synth.cancel();
+    const tok = qToken, list = urls.filter(Boolean); let i = 0, played = false;
+    const el = opt.el; if (el) { el.classList.add('playing'); qBtn = el; }
+    return new Promise((res) => {
+      const done = () => { if (tok === qToken && el) el.classList.remove('playing'); res(); };
+      const next = () => {
+        if (tok !== qToken) return res();
+        if (i >= list.length) return done();
+        const a = new Audio(list[i++]); curAudio = a;
+        a.onended = next;
+        a.onerror = () => { if (!played && opt.fallback) { done(); opt.fallback(); } else next(); };
+        a.play().then(() => { played = true; }).catch(() => { if (!played && opt.fallback) { done(); opt.fallback(); } else next(); });
+      };
+      next();
+    });
+  };
+
   /* ---------------- SFX (WebAudio, no files) ---------------- */
   let actx = null;
   const ac = () => (actx = actx || new (window.AudioContext || window.webkitAudioContext)());

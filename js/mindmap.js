@@ -70,14 +70,22 @@
     b.addEventListener('click', (e) => {
       e.stopPropagation();
       document.querySelectorAll('.w.on').forEach((x) => x.classList.remove('on'));
-      b.classList.add('on'); W.say(w.ar, null);
+      b.classList.add('on');
+      if (w.pos) W.playUrls([W.wordAudio(surahN, w.pos[0], w.pos[1])], { el: b, fallback: () => W.say(w.ar, null) });
+      else W.say(w.ar, null);
       if (opt && opt.ayah) markHeard(opt.ayah);
     });
     return b;
   };
   const sayEl = (words, ayah) => {
-    const b = W.sayBtn(() => words.map((w) => w.ar).join(' '), audioKey(ayah), 'mm2-say');
-    b.addEventListener('click', () => markHeard(ayah));
+    const b = h('button.say.mm2-say', { 'aria-label': t('listen'), html: W.svg('speaker') });
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const text = words.map((w) => w.ar).join(' ');
+      if (ayah) W.playUrls([W.verseAudio(surahN, ayah)], { el: b, fallback: () => W.say(text, null, { el: b }) });
+      else W.say(text, null, { el: b });
+      markHeard(ayah);
+    });
     return b;
   };
   const badge = (ayah) => h('span.mm2-n', { title: tx('verse') + ' ' + ayah }, String(ayah));
@@ -187,7 +195,11 @@
       if (first.length) {
         const play = h('button.btn.block.mm2-play', null, h('span', { html: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>' }), tx('listen'));
         play.addEventListener('click', () => {
-          const k = audioKey(first[0].ayah); W.say(first[0].words.map((w) => w.ar).join(' '), k); markHeard(first[0].ayah);
+          // the whole theme, verse after verse (every verse of the big rectangle, sub-themes included)
+          const all = []; walk(s.nodes, (n) => n.words && all.push(...n.words));
+          (s.subsections || []).forEach((id) => S[id] && walk(S[id].nodes, (n) => n.words && all.push(...n.words)));
+          W.playUrls(ayat.map((a) => W.verseAudio(surahN, a)), { el: play, fallback: () => W.say(all.map((w) => w.ar).join(' '), null, { el: play }) });
+          ayat.forEach(markHeard);
         });
         body.append(play);
       }
@@ -206,6 +218,50 @@
     if (loadTrIn) { if (isOpen) loadTrIn(); head.addEventListener('click', () => { if (sec.classList.contains('open')) loadTrIn(); }); }
     refreshBar(sec);
     return sec;
+  };
+
+  /* ---------- texte de quran.com : mots arabes (sourates « qwords ») et position de chaque mot pour l'audio ---------- */
+  const qcCache = {};
+  const loadChapter = (n) => (qcCache[n] = qcCache[n] || (async () => {
+    const V = {};
+    for (let p = 1; p < 20; p++) {
+      const r = await fetch('https://api.quran.com/api/v4/verses/by_chapter/' + n + '?words=true&word_fields=text_uthmani&per_page=50&page=' + p);
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json();
+      j.verses.forEach((v) => { V[v.verse_number] = v.words.filter((w) => w.char_type_name === 'word').map((w) => w.text_uthmani); });
+      if (!j.pagination || !j.pagination.next_page) break;
+    }
+    return V;
+  })().catch((e) => { delete qcCache[n]; throw e; }));
+  const skel = (x) => String(x).normalize('NFC').replace(/[آأإٱ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').replace(/\u0640/g, '').replace(/[^\u0621-\u064A]/g, '');
+  W.mmPrepare = async (data) => {
+    const n = data.surah.number;
+    let V = null;
+    try { V = await loadChapter(n); } catch (e) { if (data.qwords) return false; }
+    const each = (fn) => data.sections.forEach((sec) => walk(sec.nodes, fn));
+    if (data.qwords) each((nd) => { if (nd.g && nd.ayah && !nd.words) { const ws = V[nd.ayah] || []; nd.words = nd.g.map((p, i) => ({ ar: ws[i] || '', fr: p[0], en: p[1], pos: [nd.ayah, i + 1] })); } });
+    if (!V) return true;
+    // other surahs: find each word of the map in the quran.com text (same verse, in order)
+    const S = {}; data.sections.forEach((x) => (S[x.id] = x));
+    let cur = null;
+    const match = (nd) => {
+      if (!nd.words || !nd.words.length) return;
+      if (nd.ayah && (!cur || nd.ayah > cur[0])) cur = [nd.ayah, 0];
+      if (!cur) return;
+      nd.words.forEach((w) => {
+        if (w.pos) return;
+        const k = skel(w.ar);
+        for (let a = cur[0]; a <= cur[0] + 2 && V[a]; a++) {
+          const ws = V[a]; let i = a === cur[0] ? cur[1] : 0, hit = -1;
+          for (; i < ws.length; i++) if (skel(ws[i]) === k) { hit = i; break; }
+          if (hit < 0 && a === cur[0]) for (i = 0; i < ws.length; i++) if (skel(ws[i]) === k) { hit = i; break; }
+          if (hit >= 0) { w.pos = [a, hit + 1]; cur = [a, hit + 1]; break; }
+        }
+      });
+    };
+    data.sections.forEach((sec) => { const ay = ayatOf(sec, S); cur = ay.length ? [ay[0], 0] : cur; walk(sec.nodes, match); });
+    let tot = 0, hit = 0; each((nd) => (nd.words || []).forEach((w) => { tot++; if (w.pos) hit++; })); data._match = [hit, tot];
+    return true;
   };
 
   /* ---------- page ---------- */

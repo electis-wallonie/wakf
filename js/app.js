@@ -16,7 +16,7 @@
   };
   const ORDER = ['w85', 'read', 'surah', 'w1000'];
   const cvar = (c, s) => 'var(--' + c + (s ? '-' + s : '') + ')';
-  const SURAHS = [{ n: 1, data: 'fatiha' }, { n: 55, data: 'rahman' }, { n: 76, data: 'insan' }].sort((a, b) => a.n - b.n);
+  const SURAHS = [{ n: 1, data: 'fatiha' }, { n: 2, data: 'baqara' }, { n: 55, data: 'rahman' }, { n: 76, data: 'insan' }].sort((a, b) => a.n - b.n);
 
   /* ---------- word data ---------- */
   const wordsCache = {};
@@ -329,6 +329,8 @@
   W.route(/^\/mm\/(\d+)$/, async (tok, n) => {
     const s = SURAHS.find((x) => x.n === +n); if (!s) return W.go('#/t/surah');
     const d = await W.load(s.data); if (!d) return;
+    if (!d._prep) d._prep = await W.mmPrepare(d);
+    if (!d._prep) { d._prep = null; return W.mount(h('div.page', null, appbar({ back: '#/t/surah', title: d.surah['name_' + L()] || d.surah.name_en }), emptyState('surah', t('surahsTitle'), W.lang === 'en' ? 'Connect to the internet once to load this surah.' : 'Connecte-toi une première fois à Internet pour charger cette sourate.')), tok); }
     W.markOpened('surah:' + s.n);
     const name = d.surah['name_' + L()] || d.surah.name_en;
     W.setLast('surah', { href: '#/mm/' + n, label: name.split(' (')[0], sub: t('surahN', { n }) });
