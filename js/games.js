@@ -243,7 +243,7 @@
   });
   // Pairs round. mode 'tr' (arabic ↔ translation) or 'sound' (audio ↔ arabic script). Returns Promise<mistakes>
   W.qPairs = (P, set, mode) => new Promise((res) => {
-    let selL = null, selR = null, left = set.length, errors = 0;
+    let selL = null, selR = null, left = set.length, errors = 0; const missed = new Set();
     const L = shuffle(set), R = shuffle(set);
     const wave = () => { const s = h('span.wave'); [10, 16, 24, 30, 22, 14, 26, 18, 10].forEach((v, i) => s.append(h('i', { style: { '--h': v + 'px', '--d': i } }))); return s; };
     const lb = L.map((w) => {
@@ -264,14 +264,14 @@
       const ok = selL.ar === selR.ar;
       a.classList.remove('sel'); b.classList.remove('sel');
       if (ok) {
-        a._done = b._done = true; a.classList.add('good'); b.classList.add('good');
+        a._done = b._done = true; a.classList.add('good'); b.classList.add('good'); if (mode !== 'sound') W.memAnswer(selL.id, !missed.has(selL.id));
         // audio feedback in the learner's native language (or Arabic for sound-mode)
         W.say(selL.ar, selL.audio);
         W.sfx.ok();
         setTimeout(() => { a.classList.add('done'); b.classList.add('done'); }, 450);
         if (--left === 0) setTimeout(() => { P.score(errors === 0); res(errors); }, 900);
       } else {
-        errors++; W.srsMiss(selL.id); W.sfx.ko(); a.classList.add('bad'); b.classList.add('bad');
+        errors++; missed.add(selL.id); missed.add(selR.id); W.sfx.ko(); a.classList.add('bad'); b.classList.add('bad');
         setTimeout(() => { a.classList.remove('bad'); b.classList.remove('bad'); }, 450);
       }
       selL = selR = null;
@@ -281,8 +281,31 @@
     P.hideFooter();
   });
 
-  // every missed word goes to the review queue
-  const track = (f) => (P, w, ...a) => f(P, w, ...a).then((ok) => { if (!ok && w && w.id) W.srsMiss(w.id); return ok; });
+  // every answer, right or wrong, updates the word's memory
+  const track = (f) => (P, w, ...a) => f(P, w, ...a).then((ok) => { if (w && w.id) W.memAnswer(w.id, ok); return ok; });
+
+  /* ---------- adaptive session builder ----------
+     Weighted random order (Efraimidis–Spirakis): weak / forgotten / new words tend to come first and,
+     if weak, come back a second time later in the game; well-known words appear less often.
+     Every launch draws fresh random keys, so the order is never the same twice. */
+  const wkey = (w) => Math.pow(Math.random(), 1 / Math.max(0.05, W.memNeed(w.id)));
+  W.adaptiveOrder = (words) => words.map((w) => [wkey(w), w]).sort((a, b) => b[0] - a[0]).map((x) => x[1]);
+  W.session = (words, opt) => {
+    opt = opt || {};
+    const all = words.filter((w) => w.t);
+    if (opt.all) return W.adaptiveOrder(all);
+    // known words are kept with a low probability; keep at least `min` words
+    const min = Math.min(all.length, opt.min || 10);
+    let keep = all.filter((w) => !W.memKnown(w.id) || Math.random() < 0.3);
+    if (keep.length < min) keep = keep.concat(W.adaptiveOrder(all.filter((w) => !keep.includes(w))).slice(0, min - keep.length));
+    let list = W.adaptiveOrder(keep);
+    if (opt.repeat !== false) {
+      // weak words come back once more, at a random later position (never right after themselves)
+      const weak = list.filter((w) => W.memNeed(w.id) >= 2.4).slice(0, Math.ceil(list.length / 3));
+      weak.forEach((w) => { const i = list.indexOf(w); const pos = Math.min(list.length, i + 3 + Math.floor(Math.random() * Math.max(1, list.length - i - 2))); list.splice(pos, 0, w); });
+    }
+    return list;
+  };
   W.qToAr = track(W.qToAr); W.qToNative = track(W.qToNative); W.qHear = track(W.qHear); W.qListen = track(W.qListen);
 
   /* ---------- Games ---------- */
@@ -292,7 +315,7 @@
   W.gameMeta = meta;
 
   GAMES.flash = async (P, words) => {
-    let queue = shuffle(words); const total = queue.length; let done = 0;
+    let queue = W.session(words, { repeat: false, min: 12 }); const total = queue.length; let done = 0;
     const one = (w) => new Promise((res) => {
       const card = h('div.flash', { role: 'button', tabindex: 0, 'aria-label': t('tapToFlip') });
       const sp = W.sayBtn(w.ar, w.audio);
@@ -322,8 +345,8 @@
     while (queue.length) {
       const w = queue.shift();
       const r = await one(w);
-      if (r === 0) queue.splice(Math.min(1, queue.length), 0, w); // fail: comes back right away (next card)
-      else if (r === 1) queue.splice(Math.max(Math.min(6, queue.length), Math.floor(queue.length / 2)), 0, w); // hard: further in the game
+      if (r === 0) queue.splice(Math.min(1 + Math.floor(Math.random() * 2), queue.length), 0, w); // fail: comes back right away
+      else if (r === 1) queue.splice(Math.min(queue.length, 4 + Math.floor(Math.random() * Math.max(1, queue.length - 3))), 0, w); // hard: later in the game
       else done++;
       P.progress(done / total);
       if (P.closed) return;
@@ -360,7 +383,7 @@
     const check = h('button.btn', { disabled: true, on: { click: () => {
       P._locked = true;
       const ok = placed.every((it, i) => it.w.ar === seq[i].ar);
-      if (!ok) seq.forEach((w, i) => { if (!placed[i] || placed[i].w.ar !== w.ar) W.srsMiss(w.id); });
+      seq.forEach((w, i) => W.memAnswer(w.id, !!placed[i] && placed[i].w.ar === w.ar));
       P.score(ok);
       P.feedback(ok, ok ? h('span', null, ...seq.map((w, i) => h('span', null, i ? ' · ' : '', W.wordLabel(w)))) : detail()).then(() => { P._locked = false; res(ok); });
     } } }, t('check'));
@@ -368,7 +391,7 @@
     P.footer(skip, check);
   });
   GAMES.hear = async (P, words, pool) => {
-    const list = shuffle(words.filter((w) => w.t));
+    const list = []; for (const w of W.session(words, { min: 9 })) if (!list.includes(w)) list.push(w); // unique words per sequence
     const rounds = []; for (let i = 0; i < list.length; i += 3) rounds.push(list.slice(i, i + 3));
     if (rounds.length > 1 && rounds[rounds.length - 1].length < 2) rounds[rounds.length - 2].push(...rounds.pop());
     for (let i = 0; i < rounds.length; i++) { P.progress(i / rounds.length); await W.qHearSeq(P, rounds[i].slice(0, 4), pool); if (P.closed) return; }
@@ -376,7 +399,7 @@
   };
 
   GAMES.trans = async (P, words, pool) => {
-    const list = shuffle(words);
+    const list = W.session(words, { min: 12 });
     const start = Math.random() < 0.5 ? 0 : 1; // strict alternation, 50/50
     for (let i = 0; i < list.length; i++) {
       P.progress(i / list.length);
@@ -388,7 +411,7 @@
 
   const pairable = (words) => { const seenA = new Set(), seenT = new Set(); return words.filter((w) => w.t && !seenA.has(w.ar) && !seenT.has(base(w)) && seenA.add(w.ar) && seenT.add(base(w))); };
   GAMES.pairs = async (P, words) => {
-    const list = shuffle(pairable(words));
+    const list = pairable(W.session(words, { repeat: false, min: 10 }));
     const rounds = []; for (let i = 0; i < list.length; i += 5) rounds.push(list.slice(i, i + 5));
     if (rounds.length > 1 && rounds[rounds.length - 1].length < 3) { const last = rounds.pop(); rounds[rounds.length - 1].push(...last); }
     for (let r = 0; r < rounds.length; r++) { P.progress(r / rounds.length); await W.qPairs(P, rounds[r].slice(0, 6), 'tr'); if (P.closed) return; }
@@ -396,7 +419,7 @@
   };
 
   GAMES.exam = async (P, words, pool) => {
-    const list = shuffle(words.filter((w) => w.t));
+    const list = W.session(words, { all: true });
     const kinds = shuffle(list.map((_, i) => ['ar', 'native', 'listen'][i % 3]));
     for (let i = 0; i < list.length; i++) {
       P.progress(i / list.length);

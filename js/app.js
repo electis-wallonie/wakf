@@ -14,7 +14,7 @@
     read: { cls: 't-read', key: 'th_read', icon: 'read', color: 'amethyste', art: 'read', data: 'reading' },
     w1000: { cls: 't-w1000', key: 'th_w1000', icon: 'words', color: 'safran', art: 'words', data: 'words1000', size: 20 },
   };
-  const ORDER = ['surah', 'w85', 'read', 'w1000'];
+  const ORDER = ['w85', 'read', 'surah', 'w1000'];
   const cvar = (c, s) => 'var(--' + c + (s ? '-' + s : '') + ')';
   const SURAHS = [{ n: 55, data: 'rahman' }, { n: 76, data: 'insan' }];
 

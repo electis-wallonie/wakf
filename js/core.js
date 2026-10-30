@@ -188,17 +188,40 @@
   W.setLast = (theme, rec) => { S.last[theme] = Object.assign({ at: Date.now() }, rec); S.last._ = theme; W.save(); };
   W.markOpened = (key) => { if (!S.opened[key]) { S.opened[key] = Date.now(); W.save(); } };
   const DAY = 864e5;
-  // spaced repetition: b = box, due = timestamp
-  W.srsRate = (id, r) => {
-    const now = Date.now(), prev = S.srs[id] || { b: 0 };
-    if (r === 0) S.srs[id] = { b: 0, due: now };
-    else if (r === 1) S.srs[id] = { b: Math.max(1, prev.b), due: now + DAY };
-    else if (r === 2) S.srs[id] = { b: prev.b + 1, due: now + [3, 3, 7, 14, 30, 60][Math.min(prev.b, 5)] * DAY };
-    else S.srs[id] = { b: prev.b + 2, due: now + [10, 10, 21, 45, 90, 180][Math.min(prev.b, 5)] * DAY };
+  /* ---------- spaced repetition memory (one record per word, shared by every game) ----------
+     s: strength 0..7 · due: next review timestamp · lapses: times forgotten · n: answers seen · last: last seen */
+  const MIN = 6e4;
+  const IV = [0, 10 * MIN, DAY, 3 * DAY, 7 * DAY, 16 * DAY, 35 * DAY, 75 * DAY]; // interval by strength
+  const memOf = (id) => S.srs[id] || (S.srs[id] = { s: 0, due: 0, lapses: 0, n: 0, last: 0, isNew: true });
+  for (const id in S.srs) { const r = S.srs[id]; if (r.s == null) S.srs[id] = { s: r.b || 0, due: r.due || 0, lapses: r.b ? 0 : 1, n: 1, last: r.due || 0 }; }
+  const jitter = (ms) => ms * (0.85 + Math.random() * 0.3); // avoid every word coming back at the same minute
+  W.memAnswer = (id, ok) => {
+    if (!id) return; const m = memOf(id), now = Date.now();
+    delete m.isNew; m.n++; m.last = now;
+    if (ok) { m.s = Math.min(7, m.s + 1); m.due = now + jitter(IV[m.s]); }
+    else { m.lapses++; m.s = Math.max(0, m.s - 2); m.due = now; }
     W.save();
   };
-  W.srsMiss = (id) => { if (id) { S.srs[id] = { b: 0, due: Date.now() }; W.save(); } };
-  W.dueIds = () => { const now = Date.now(); return Object.keys(S.srs).filter((k) => S.srs[k].due <= now); };
+  // flashcards: 0 fail · 1 hard · 2 good · 3 easy
+  W.srsRate = (id, r) => {
+    const m = memOf(id), now = Date.now(); delete m.isNew; m.n++; m.last = now;
+    if (r === 0) { m.lapses++; m.s = Math.max(0, m.s - 2); m.due = now; }
+    else if (r === 1) { m.s = Math.max(1, m.s); m.due = now + jitter(DAY); }
+    else if (r === 2) { m.s = Math.min(7, Math.max(m.s + 1, 3)); m.due = now + jitter(IV[m.s]); }
+    else { m.s = Math.min(7, Math.max(m.s + 2, 5)); m.due = now + jitter(IV[m.s]); }
+    W.save();
+  };
+  W.srsMiss = (id) => W.memAnswer(id, false);
+  W.mem = (id) => S.srs[id] || null;
+  // need for practice: high = should come back now (weak, forgotten, overdue), low = well known
+  W.memNeed = (id) => {
+    const m = S.srs[id]; if (!m || !m.n) return 2.2; // never seen
+    const now = Date.now();
+    const overdue = m.due <= now ? 1 + Math.min(2, (now - m.due) / Math.max(IV[m.s] || DAY, DAY)) : 0.25 * Math.max(0, 1 - (m.due - now) / Math.max(IV[m.s], MIN));
+    return Math.max(0.05, (7 - m.s) / 7 * 2 + Math.min(2, m.lapses * 0.5) + overdue);
+  };
+  W.memKnown = (id) => { const m = S.srs[id]; return !!m && m.s >= 4 && m.due > Date.now(); };
+  W.dueIds = () => { const now = Date.now(); return Object.keys(S.srs).filter((k) => { const m = S.srs[k]; return m.n && m.due <= now && (m.lapses > 0 || m.s >= 2); }); };
   W.resetAll = () => { const l = S.lang; for (const k in S) delete S[k]; Object.assign(S, JSON.parse(JSON.stringify(DEF)), { lang: l }); W.save(); };
 
   /* ---------------- DOM helpers ---------------- */
