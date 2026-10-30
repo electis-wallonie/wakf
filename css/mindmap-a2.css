@@ -1,0 +1,96 @@
+/* Wakf — mind maps, design A2 « Rubriques colorées ».
+   Toutes les règles sont préfixées .mm2 : rien d'autre du site n'est touché. */
+
+/* Couleur d'un thème : --k (plein), --kd (foncé), --kl (clair), --km (moyen), --kt (texte sur plein).
+   (Noms --k* pour ne pas entrer en conflit avec --c/--cd/--ct des .btn du site.) */
+.mm2 .c-jade      { --k: var(--jade);      --kd: var(--jade-d);      --kl: var(--jade-l);      --km: var(--jade-m);      --kt: #fff; }
+.mm2 .c-lapis     { --k: var(--lapis);     --kd: var(--lapis-d);     --kl: var(--lapis-l);     --km: var(--lapis-m);     --kt: #fff; }
+.mm2 .c-amethyste { --k: var(--amethyste); --kd: var(--amethyste-d); --kl: var(--amethyste-l); --km: var(--amethyste-m); --kt: #fff; }
+.mm2 .c-safran    { --k: var(--safran);    --kd: var(--safran-d);    --kl: var(--safran-l);    --km: var(--safran-m);    --kt: var(--nuit); }
+.mm2 .c-grenade   { --k: var(--grenade);   --kd: var(--grenade-d);   --kl: var(--grenade-l);   --km: var(--grenade-m);   --kt: #fff; }
+
+/* En-tête d'onglet (style .hero2 du site) */
+.mm2-intro { display: flex; gap: 16px; align-items: center; padding: 18px; border-radius: 24px; background: var(--kl); margin: 0 0 18px; }
+.mm2-intro-ic { width: 64px; height: 64px; border-radius: 20px; background: var(--k); box-shadow: 0 4px 0 var(--kd); display: grid; place-items: center; flex: 0 0 auto; }
+.mm2-intro-ic .ar { color: #fff; font-size: 22px; line-height: 1; }
+.mm2-intro b { display: block; font-family: var(--title); font-size: 22px; line-height: 1.1; margin-bottom: 4px; }
+.mm2-intro span { color: var(--ink2); font-size: 14px; line-height: 1.4; }
+.mm2-h2 { font-family: var(--title); font-size: 20px; margin: 4px 2px 12px; }
+
+/* Rubrique (section) */
+.mm2-grid { display: grid; gap: 18px; }
+.mm2-sec { background: var(--card); border: 2px solid var(--line); border-radius: 22px; box-shadow: 0 4px 0 var(--line); overflow: hidden; scroll-margin-top: 80px; }
+.mm2-head { display: flex; align-items: stretch; width: 100%; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; color: inherit; font: inherit; }
+.mm2-panel { width: 88px; flex: 0 0 auto; background: var(--k); display: grid; place-items: center; padding: 12px 0; }
+.mm2-panel-art { width: 58px; height: 58px; display: block; filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .12)); }
+.mm2-panel > .ar { color: var(--kt); font-size: 30px; line-height: 1.2; }
+.mm2-info { flex: 1; min-width: 0; padding: 12px 14px; display: flex; flex-direction: column; gap: 5px; }
+.mm2-info b { font-family: var(--title); font-weight: 800; font-size: 17px; line-height: 1.15; }
+.mm2-info b.ar { font-size: 26px; }
+.mm2-marker { font-size: 16px; color: var(--ink3); margin-inline-start: 6px; }
+.mm2-info small { font-size: 13px; font-weight: 700; color: var(--ink2); display: flex; gap: 8px; }
+.mm2-heard { color: var(--kd); }
+.mm2-track { display: block; height: 10px; border-radius: 99px; background: var(--soft); overflow: hidden; }
+.mm2-bar { display: block; height: 100%; width: 0; background: var(--k); border-radius: 99px; transition: width .4s var(--ease); }
+.mm2-chev { display: grid; place-items: center; padding: 0 12px 0 0; color: var(--ink3); }
+.mm2-chev svg { width: 22px; height: 22px; transition: transform .25s var(--ease); }
+.mm2-sec.open > .mm2-head .mm2-chev svg { transform: rotate(180deg); }
+.mm2-body { display: none; border-top: 2px solid var(--line); padding: 16px 12px; flex-direction: column; gap: 12px; }
+.mm2-sec.open > .mm2-body { display: flex; animation: pageIn .26s var(--ease) both; }
+.mm2-body .mm-center { font-size: 64px; margin: 0; }
+
+/* Sous-rubrique (ex. Récompense → Les devanciers / Ceux qui suivent) */
+.mm2-sec.sub { box-shadow: none; border-color: var(--km); }
+.mm2-sec.sub .mm2-panel { width: 64px; }
+.mm2-sec.sub .mm2-panel-art { width: 44px; height: 44px; }
+.mm2-sec.sub > .mm2-body { display: flex; border-top-color: var(--km); }
+
+/* Nœuds */
+.mm2-box { background: var(--card); border: 2px solid var(--line); border-radius: 16px; box-shadow: 0 3px 0 var(--line); padding: 8px 6px; display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+.mm2-box.fx, .mm2-box.boxed { background: var(--kl); border-color: var(--km); box-shadow: 0 3px 0 var(--km); }
+.mm2-art { width: 48px; height: 48px; display: block; }
+.mm2-meta { display: flex; align-items: center; gap: 6px; }
+.mm2-n { width: 26px; height: 26px; border-radius: 50%; background: var(--safran); color: var(--nuit); display: grid; place-items: center; font: 800 12px var(--ui); }
+.mm2-words { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 2px; }
+.mm2 .mm2-words .w { padding: 2px 4px; max-width: 120px; }
+.mm2 .mm2-words .w .ar { font-size: 24px; line-height: 1.55; }
+.mm2 .mm2-words .w .gl { font-size: 10.5px; }
+.mm2 .say.mm2-say { width: 34px; height: 34px; border-radius: 11px; background: var(--card); color: var(--kd); box-shadow: 0 2px 0 var(--line), inset 0 0 0 2px var(--line); }
+.mm2 .say.mm2-say .ic { width: 18px; height: 18px; --ic-tint: var(--kl); }
+.mm2-note { font-size: 12px; color: var(--ink2); font-style: italic; text-align: center; }
+
+/* Arbre : parent → branches */
+.mm2-tree { display: flex; flex-direction: column; align-items: stretch; }
+.mm2-tree > .mm2-box { align-self: center; max-width: 100%; }
+.mm2-branch { display: flex; flex-direction: column; }
+.mm2-link { color: var(--km); height: 22px; margin: 0 8%; }
+.mm2-link svg { width: 100%; height: 100%; display: block; }
+.mm2-kids { display: grid; gap: 6px; align-items: start; }
+.mm2-kids.stack { grid-template-columns: 1fr; gap: 10px; }
+
+/* Cause → conséquence sur une ligne */
+.mm2-pair { display: flex; align-items: center; gap: 6px; }
+.mm2-pair > .mm2-box { flex: 1 1 0; }
+.mm2-pair > .mm2-box.fx { flex: 0 1 40%; }
+.mm2-arrow { width: 22px; flex: 0 0 auto; color: var(--km); }
+.mm2-arrow svg { width: 22px; height: 14px; display: block; }
+
+/* Niveaux imbriqués (colonnes étroites) : tout passe à la verticale */
+.mm2-pair.v { flex-direction: column; align-items: stretch; }
+.mm2-pair.v > .mm2-box, .mm2-pair.v > .mm2-box.fx { flex: none; }
+.mm2-pair.v > .mm2-arrow { align-self: center; transform: rotate(-90deg); }
+.mm2 .mm2-kids .mm2-kids .mm2-words .w .ar { font-size: 21px; }
+
+/* Groupes et refrain */
+.mm2-group { display: flex; flex-direction: column; gap: 8px; }
+.mm2-label { align-self: center; font-family: var(--title); font-weight: 800; font-size: 14px; color: var(--kd); background: var(--kl); border-radius: 99px; padding: 3px 14px; }
+.mm2-refrain { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px 4px; background: var(--soft); border: 2px dashed var(--line2); border-radius: 18px; padding: 6px 10px; }
+.mm2-refrain .w .ar { font-size: 21px; line-height: 1.5; }
+.mm2-refrain .w .gl { font-size: 10px; }
+
+/* Bouton d'écoute de la rubrique (classe .btn du site) */
+.mm2-sec .btn.mm2-play { --c: var(--k); --cd: var(--kd); --ct: var(--kt); margin-top: 4px; }
+
+@media (min-width: 980px) {
+  .mm2-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+}
