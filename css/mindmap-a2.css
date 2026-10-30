@@ -125,3 +125,7 @@
   .mm2-top-info h1 { font-size: 32px; }
 }
 .mm2-sec .btn.mm2-tr { margin-top: 2px; }
+.mm2-trtext { background: var(--soft); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.mm2-trtext p { margin: 0; display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.55; color: var(--ink); }
+.mm2-trtext .mm2-n { flex: none; margin-top: 1px; }
+.mm2-trtext p.mm2-trnote { font-size: 12px; color: var(--ink3); display: block; }
