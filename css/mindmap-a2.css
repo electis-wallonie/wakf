@@ -94,3 +94,33 @@
 @media (min-width: 980px) {
   .mm2-grid { grid-template-columns: 1fr 1fr; align-items: start; }
 }
+
+/* ---------- En-tête de la sourate (même langage que les cartes de thèmes) ---------- */
+.mm2-top { display: grid; grid-template-columns: 1fr; background: var(--card); border: 2px solid var(--line); border-radius: 26px; box-shadow: 0 5px 0 var(--line); overflow: hidden; margin: 0 0 22px; }
+.mm2-top-panel { position: relative; overflow: hidden; background: var(--k); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 18px 16px 8px; min-height: 160px; }
+.mm2-top-panel::before, .mm2-top-panel::after { content: ""; position: absolute; border-radius: 28px; background: rgba(255, 255, 255, .1); transform: rotate(45deg); pointer-events: none; }
+.mm2-top-panel::before { width: 150px; height: 150px; right: -50px; top: -60px; }
+.mm2-top-panel::after { width: 110px; height: 110px; left: -40px; bottom: -50px; }
+.mm2-top-n { position: relative; z-index: 1; font: 800 12px var(--ui); letter-spacing: .8px; text-transform: uppercase; background: rgba(255, 255, 255, .18); border-radius: 99px; padding: 4px 12px; }
+.mm2-top-panel .ar { position: relative; z-index: 1; font-size: 54px; line-height: 2; color: #fff; text-shadow: 0 3px 0 var(--kd); }
+.mm2-top-info { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.mm2-top-info h1 { font-family: var(--title); font-weight: 800; font-size: 26px; line-height: 1.1; margin: 0; }
+.mm2-top-info p { margin: 0; color: var(--ink2); font-size: 15px; font-weight: 700; }
+.mm2-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 2px; }
+.mm2-chips span { font: 800 12.5px var(--ui); color: var(--kd); background: var(--kl); border-radius: 99px; padding: 4px 11px; }
+.mm2-top-prog { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+.mm2-top-prog small { font-size: 12.5px; font-weight: 700; color: var(--ink2); min-height: 1em; }
+.mm2-top-refrain { grid-column: 1 / -1; border-top: 2px solid var(--line); background: var(--kl); padding: 12px 14px 14px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.mm2-top-rlab { display: flex; align-items: center; gap: 6px; font: 800 12px var(--ui); letter-spacing: .8px; text-transform: uppercase; color: var(--kd); }
+.mm2-top-rlab .ic { width: 18px; height: 18px; }
+.mm2-top-rwords { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0 4px; }
+.mm2 .mm2-top-rwords .w .ar { font-size: 26px; line-height: 1.55; }
+.mm2 .mm2-top-rwords .w .gl { font-size: 11px; }
+.mm2-top-rtr { font-size: 14px; color: var(--ink2); text-align: center; font-style: italic; max-width: 560px; }
+@media (min-width: 720px) {
+  .mm2-top { grid-template-columns: 240px 1fr; }
+  .mm2-top-panel { min-height: 190px; }
+  .mm2-top-panel .ar { font-size: 62px; }
+  .mm2-top-info { justify-content: center; padding: 20px 24px; }
+  .mm2-top-info h1 { font-size: 32px; }
+}
