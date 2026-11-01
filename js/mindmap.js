@@ -64,6 +64,25 @@
     .catch((e) => { delete trCache[n + ':' + id]; throw e; }));
   const audioKey = (ayah) => (W.mmKey && ayah ? W.mmKey + '-' + String(ayah).padStart(3, '0') : null);
 
+  /* ---------- bulle : le sens d'un mot arabe, au toucher ---------- */
+  const hideMeaning = () => document.querySelectorAll('.mm2-bub').forEach((x) => x.remove());
+  const showMeaning = (b, w) => {
+    hideMeaning();
+    const mean = w[L()] || w.en || '';
+    if (!mean) return;
+    const bub = h('div.mm2-bub', { role: 'status' }, h('span.ar', { lang: 'ar' }, w.ar), h('b', null, mean));
+    document.body.append(bub);
+    const r = b.getBoundingClientRect(), bw = bub.offsetWidth, bh = bub.offsetHeight;
+    const x = Math.min(Math.max(8, r.left + r.width / 2 - bw / 2), window.innerWidth - bw - 8);
+    const above = r.top - bh - 12 > 8;
+    bub.classList.toggle('below', !above);
+    bub.style.left = x + 'px';
+    bub.style.top = (above ? r.top - bh - 12 : r.bottom + 12) + window.scrollY + 'px';
+    bub.style.setProperty('--ax', (r.left + r.width / 2 - x) + 'px');
+    clearTimeout(showMeaning.tm); showMeaning.tm = setTimeout(hideMeaning, 4000);
+  };
+  if (!W._mmBubBound) { W._mmBubBound = true; document.addEventListener('click', (e) => { if (!e.target.closest('.w')) hideMeaning(); }); window.addEventListener('hashchange', hideMeaning); }
+
   /* ---------- éléments ---------- */
   const wordEl = (w, opt) => {
     const b = h('button.w' + (opt && opt.hl ? '.hl' : ''), { lang: 'ar' }, ar(w.ar), h('span.gl', null, w[L()] || w.en || ''));
@@ -71,8 +90,8 @@
       e.stopPropagation();
       document.querySelectorAll('.w.on').forEach((x) => x.classList.remove('on'));
       b.classList.add('on');
-      if (w.pos) W.playUrls([W.wordAudio(surahN, w.pos[0], w.pos[1])], { el: b, fallback: () => W.say(w.ar, null) });
-      else W.say(w.ar, null);
+      showMeaning(b, w);
+      if (w.pos) W.playUrls([W.wordAudio(surahN, w.pos[0], w.pos[1])], { el: b, fallback: () => {} });
       if (opt && opt.ayah) markHeard(opt.ayah);
     });
     return b;
@@ -82,8 +101,7 @@
     b.addEventListener('click', (e) => {
       e.stopPropagation();
       const text = words.map((w) => w.ar).join(' ');
-      if (ayah) W.playUrls([W.verseAudio(surahN, ayah)], { el: b, fallback: () => W.say(text, null, { el: b }) });
-      else W.say(text, null, { el: b });
+      if (ayah) W.playUrls([W.verseAudio(surahN, ayah)], { el: b, fallback: () => {} });
       markHeard(ayah);
     });
     return b;
@@ -112,6 +130,7 @@
     if (n.words && n.words.length) {
       box.append(h('div.mm2-words', { dir: 'rtl' }, n.words.map((w, i) => wordEl(w, { hl: hlAll || w.highlight || hl.has(i) || hl.has(w.ar), ayah: n.ayah }))));
       if (n.ayah) box.append(sayEl(n.words, n.ayah));
+      if (n.ayah) box.append(h('div.mm2-vtr', { 'data-ayah': n.ayah }));
     }
     const nt = n['note_' + L()] || n.note_en;
     if (nt) box.append(h('div.mm2-note', null, nt));
@@ -198,19 +217,20 @@
           // the whole theme, verse after verse (every verse of the big rectangle, sub-themes included)
           const all = []; walk(s.nodes, (n) => n.words && all.push(...n.words));
           (s.subsections || []).forEach((id) => S[id] && walk(S[id].nodes, (n) => n.words && all.push(...n.words)));
-          W.playUrls(ayat.map((a) => W.verseAudio(surahN, a)), { el: play, fallback: () => W.say(all.map((w) => w.ar).join(' '), null, { el: play }) });
+          W.playUrls(ayat.map((a) => W.verseAudio(surahN, a)), { el: play, fallback: () => {} });
           ayat.forEach(markHeard);
         });
         body.append(play);
       }
-      const trId = CUR && CUR.translation && CUR.translation[L()];
+      const trId = (CUR && CUR.translation && CUR.translation[L()]) || (L() === 'en' ? 20 : 31);
       if (trId) {
-        const n0 = surahN, panel = h('div.mm2-trtext');
-        body.append(panel);
+        const n0 = surahN;
         loadTrIn = () => {
-          if (panel.childNodes.length) return;
-          loadTr(n0, trId).then((list) => panel.replaceChildren(...ayat.map((a) => h('p', null, badge(a), h('span', null, list[a - 1] || '')))))
-            .catch(() => panel.replaceChildren());
+          if (body.dataset.tr) return;
+          loadTr(n0, trId).then((list) => {
+            body.dataset.tr = '1';
+            body.querySelectorAll('.mm2-vtr').forEach((el) => { el.textContent = list[+el.dataset.ayah - 1] || ''; });
+          }).catch(() => {});
         };
       }
     }
@@ -295,8 +315,7 @@
     root.append(headerEl(data, R, secs, S));
     root.append(h('h2.mm2-h2', null, tx('themes')));
     const grid = h('div.mm2-grid');
-    const opened = getOpen();
-    secs.forEach((s, i) => grid.append(sectionEl(s, R || { words: [] }, S, i, { open: i === 0 || opened.has(s.id) })));
+    secs.forEach((s, i) => grid.append(sectionEl(s, R || { words: [] }, S, i, { open: false })));
     root.append(grid);
     return root;
   };
