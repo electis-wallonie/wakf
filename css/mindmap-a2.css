@@ -141,3 +141,13 @@
 .mm2-bub::after { content: ""; position: absolute; left: var(--ax, 50%); bottom: -6px; width: 12px; height: 12px; background: inherit; transform: translateX(-50%) rotate(45deg); }
 .mm2-bub.below::after { bottom: auto; top: -6px; }
 @keyframes mm2bub { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.mm2 .mm2-blabel { font-family: var(--title); font-weight: 800; font-size: 13px; line-height: 1.15; color: var(--kd); text-align: center; max-width: 220px; }
+/* colonnes des branches : jamais trop étroites sur téléphone */
+.mm2 .mm2-branch > .mm2-kids { grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr)); }
+@media (max-width: 640px) {
+  .mm2 .mm2-branch > .mm2-kids { grid-template-columns: repeat(min(var(--cols, 1), 2), minmax(0, 1fr)); }
+  .mm2 .mm2-branch.deep > .mm2-kids { grid-template-columns: minmax(0, 1fr); }
+  .mm2 .mm2-branch.deep > .mm2-link { display: none; }
+  .mm2 .mm2-branch.deep > .mm2-kids > * { border-left: 3px solid var(--km); padding-left: 8px; }
+}
+.mm2 .mm2-vtr { font-size: 13.5px; }

@@ -121,16 +121,19 @@
     const hlAll = n.highlight === true; const hl = new Set(Array.isArray(n.highlight) ? n.highlight : []);
     const box = h('div.mm2-box' + (effect ? '.fx' : '') + (n.boxed ? '.boxed' : ''));
     if (n.art && W.MMART[n.art]) box.append(h('span.mm2-art', { html: W.MMART[n.art] }));
-    if (n.ayah || n.refrain_marker) {
+    const lab = n['label_' + L()] || n.label_fr;
+    if (lab) box.append(h('div.mm2-blabel', null, lab));
+    const showN = n.ayah && n._last !== false;
+    if (showN || n.refrain_marker) {
       const meta = h('div.mm2-meta');
-      if (n.ayah) meta.append(badge(n.ayah));
+      if (showN) meta.append(badge(n.ayah));
       if (n.refrain_marker) meta.append(h('span.mm-ref', { title: t('refrainHint'), html: W.svg('refrain') }));
       box.append(meta);
     }
     if (n.words && n.words.length) {
       box.append(h('div.mm2-words', { dir: 'rtl' }, n.words.map((w, i) => wordEl(w, { hl: hlAll || w.highlight || hl.has(i) || hl.has(w.ar), ayah: n.ayah }))));
-      if (n.ayah) box.append(sayEl(n.words, n.ayah));
-      if (n.ayah) box.append(h('div.mm2-vtr', { 'data-ayah': n.ayah }));
+      if (n.ayah && n._last !== false) box.append(sayEl(n.words, n.ayah));
+      if (n.ayah && n._last !== false) box.append(h('div.mm2-vtr', { 'data-ayah': n.ayah }));
     }
     const nt = n['note_' + L()] || n.note_en;
     if (nt) box.append(h('div.mm2-note', null, nt));
@@ -151,10 +154,11 @@
      plus bas (colonnes étroites) elles s'empilent pour rester lisibles sur mobile */
   const kidsEl = (kids, R, d) => {
     const k = kids.length;
+    const deep = kids.some((c) => (c.children || []).length);
     const cols = d > 0 ? 1 : (k <= 3 ? k : 2);
-    const wrap = h('div.mm2-branch');
+    const wrap = h('div.mm2-branch' + (deep ? '.deep' : ''));
     wrap.append(connector(d > 0 ? 1 : Math.min(k, 3)));
-    wrap.append(h('div.mm2-kids', { dir: 'rtl', style: { gridTemplateColumns: 'repeat(' + cols + ', minmax(0, 1fr))' } }, kids.map((c) => nodeEl(c, R, d + 1))));
+    wrap.append(h('div.mm2-kids', { dir: 'rtl', style: { '--cols': cols } }, kids.map((c) => nodeEl(c, R, d + 1))));
     return wrap;
   };
 
@@ -259,6 +263,15 @@
     let V = null;
     try { V = await loadChapter(n); } catch (e) { if (data.qwords) return false; }
     const each = (fn) => data.sections.forEach((sec) => walk(sec.nodes, fn));
+    if (data.qwords && data.gloss) {
+      const seen = {}, last = {};
+      each((nd) => { if (nd.w && nd.ayah && !nd.words) {
+        const ws = V[nd.ayah] || [], gl = data.gloss[nd.ayah] || [];
+        nd.words = []; for (let i = nd.w[0]; i <= nd.w[1]; i++) { const p = gl[i - 1] || ['', '']; nd.words.push({ ar: ws[i - 1] || '', fr: p[0], en: p[1], pos: [nd.ayah, i] }); }
+        nd._first = !seen[nd.ayah]; seen[nd.ayah] = true; nd._last = false; last[nd.ayah] = nd;
+      } });
+      Object.values(last).forEach((nd) => (nd._last = true));
+    }
     if (data.qwords) each((nd) => { if (nd.g && nd.ayah && !nd.words) { const ws = V[nd.ayah] || []; nd.words = nd.g.map((p, i) => ({ ar: ws[i] || '', fr: p[0], en: p[1], pos: [nd.ayah, i + 1] })); } });
     if (!V) return true;
     // other surahs: find each word of the map in the quran.com text (same verse, in order)
