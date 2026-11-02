@@ -154,7 +154,7 @@
       requestAnimationFrame(() => (sl.bar.style.width = Math.max(st.frac * 100, st.frac ? 4 : 0) + '%'));
       const lt = S.last[k];
       sl.cta.textContent = lt ? t('ctaContinue', { x: lt.label.toLowerCase() === lt.label ? lt.label : lt.label.charAt(0).toLowerCase() + lt.label.slice(1) }) : t('ctaStart');
-      if (lt) sl.card.href = lt.href;
+      if (lt && k !== 'surah') sl.card.href = lt.href;
     }
   });
 
@@ -316,14 +316,14 @@
   /* ---------- surahs ---------- */
   W.route(/^\/t\/surah$/, async (tok) => {
     const page = h('div.page', null, appbar({ back: '#/', title: t('th_surah') }));
-    for (const s of SURAHS) {
-      const d = await W.load(s.data); if (!d) continue;
+    const all = await Promise.all(SURAHS.map((s) => W.load(s.data)));
+    for (const [i, s] of SURAHS.entries()) {
+      const d = all[i]; if (!d) continue;
       page.append(h('a.card.press', { href: '#/mm/' + s.n, style: { display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' } },
         h('span', { style: { width: '64px', height: '64px', borderRadius: '20px', background: 'var(--lapis)', color: '#fff', display: 'grid', placeItems: 'center', fontFamily: 'var(--title)', fontWeight: 800, fontSize: '22px', boxShadow: '0 4px 0 var(--lapis-d)', flex: 'none' } }, String(s.n)),
         h('span', { style: { flex: 1 } }, h('h3', null, d.surah['name_' + L()] || d.surah.name_en), h('span.muted.small', null, (d.surah.verses || '') + ' ' + (W.lang === 'en' ? 'verses' : 'versets'))),
         h('span.ar', { lang: 'ar', style: { fontSize: '34px' } }, d.surah.name_ar)));
     }
-    page.append(emptyState('surah', t('surahsTitle'), t('mmSoon')));
     W.mount(page, tok);
   });
   W.route(/^\/mm\/(\d+)$/, async (tok, n) => {
