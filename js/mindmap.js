@@ -113,7 +113,8 @@
     if (ayah) row.append(badge(ayah));
     R.words.forEach((w) => row.append(wordEl(w, { ayah })));
     row.append(sayEl(R.words, ayah));
-    return row;
+    if (!ayah) return row;
+    return h('div.mm2-refwrap', null, row, h('div.mm2-vtr', { 'data-ayah': ayah }));
   };
 
   /* La « carte » d'un nœud (sans ses enfants) */
