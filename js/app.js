@@ -259,25 +259,79 @@
 
   /* ---------- reading: the book, page by page ---------- */
   const isRead = (n) => !!(S.readPages && S.readPages[n]);
+  /* Apprendre à lire — sommaire en parcours (modèle P3) */
+  const RR_KEY = 'wakf.recentRead';
+  const recentRead = () => { try { return JSON.parse(localStorage.getItem(RR_KEY) || '[]'); } catch (e) { return []; } };
+  const pushRecentRead = (pg) => { try { const r = recentRead().filter((x) => x.p !== pg); r.unshift({ p: pg, t: Date.now() }); localStorage.setItem(RR_KEY, JSON.stringify(r.slice(0, 8))); } catch (e) {} };
+  const RD_TXT = { 70: ['L’élève bien élevé', 'The well-mannered pupil'], 71: ['À l’école', 'At school'], 72: ['Le retour de l’école', 'Coming home from school'], 73: ['Fatima, une fille bien élevée', 'Fatima, a well-mannered girl'], 74: ['La pleine lune s’est levée', 'The full moon has risen'], 75: ['Le temps', 'Time'], 76: ['La prière, pilier de la religion', 'Prayer, the pillar of religion'], 77: ['Le mois de Ramadan', 'The month of Ramadan'], 78: ['Le jeu', 'Play'], 79: ['Je suis musulman', 'I am a Muslim'], 80: ['Les vacances d’été', 'The summer holidays'], 81: ['La propreté', 'Cleanliness'], 82: ['Les ablutions', 'Ablution'], 83: ['Le paysan', 'The farmer'], 84: ['La lune', 'The moon'], 85: ['Dialogue entre Rachid et Fatima', 'A dialogue between Rachid and Fatima'], 86: ['L’organisation du temps', 'Organising one’s time'], 87: ['La sauterelle et la fourmi', 'The grasshopper and the ant'], 88: ['L’amour des parents', 'Love for one’s parents'], 89: ['Le musulman est le frère du musulman', 'A Muslim is a Muslim’s brother'], 90: ['L’adieu', 'Farewell'] };
+  const RD_BASE = [['Les voyelles et les signes', 'Vowels and signs'], ['Les 28 lettres', 'The 28 letters'], ['Début, milieu, fin de mot', 'Start, middle, end of a word']];
+  const RD_IC = (k) => {
+    const c = 'currentColor', T = (x, y, s, v, o = '') => `<text x="${x}" y="${y}" font-family="Amiri,serif" font-weight="700" font-size="${s}" text-anchor="middle" fill="${c}"${o}>${v}</text>`;
+    const box = (b) => `<svg class="rdi" viewBox="0 0 48 48" aria-hidden="true">${b}</svg>`;
+    return box({
+      signes: `<circle cx="24" cy="25" r="9.5" fill="none" stroke="${c}" stroke-width="2.8" stroke-dasharray="3.4 3.2"/><path d="M17 10.5l12-4M19 43l12-4" stroke="${c}" stroke-width="3.8" stroke-linecap="round"/><circle cx="38.5" cy="11" r="4" fill="none" stroke="${c}" stroke-width="2.8"/>`,
+      alphabet: `<rect x="3" y="3" width="42" height="42" rx="11" fill="none" stroke="${c}" stroke-width="2.6"/><path d="M24 3v42M3 24h42" stroke="${c}" stroke-width="2" opacity=".45"/>${T(34.5, 19.5, 15, 'أ')}${T(13.5, 19.5, 15, 'ب')}${T(34.5, 40, 15, 'ت')}${T(13.5, 40, 15, 'ث')}`,
+      formes: `${T(38, 22, 15, 'ع')}${T(13, 22, 15, 'عـ')}${T(36, 42, 15, 'ـعـ')}${T(12, 42, 15, 'ـع')}<path d="M24 4v40M4 26h40" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity=".35"/>`,
+      dua: `<circle cx="24" cy="21" r="14" fill="none" stroke="${c}" stroke-dasharray=".1 5.6" stroke-linecap="round" style="stroke-width:5"/><path d="M24 35v6" stroke="${c}" stroke-width="2.6" stroke-linecap="round"/><path d="M20 41h8l-4 5z" fill="${c}"/><path d="M29 15a7 7 0 1 0 0 12 5.5 5.5 0 1 1 0-12z" fill="${c}"/>`,
+    }[k]);
+  };
   W.route(/^\/t\/read$/, async (tok) => {
-    const T = THEMES.read;
-    const page = h('div.page', null, appbar({ back: '#/', title: t(T.key) }));
+    const en = W.lang === 'en'; const tl = (a, b) => (en ? b : a);
     const book = await W.load('reading'); if (!book) return;
-    const all = W.bookCountable(book); const nRead = all.filter((p) => isRead(p.page)).length;
-    const next = (S.last.read && S.last.read.page) || (all.find((p) => !isRead(p.page)) || all[0]).page;
-    page.append(h('a.resume', { href: '#/t/read/p/' + next, style: { '--c': cvar('amethyste'), '--cd': cvar('amethyste', 'd') } },
-      h('span.pl', { html: svg(nRead ? 'play' : 'read') }), h('span', null, h('small', null, nRead ? t('resume') : t('ctaStart')), h('b', null, t('page') + ' ' + next), h('span.s', null, t('progRead', { a: nRead, b: all.length }))), h('span.go', { html: svg('next') })));
-    page.append(h('div.sect', null, h('h2', null, W.lang === 'en' ? 'Contents' : 'Sommaire')));
-    W.bookSections(book).forEach((sec) => {
-      const list = h('div.toc');
-      sec.items.forEach((it) => {
-        const done = isRead(it.page) && (!it.writing || isRead(it.writing));
-        list.append(h('a.tocitem' + (done ? '.done' : ''), { href: '#/t/read/p/' + it.page },
-          h('span.tg', null, it.glyph ? ar(it.glyph) : h('span', { html: svg(done ? 'pageRead' : 'toc') })),
-          h('span.grow', null, h('b' + (/[؀-ۿ]/.test(it.label) ? '.ar' : ''), null, it.label), h('span', null, t('page') + ' ' + it.page + (it.writing ? ' · ' + (W.lang === 'en' ? 'writing p. ' : 'écriture p. ') + it.writing : ''))),
-          done ? h('span.ck', { html: svg('ok') }) : h('span.pg', null, String(it.page))));
+    const pages = W.bookPages(book); const by = {}; pages.forEach((p) => (by[p.page] = p));
+    const secs = W.bookSections(book);
+    const items = secs.flatMap((s) => s.items);
+    const done = (it) => isRead(it.page) && (!it.writing || isRead(it.writing));
+    const lastPg = S.last.read && S.last.read.page;
+    const curIt = (lastPg && items.find((it) => it.page === lastPg || it.writing === lastPg)) || items.find((it) => !done(it)) || items[0];
+    const lessonsAll = items.filter((it) => by[it.page].kind === 'lesson');
+    const nLesDone = lessonsAll.filter(done).length;
+    const page = h('div.page.rdl', null, appbar({ back: '#/', title: t('th_read') }), h('h1.sl-big', null, tl('Leçons', 'Lessons')));
+    const lblOf = (it) => { const p = by[it.page]; return p.kind === 'lesson' ? tl('Leçon ', 'Lesson ') + p.lesson : RD_TXT[it.page] ? RD_TXT[it.page][en ? 1 : 0] : it.label; };
+    const curP = by[curIt.page];
+    page.append(h('a.resume', { href: '#/t/read/p/' + (lastPg || curIt.page), style: { '--c': cvar('amethyste'), '--cd': cvar('amethyste', 'd') } },
+      h('span.pl' + (curIt.glyph ? '.rd-g' : ''), curIt.glyph ? null : { html: svg('read') }, curIt.glyph ? curIt.glyph : null),
+      h('span', null, h('small', null, lastPg ? t('resume') : t('ctaStart')), h('b', null, lblOf(curIt)),
+        h('span.s', null, tl(nLesDone + ' leçon' + (nLesDone > 1 ? 's' : '') + ' terminée' + (nLesDone > 1 ? 's' : '') + ' sur ' + lessonsAll.length, nLesDone + ' of ' + lessonsAll.length + ' lessons completed')),
+        h('span.rd-bar', null, h('i', { style: { width: Math.round((nLesDone / lessonsAll.length) * 100) + '%' } }))),
+      h('span.go', { html: svg('next') })));
+    // pages récentes
+    const ago = (ts) => { const d = Math.floor((new Date().setHours(0, 0, 0, 0) - new Date(ts).setHours(0, 0, 0, 0)) / 864e5); return en ? (d <= 0 ? 'today' : d === 1 ? 'yesterday' : d + ' days ago') : (d <= 0 ? 'aujourd’hui' : d === 1 ? 'hier' : 'il y a ' + d + ' jours'); };
+    const rec = []; recentRead().forEach((r) => { const it = items.find((x) => x.page === r.p || x.writing === r.p); if (it && !rec.some((y) => y.it === it)) rec.push({ it, t: r.t }); });
+    const nodeIcon = (it, i) => { const p = by[it.page]; if (p.kind === 'lesson') return { txt: it.glyph }; if (it.page <= 7) return { html: RD_IC(['signes', 'alphabet', 'formes'][i] || 'formes') }; if (it.page === 93) return { html: RD_IC('dua') }; return { html: svg('read') }; };
+    if (rec.length) {
+      page.append(h('section.sl-recent', null, h('h2', null, h('span.sl-clock', { 'aria-hidden': 'true' }), tl('Pages récentes', 'Recent pages') + ' (' + rec.length + ')'),
+        h('div.sl-pills', null, rec.map(({ it, t: ts }) => { const ic = nodeIcon(it, secs[0].items.indexOf(it)); return h('a.sl-pill', { href: '#/t/read/p/' + it.page },
+          h('span.n.rd-pn' + (ic.txt ? '.ar' : ''), ic.html ? { html: ic.html } : null, ic.txt || null), h('span', null, h('b', null, lblOf(it)), h('small', null, ago(ts)))); }))));
+    }
+    const headOf = (title, list) => h('div.rd-sec', null, h('h2', null, title), h('span.rd-cnt', null, list.filter(done).length + '/' + list.length));
+    const status = (it) => done(it) ? h('span.rd-ck', { html: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="var(--jade)"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' }) : it === curIt ? h('span.rd-now', null, tl('En cours', 'In progress')) : null;
+    const stepEl = (it, node, title, sub) => h('a.rd-step' + (done(it) ? '.d' : '') + (it === curIt ? '.c' : ''), { href: '#/t/read/p/' + it.page }, node, h('span.rd-box', null, h('span.t', null, h('b', null, title), sub ? h('small', null, sub) : null), status(it)));
+    const kwSub = (p) => [h('span.ar.rd-kw', { lang: 'ar' }, p.keyword || ''), ' « ' + ((en ? p.image_alt_en : p.image_alt_fr) || '').split(' «')[0].split(' (')[0].replace(/ portant$| bearing$/, '') + ' »'];
+    const T = [tl('Les bases', 'The basics'), tl('Partie 1 · Les 29 leçons', 'Part 1 · The 29 lessons'), tl('Partie 2 · Textes de lecture', 'Part 2 · Reading texts'), tl('Sourates et invocations', 'Surahs and invocations')];
+    secs.forEach((sec, si) => {
+      page.append(headOf(T[si] || sec.title, sec.items));
+      const path = h('div.rd-path');
+      sec.items.forEach((it, i) => {
+        const p = by[it.page];
+        if (si === 0) path.append(stepEl(it, h('span.rd-node.ic', { html: nodeIcon(it, i).html }), it.label, tl(...RD_BASE[i] || ['', ''])));
+        else if (p.kind === 'lesson' && p.lesson === 1) {
+          const d = done(it);
+          path.append(h('a.rd-step.hero' + (d ? '.d' : '') + (it === curIt ? '.c' : ''), { href: '#/t/read/p/' + it.page }, h('span.rd-node.num.big', null, '1'),
+            h('span.rd-hero', null, h('span.big1', { 'aria-hidden': 'true' }, '1'), h('small', null, it.label), h('b', null, tl('La lettre ', 'The letter '), h('span.ar.rd-kw', { lang: 'ar' }, it.glyph)), h('span.s', null, ...kwSub(p)),
+              h('span.go', null, d ? '✓ ' + tl('Terminée · Revoir', 'Completed · Review') : tl('Commencer', 'Start')))));
+        } else if (p.kind === 'lesson') path.append(stepEl(it, h('span.rd-node.num', null, String(p.lesson)), [tl('La lettre ', 'The letter '), h('span.ar.rd-kw', { lang: 'ar' }, it.glyph)], kwSub(p)));
+        else if (si === 2) path.append(stepEl(it, h('span.rd-node.num.sq', null, String(i + 1)), h('span.ar.rd-at', { lang: 'ar' }, it.label), RD_TXT[it.page] ? RD_TXT[it.page][en ? 1 : 0] : ''));
       });
-      page.append(h('div.tocsec', null, h('h3', null, sec.title), list));
+      if (si === 3) {
+        const SUR = [[1, 'Al-Fatiha', 'L’ouverture', 'The Opener', 91], [112, 'Al-Ikhlas', 'Le monothéisme pur', 'Sincerity', 91], [113, 'Al-Falaq', 'L’aube naissante', 'The Daybreak', 92], [114, 'An-Nas', 'Les hommes', 'Mankind', 92]];
+        const box = h('div.rd-sur');
+        SUR.forEach(([n, nm, fr, enn, pg]) => { const it = sec.items.find((x) => x.page === pg); if (!it) return;
+          box.append(h('a.rd-srow' + (done(it) ? '.d' : ''), { href: '#/t/read/p/' + pg }, h('span.t', null, h('b', null, n + '. ' + nm), h('small', null, en ? enn : fr)), h('span.sn', { 'aria-hidden': 'true', translate: 'no' }, String(n).padStart(3, '0')), status(it))); });
+        const inv = sec.items.find((x) => x.page === 93);
+        if (inv) box.append(h('a.rd-srow' + (done(inv) ? '.d' : ''), { href: '#/t/read/p/93' }, h('span.rd-node.ic.sm', { html: RD_IC('dua') }), h('span.t', null, h('b', null, tl('Invocations de la prière', 'Prayer invocations')), h('small', null, h('span.ar.rd-kw', { lang: 'ar' }, inv.label))), status(inv)));
+        page.append(box);
+      } else page.append(path);
     });
     W.mount(page, tok);
   });
@@ -289,7 +343,7 @@
     let ctx = p;
     if (p.kind === 'writing') ctx = pages[i - 1];
     const title = W.pageLabel(p) + (p.kind === 'writing' && ctx.kind === 'lesson' ? ' · ' + W.pageLabel(ctx) : '');
-    W.setLast('read', { href: '#/t/read/p/' + p.page, page: p.page, label: t('page') + ' ' + p.page, sub: W.pageLabel(ctx) });
+    W.setLast('read', { href: '#/t/read/p/' + p.page, page: p.page, label: W.pageLabel(ctx) }); pushRecentRead(p.page);
     const prev = pages[i - 1], next = pages[i + 1];
     const sentinel = h('div.sentinel');
     const readMark = h('div.readmark' + (isRead(p.page) ? '.on' : ''), { html: svg('pageRead') }, W.lang === 'en' ? 'Page read' : 'Page lue');
