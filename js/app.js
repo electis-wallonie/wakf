@@ -154,7 +154,6 @@
       requestAnimationFrame(() => (sl.bar.style.width = Math.max(st.frac * 100, st.frac ? 4 : 0) + '%'));
       const lt = S.last[k];
       sl.cta.textContent = lt ? t('ctaContinue', { x: lt.label.toLowerCase() === lt.label ? lt.label : lt.label.charAt(0).toLowerCase() + lt.label.slice(1) }) : t('ctaStart');
-      if (lt && k !== 'surah') sl.card.href = lt.href;
     }
   });
 
