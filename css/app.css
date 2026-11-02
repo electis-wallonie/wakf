@@ -604,3 +604,35 @@ h1{font-size:30px}h2{font-size:22px}h3{font-size:18px}
   .rc .bar{height:7px}
   .rc .cta{margin-top:8px;min-height:38px;font-size:14px;padding:0 12px;border-radius:12px;box-shadow:0 3px 0 var(--cd)}
 }
+
+/* ============ Liste des sourates (modèle H, inspiré de quran.com) ============ */
+@font-face{font-family:"surahnames";font-display:block;src:url(../fonts/sura_names.woff2) format("woff2")}
+.slist{max-width:720px}
+.sl-big{font-family:var(--title);font-weight:800;font-size:34px;line-height:1;margin:10px 4px 16px}
+.sl-recent{background:var(--card);border:2px solid var(--line);box-shadow:0 4px 0 var(--line);border-radius:24px;padding:14px 12px 12px;margin-bottom:6px}
+.sl-recent h2{margin:0 4px 12px;font-size:14px;font-weight:700;color:var(--ink2);display:flex;align-items:center;gap:8px;font-family:var(--ui)}
+.sl-clock{width:16px;height:16px;border-radius:50%;border:2.5px solid currentColor;position:relative;flex:none}
+.sl-clock::after{content:"";position:absolute;left:5px;top:2px;width:2px;height:5px;background:currentColor;border-radius:2px}
+.sl-pills{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.sl-pills::-webkit-scrollbar{display:none}
+.sl-pill{flex:none;display:flex;align-items:center;gap:10px;background:var(--soft);border-radius:999px;padding:6px 16px 6px 6px;color:inherit;text-decoration:none}
+.sl-pill .n{width:40px;height:40px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-family:var(--title);font-weight:800;font-size:16px}
+.sl-pill b{display:block;font-size:13.5px;letter-spacing:.02em;white-space:nowrap}
+.sl-pill small{display:block;font-size:11.5px;color:var(--ink3)}
+.sl-juz{display:flex;width:100%;justify-content:space-between;align-items:center;margin:22px 0 10px;padding:0 8px;font-family:var(--title);font-weight:800;font-size:17px;color:var(--ink2)}
+.sl-juz .chev{width:18px;height:18px;display:grid;place-items:center;transform:rotate(90deg);transition:transform .2s var(--ease);color:var(--ink3)}
+.sl-juz .chev .ic{width:16px;height:16px}
+.sl-juz[aria-expanded="false"] .chev{transform:rotate(0)}
+.sl-grp{background:var(--card);border:2px solid var(--line);box-shadow:0 4px 0 var(--line);border-radius:24px;padding:0 16px}
+.sl-grp[hidden]{display:none}
+.sl-row{display:flex;align-items:center;gap:12px;padding:15px 0;color:inherit;text-decoration:none}
+.sl-row+.sl-row{border-top:1.5px solid var(--line)}
+.sl-row:active{opacity:.6}
+.sl-t{flex:1;min-width:0}
+.sl-nm{display:flex;align-items:center;gap:12px;font-size:16.5px;font-weight:800;line-height:1.2}
+.sl-nm>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sn{font-family:"surahnames";font-weight:400;font-size:32px;line-height:1;direction:rtl;flex:none;transform:translateY(3px)}
+.sl-sub{display:block;font-size:13px;color:var(--ink2);margin-top:4px;line-height:1.35}
+.sl-th{flex:none;text-align:right;color:var(--ink3);font-family:var(--title);font-weight:800;font-size:15px;line-height:1.1}
+.sl-th small{display:block;font-family:var(--ui);font-weight:700;font-size:10px}
+@media (min-width:900px){.slist{max-width:760px}.sl-nm{font-size:17.5px}.sn{font-size:36px}}

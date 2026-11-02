@@ -313,15 +313,40 @@
   });
 
   /* ---------- surahs ---------- */
+  const RS_KEY = 'wakf.recentSurahs';
+  const recentSurahs = () => { try { return JSON.parse(localStorage.getItem(RS_KEY) || '[]'); } catch (e) { return []; } };
+  const pushRecentSurah = (n) => { try { const r = recentSurahs().filter((x) => x.n !== n); r.unshift({ n, t: Date.now() }); localStorage.setItem(RS_KEY, JSON.stringify(r.slice(0, 8))); } catch (e) {} };
+  const ago = (ts) => {
+    const d = Math.floor((new Date().setHours(0, 0, 0, 0) - new Date(ts).setHours(0, 0, 0, 0)) / 864e5);
+    if (W.lang === 'en') return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d + ' days ago';
+    return d <= 0 ? 'aujourd’hui' : d === 1 ? 'hier' : 'il y a ' + d + ' jours';
+  };
+  const snGlyph = (n) => h('span.sn', { translate: 'no', 'aria-hidden': 'true' }, String(n).padStart(3, '0'));
   W.route(/^\/t\/surah$/, async (tok) => {
-    const page = h('div.page', null, appbar({ back: '#/', title: t('th_surah') }));
-    const all = await Promise.all(SURAHS.map((s) => W.load(s.data)));
-    for (const [i, s] of SURAHS.entries()) {
-      const d = all[i]; if (!d) continue;
-      page.append(h('a.card.press', { href: '#/mm/' + s.n, style: { display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' } },
-        h('span', { style: { width: '64px', height: '64px', borderRadius: '20px', background: 'var(--lapis)', color: '#fff', display: 'grid', placeItems: 'center', fontFamily: 'var(--title)', fontWeight: 800, fontSize: '22px', boxShadow: '0 4px 0 var(--lapis-d)', flex: 'none' } }, String(s.n)),
-        h('span', { style: { flex: 1 } }, h('h3', null, d.surah['name_' + L()] || d.surah.name_en), h('span.muted.small', null, (d.surah.verses || '') + ' ' + (W.lang === 'en' ? 'verses' : 'versets'))),
-        h('span.ar', { lang: 'ar', style: { fontSize: '34px' } }, d.surah.name_ar)));
+    const en = W.lang === 'en';
+    const list = (await W.load('surahlist')) || [];
+    const page = h('div.page.slist', null, appbar({ back: '#/', title: t('th_surah') }), h('h1.sl-big', null, en ? 'Surahs' : 'Sourates'));
+    const byN = {}; list.forEach((x) => (byN[x[0]] = x));
+    const rec = recentSurahs().filter((r) => byN[r.n]);
+    if (rec.length) {
+      page.append(h('section.sl-recent', null,
+        h('h2', null, h('span.sl-clock', { 'aria-hidden': 'true' }), (en ? 'Recent pages' : 'Pages récentes') + ' (' + rec.length + ')'),
+        h('div.sl-pills', null, rec.map((r) => h('a.sl-pill', { href: '#/mm/' + r.n },
+          h('span.n', null, String(r.n)), h('span', null, h('b', null, byN[r.n][1].toUpperCase()), h('small', null, ago(r.t))))))));
+    }
+    let cur = 0, grp = null;
+    for (const x of list) {
+      const [n, name, trFr, trEn, place, verses, juz, themes] = x;
+      if (juz !== cur) {
+        cur = juz; grp = h('div.sl-grp'); const g = grp;
+        const head = h('button.sl-juz', { 'aria-expanded': 'true' }, h('span', null, 'Juz’ ' + juz), h('span.chev', { html: svg('next') }));
+        head.addEventListener('click', () => { const open = head.getAttribute('aria-expanded') !== 'true'; head.setAttribute('aria-expanded', String(open)); g.hidden = !open; });
+        page.append(head, grp);
+      }
+      const meta = [en ? trEn : trFr, place === 'Md' ? (en ? 'Medinan' : 'Médinoise') : (en ? 'Meccan' : 'Mecquoise'), verses + ' ' + (en ? 'verses' : 'versets')].filter((v, i) => v && !(i === 0 && v === name)).join(' · ');
+      grp.append(h('a.sl-row', { href: '#/mm/' + n },
+        h('span.sl-t', null, h('span.sl-nm', null, h('span', null, n + '. ' + name), snGlyph(n)), h('span.sl-sub', null, meta)),
+        h('span.sl-th', null, h('b', null, String(themes)), h('small', null, en ? 'themes' : 'thèmes'))));
     }
     W.mount(page, tok);
   });
@@ -330,7 +355,7 @@
     const d = await W.load(s.data); if (!d) return;
     if (!d._prep) d._prep = await W.mmPrepare(d);
     if (!d._prep) { d._prep = null; return W.mount(h('div.page', null, appbar({ back: '#/t/surah', title: d.surah['name_' + L()] || d.surah.name_en }), emptyState('surah', t('surahsTitle'), W.lang === 'en' ? 'Connect to the internet once to load this surah.' : 'Connecte-toi une première fois à Internet pour charger cette sourate.')), tok); }
-    W.markOpened('surah:' + s.n);
+    W.markOpened('surah:' + s.n); pushRecentSurah(s.n);
     const name = d.surah['name_' + L()] || d.surah.name_en;
     W.setLast('surah', { href: '#/mm/' + n, label: name.split(' (')[0], sub: t('surahN', { n }) });
     let tab = 'visual'; try { tab = sessionStorage.getItem('wakf.mmtab') || 'visual'; } catch (e) {}
