@@ -699,3 +699,7 @@ h1{font-size:30px}h2{font-size:22px}h3{font-size:18px}
 @media (max-width:560px){.conjcols{grid-template-columns:1fr}.conjrow .ar{font-size:24px}}
 /* jeux d'écoute : mots inactifs pendant la lecture */
 .bank.locked .chip,.answer.locked .chip{opacity:.45;pointer-events:none;filter:saturate(.6);transition:opacity .2s}
+/* Flashcards : lien « carte précédente » (B3) */
+.flash-prev{display:flex;align-items:center;gap:7px;margin:30px auto 0;padding:8px 10px;color:var(--ink2);font-size:14px;font-weight:700;text-decoration:underline;text-decoration-color:var(--line2);text-underline-offset:4px;background:none}
+.flash-prev span{width:18px;height:18px;display:inline-flex}.flash-prev svg{width:100%;height:100%}
+.flash-prev:active{opacity:.6}

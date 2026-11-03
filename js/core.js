@@ -211,6 +211,8 @@
     else { m.s = Math.min(7, Math.max(m.s + 2, 5)); m.due = now + jitter(IV[m.s]); }
     W.save();
   };
+  W.srsSnapshot = (id) => (S.srs[id] ? JSON.parse(JSON.stringify(S.srs[id])) : null);
+  W.srsRestore = (id, snap) => { if (snap) S.srs[id] = snap; else delete S.srs[id]; W.save(); };
   W.srsMiss = (id) => W.memAnswer(id, false);
   W.mem = (id) => S.srs[id] || null;
   // need for practice: high = should come back now (weak, forgotten, overdue), low = well known

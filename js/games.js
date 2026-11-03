@@ -318,7 +318,9 @@
 
   GAMES.flash = async (P, words) => {
     let queue = W.session(words, { repeat: false, min: 12 }); const total = queue.length; let done = 0;
-    const one = (w) => new Promise((res) => {
+    const en = W.lang === 'en';
+    const undoIc = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>';
+    const one = (w, canBack) => new Promise((res) => {
       const card = h('div.flash', { role: 'button', tabindex: 0, 'aria-label': t('tapToFlip') });
       const sp = W.sayBtn(w.ar, w.audio);
       const front = h('div.face', null, ar(w.ar), w.extra ? h('div.ex', null, ar(w.extra)) : null, h('div.hint', null, t('tapToFlip')));
@@ -327,11 +329,13 @@
       const flip = () => { card.classList.toggle('flip'); W.sfx.flip(); if (card.classList.contains('flip')) showRate(); };
       card.addEventListener('click', flip);
       card.addEventListener('keydown', (e) => { if (e.key === ' ') { e.preventDefault(); flip(); } });
-      P.show(h('div', null, h('div', { style: { display: 'flex', justifyContent: 'center' } }, sp), card));
+      const goBack = () => { if (canBack) res('back'); };
+      const backLink = canBack ? h('button.flash-prev', { type: 'button', on: { click: goBack } }, h('span', { html: undoIc }), en ? 'Back to the previous card' : 'Revenir à la carte précédente') : null;
+      P.show(h('div', null, h('div', { style: { display: 'flex', justifyContent: 'center' } }, sp), card, backLink));
       setTimeout(() => W.say(w.ar, w.audio, { el: sp }), 350);
       const showB = h('button.btn.lapis.block', { on: { click: flip } }, t('showAns'));
       P.footer(showB);
-      P._keys = { ' ': flip };
+      P._keys = { ' ': flip, Backspace: goBack };
       const rate = (r) => () => {
         W.srsRate(w.id, r);
         P.score(r >= 2);
@@ -339,19 +343,27 @@
       };
       const showRate = () => {
         const mk = (cls, k, r, sub) => h('button.btn' + cls, { on: { click: rate(r) } }, t(k), h('small', null, sub));
-        const en = W.lang === 'en';
         P.footer(h('div.rate', null, mk('.red', 'r_fail', 0, en ? 'right away' : 'tout de suite'), mk('.safran', 'r_hard', 1, en ? 'later on' : 'plus loin'), mk('', 'r_good', 2, en ? 'in 3 days' : 'dans 3 jours'), mk('.lapis', 'r_easy', 3, en ? 'in 10 days' : 'dans 10 jours')));
-        P._keys = { 1: rate(0), 2: rate(1), 3: rate(2), 4: rate(3), ' ': flip };
+        P._keys = { 1: rate(0), 2: rate(1), 3: rate(2), 4: rate(3), ' ': flip, Backspace: goBack };
       };
     });
-    while (queue.length) {
-      const w = queue.shift();
-      const r = await one(w);
+    const hist = [];
+    let w = queue.shift();
+    while (w) {
+      const snap = { w, queue: [...queue], done, srs: W.srsSnapshot(w.id), score: { total: P.total, right: P.right, streak: P.streak, best: P.best } };
+      const r = await one(w, hist.length > 0);
+      if (P.closed) return;
+      if (r === 'back') { // carte précédente : on annule sa note
+        const prev = hist.pop();
+        queue = prev.queue; done = prev.done; W.srsRestore(prev.w.id, prev.srs); Object.assign(P, prev.score);
+        P.progress(done / total); w = prev.w; continue;
+      }
+      hist.push(snap);
       if (r === 0) queue.splice(Math.min(1 + Math.floor(Math.random() * 2), queue.length), 0, w); // fail: comes back right away
       else if (r === 1) queue.splice(Math.min(queue.length, 4 + Math.floor(Math.random() * Math.max(1, queue.length - 3))), 0, w); // hard: later in the game
       else done++;
       P.progress(done / total);
-      if (P.closed) return;
+      w = queue.shift();
     }
     return { xp: 10 + Math.min(10, total) };
   };
