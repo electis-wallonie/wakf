@@ -270,6 +270,14 @@
     clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), ms || 3200);
   };
 
+  /* ---------------- Son même en mode silencieux (iPhone) ----------------
+     Sur iOS, le Web Audio (bruitages des jeux) fait passer la page en catégorie « ambient » :
+     tout le son de la page suit alors le bouton silencieux. On déclare une lecture « playback »
+     (iOS 16.4+) ; sur les iOS plus anciens, les bruitages passent par de petits fichiers WAV
+     joués comme un média, sans Web Audio. */
+  const HAS_SESSION = !!(navigator.audioSession);
+  try { if (HAS_SESSION) navigator.audioSession.type = 'playback'; } catch (e) {}
+
   /* ---------------- Text-to-speech ---------------- */
   const synth = window.speechSynthesis;
   let voices = [];
@@ -374,24 +382,36 @@
     });
   };
 
-  /* ---------------- SFX (WebAudio, no files) ---------------- */
-  let actx = null;
-  const ac = () => (actx = actx || new (window.AudioContext || window.webkitAudioContext)());
-  const tone = (f, t0, d, type, g) => {
-    const c = ac(); const o = c.createOscillator(); const v = c.createGain();
-    o.type = type || 'sine'; o.frequency.value = f;
-    v.gain.setValueAtTime(0, c.currentTime + t0);
-    v.gain.linearRampToValueAtTime(g || 0.16, c.currentTime + t0 + 0.01);
-    v.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + t0 + d);
-    o.connect(v).connect(c.destination); o.start(c.currentTime + t0); o.stop(c.currentTime + t0 + d + 0.02);
+  /* ---------------- SFX : petits sons synthétisés en WAV, joués comme un média ---------------- */
+  const SR = 22050;
+  const wav = (notes) => {
+    const len = Math.ceil(SR * Math.max(...notes.map(([, t0, d]) => t0 + d + 0.03)));
+    const buf = new Float32Array(len);
+    notes.forEach(([f, t0, d, type, g]) => {
+      g = g || 0.16; const s0 = Math.floor(t0 * SR), n = Math.floor((d + 0.02) * SR);
+      for (let i = 0; i < n && s0 + i < len; i++) {
+        const tt = i / SR, ph = (f * tt) % 1;
+        const osc = type === 'square' ? (ph < 0.5 ? 1 : -1) : type === 'triangle' ? 1 - 4 * Math.abs(ph - 0.5) : Math.sin(2 * Math.PI * ph);
+        const env = tt < 0.01 ? (tt / 0.01) * g : g * Math.exp(-6.9 * (tt - 0.01) / d);
+        buf[s0 + i] += osc * env;
+      }
+    });
+    const dv = new DataView(new ArrayBuffer(44 + len * 2)); const ws = (o, s) => { for (let i = 0; i < s.length; i++) dv.setUint8(o + i, s.charCodeAt(i)); };
+    ws(0, 'RIFF'); dv.setUint32(4, 36 + len * 2, true); ws(8, 'WAVEfmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+    dv.setUint32(24, SR, true); dv.setUint32(28, SR * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); ws(36, 'data'); dv.setUint32(40, len * 2, true);
+    for (let i = 0; i < len; i++) dv.setInt16(44 + i * 2, Math.max(-1, Math.min(1, buf[i])) * 32767, true);
+    return URL.createObjectURL(new Blob([dv], { type: 'audio/wav' }));
   };
-  W.sfx = {
-    ok() { try { tone(784, 0, 0.14, 'triangle'); tone(1175, 0.09, 0.22, 'triangle'); } catch (e) {} },
-    ko() { try { tone(220, 0, 0.18, 'square', 0.07); tone(165, 0.1, 0.25, 'square', 0.07); } catch (e) {} },
-    tap() { try { tone(600, 0, 0.05, 'sine', 0.06); } catch (e) {} },
-    win() { try { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.11, 0.3, 'triangle', 0.14)); } catch (e) {} },
-    flip() { try { tone(440, 0, 0.06, 'sine', 0.05); tone(660, 0.04, 0.06, 'sine', 0.05); } catch (e) {} },
+  const SFX = {
+    ok: [[784, 0, 0.14, 'triangle'], [1175, 0.09, 0.22, 'triangle']],
+    ko: [[220, 0, 0.18, 'square', 0.07], [165, 0.1, 0.25, 'square', 0.07]],
+    tap: [[600, 0, 0.05, 'sine', 0.06]],
+    win: [523, 659, 784, 1047].map((f, i) => [f, i * 0.11, 0.3, 'triangle', 0.14]),
+    flip: [[440, 0, 0.06, 'sine', 0.05], [660, 0.04, 0.06, 'sine', 0.05]],
   };
+  const sfxUrl = {};
+  const playSfx = (k) => { try { const u = sfxUrl[k] || (sfxUrl[k] = wav(SFX[k])); const a = new Audio(u); a.volume = 1; const pr = a.play(); if (pr) pr.catch(() => {}); } catch (e) {} };
+  W.sfx = { ok: () => playSfx('ok'), ko: () => playSfx('ko'), tap: () => playSfx('tap'), win: () => playSfx('win'), flip: () => playSfx('flip') };
 
   /* ---------------- confetti ---------------- */
   W.confetti = () => {

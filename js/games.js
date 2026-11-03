@@ -226,11 +226,13 @@
       chips.forEach((c, i) => c.classList.toggle('ghost', placed.includes(bankItems[i])));
       check.disabled = !placed.length;
     };
-    const toggle = (it) => { if (P._locked) return; const k = placed.indexOf(it); if (k >= 0) placed.splice(k, 1); else { placed.push(it); W.speak(it.v, 'ar', { rate: 0.7 }); } W.sfx.tap(); render(); };
-    const big = h('button.speaker', { 'aria-label': t('listen'), html: icon.speaker, on: { click: () => W.say(w.ar, w.audio, { el: big }) } });
-    const slow = h('button.speaker.slow', { 'aria-label': t('listenSlow'), html: icon.turtle, on: { click: () => W.say(w.ar, w.audio, { el: slow, rate: 0.5 }) } });
+    const toggle = (it) => { if (P._locked || playing) return; W.sfx.tap(); const k = placed.indexOf(it); if (k >= 0) placed.splice(k, 1); else { placed.push(it); W.speak(it.v, 'ar', { rate: 0.7 }); } render(); };
+    let playing = false;
+    const playW = async (el, rate) => { if (playing) return; playing = true; [bank, answer].forEach((x) => x.classList.add('locked')); try { await Promise.race([W.say(w.ar, w.audio, { el, rate }), new Promise((r) => setTimeout(r, 8000))]); } finally { playing = false; [bank, answer].forEach((x) => x.classList.remove('locked')); } };
+    const big = h('button.speaker', { 'aria-label': t('listen'), html: icon.speaker, on: { click: () => playW(big) } });
+    const slow = h('button.speaker.slow', { 'aria-label': t('listenSlow'), html: icon.turtle, on: { click: () => playW(slow, 0.5) } });
     P.show(h('div', null, h('div.qtitle', null, t('tapHear')), h('div.speakrow', null, big, slow), answer, bank));
-    setTimeout(() => W.say(w.ar, w.audio, { el: big }), 380);
+    setTimeout(() => playW(big), 380);
     P._keys = null;
     const check = h('button.btn', { disabled: true, on: { click: () => {
       P._locked = true;
@@ -320,7 +322,7 @@
       const card = h('div.flash', { role: 'button', tabindex: 0, 'aria-label': t('tapToFlip') });
       const sp = W.sayBtn(w.ar, w.audio);
       const front = h('div.face', null, ar(w.ar), w.extra ? h('div.ex', null, ar(w.extra)) : null, h('div.hint', null, t('tapToFlip')));
-      const back = h('div.face.back', null, h('div.tr', null, W.wordLabel(w)), ar(w.ar), w.group ? h('div.ex', null, w.group) : null);
+      const back = h('div.face.back', null, h('div.tr', null, W.wordLabel(w)), ar(w.ar));
       card.append(h('div.inner', null, front, back));
       const flip = () => { card.classList.toggle('flip'); W.sfx.flip(); if (card.classList.contains('flip')) showRate(); };
       card.addEventListener('click', flip);
@@ -366,13 +368,14 @@
     const chips = bankItems.map((it) => { const c = h('button.chip.word', { lang: 'ar', on: { click: () => toggle(it) } }, it.w.ar); it.el = c; return c; });
     bank.append(...chips);
     let playing = false;
-    const play = async (el, rate) => { if (playing) return; playing = true; el && el.classList.add('playing'); for (const w of seq) { await W.say(w.ar, w.audio, { rate, queue: true }); await sleep(380); } el && el.classList.remove('playing'); playing = false; };
+    const lockUi = (on) => { playing = on; [bank, answer].forEach((x) => x.classList.toggle('locked', on)); (bank.parentNode ? bank.parentNode.querySelectorAll('.chip.word') : chips).forEach((c) => (c.disabled = on)); };
+    const play = async (el, rate) => { if (playing) return; lockUi(true); el && el.classList.add('playing'); try { for (const w of seq) { await Promise.race([W.say(w.ar, w.audio, { rate, queue: true }), sleep(8000)]); await sleep(380); } } finally { el && el.classList.remove('playing'); lockUi(false); } };
     const render = () => {
       answer.replaceChildren(...placed.map((it) => h('button.chip.word', { lang: 'ar', on: { click: () => toggle(it) } }, it.w.ar)));
       chips.forEach((c, i) => c.classList.toggle('ghost', placed.includes(bankItems[i])));
       check.disabled = placed.length !== seq.length;
     };
-    const toggle = (it) => { if (P._locked) return; const k = placed.indexOf(it); if (k >= 0) placed.splice(k, 1); else if (placed.length < seq.length) { placed.push(it); W.say(it.w.ar, it.w.audio); } W.sfx.tap(); render(); };
+    const toggle = (it) => { if (P._locked || playing) return; W.sfx.tap(); const k = placed.indexOf(it); if (k >= 0) placed.splice(k, 1); else if (placed.length < seq.length) { placed.push(it); W.say(it.w.ar, it.w.audio); } render(); };
     const big = h('button.speaker', { 'aria-label': t('listen'), html: W.svg('speaker'), on: { click: () => play(big) } });
     const slow = h('button.speaker.slow', { 'aria-label': t('listenSlow'), html: W.svg('slow'), on: { click: () => play(slow, 0.55) } });
     const n = seq.length;

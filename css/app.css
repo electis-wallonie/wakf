@@ -697,3 +697,5 @@ h1{font-size:30px}h2{font-size:22px}h3{font-size:18px}
 .conjrow .ar{flex:0 1 auto;min-width:0;overflow-wrap:anywhere;white-space:normal;text-align:right}
 .conjrow small{flex:1 1 0;min-width:0;text-align:left;line-height:1.35;overflow-wrap:anywhere}
 @media (max-width:560px){.conjcols{grid-template-columns:1fr}.conjrow .ar{font-size:24px}}
+/* jeux d'écoute : mots inactifs pendant la lecture */
+.bank.locked .chip,.answer.locked .chip{opacity:.45;pointer-events:none;filter:saturate(.6);transition:opacity .2s}
