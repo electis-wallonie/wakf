@@ -306,7 +306,6 @@
     lang = lang || 'ar';
     if (!synth || !text) return Promise.resolve();
     const v = voiceFor(lang);
-    if (!v && lang === 'ar' && !warned) { warned = true; let seen = false; try { seen = sessionStorage.getItem('wakf.novoice') === '1'; sessionStorage.setItem('wakf.novoice', '1'); } catch (e) {} if (!seen) W.toast(W.t('noVoice'), 4500); }
     if (!opt.queue) synth.cancel();
     if (curBtn) curBtn.classList.remove('playing');
     const u = new SpeechSynthesisUtterance(lang === 'ar' ? W.speakable(text) : String(text).replace(/\([^)]*\)/g, ' ').replace(/[\[\]]/g, ''));
