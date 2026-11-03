@@ -309,7 +309,7 @@
     const top = h('section.mm2-top.c-lapis', { 'data-mm2-ayat': ay.join(',') },
       h('div.mm2-top-panel', null,
         h('span.mm2-top-n', null, t('surahN', { n: data.surah.number })),
-        h('span.ar', { lang: 'ar' }, data.surah.name_ar)),
+        h('span.sn.mm2-top-sn', { 'aria-label': data.surah.name_ar, translate: 'no' }, String(data.surah.number).padStart(3, '0'))),
       h('div.mm2-top-info', null,
         h('h1', null, main),
         h('div.mm2-chips', null,

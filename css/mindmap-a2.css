@@ -151,3 +151,5 @@
   .mm2 .mm2-branch.deep > .mm2-kids > * { border-left: 3px solid var(--km); padding-left: 8px; }
 }
 .mm2 .mm2-vtr { font-size: 13.5px; }
+.mm2-top-panel .mm2-top-sn { position: relative; z-index: 1; font-size: 76px; line-height: 1.25; color: #fff; text-shadow: 0 3px 0 var(--kd); transform: none; margin: 4px 0 10px; }
+@media (min-width: 900px) { .mm2-top-panel .mm2-top-sn { font-size: 92px; } }
