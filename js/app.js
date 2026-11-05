@@ -385,7 +385,7 @@
     if (rec.length) {
       page.append(h('section.sl-recent', null,
         h('h2', null, h('span.sl-clock', { 'aria-hidden': 'true' }), (en ? 'Recent pages' : 'Pages récentes') + ' (' + rec.length + ')'),
-        h('div.sl-pills', null, rec.map((r) => h('a.sl-pill', { href: '#/mm/' + r.n },
+        h('div.sl-pills', null, rec.map((r) => h('a.sl-pill', { href: '#/mm/' + r.n, on: { click: (e) => { e.preventDefault(); W.openSurahSheet(byN[r.n]); } } },
           h('span.n', null, String(r.n)), h('span', null, h('b', null, byN[r.n][1].toUpperCase()), h('small', null, ago(r.t))))))));
     }
     let cur = 0, grp = null;
@@ -398,11 +398,36 @@
         page.append(head, grp);
       }
       const meta = [en ? trEn : trFr, place === 'Md' ? (en ? 'Medinan' : 'Médinoise') : (en ? 'Meccan' : 'Mecquoise'), verses + ' ' + (en ? 'verses' : 'versets')].filter((v, i) => v && !(i === 0 && v === name)).join(' · ');
-      grp.append(h('a.sl-row', { href: '#/mm/' + n },
+      grp.append(h('a.sl-row', { href: '#/mm/' + n, on: { click: (e) => { e.preventDefault(); W.openSurahSheet(x); } } },
         h('span.sl-t', null, h('span.sl-nm', null, h('span', null, n + '. ' + name), snGlyph(n)), h('span.sl-sub', null, meta)),
         h('span.sl-th', null, h('b', null, String(themes)), h('small', null, en ? 'themes' : 'thèmes'))));
     }
     W.mount(page, tok);
+  });
+  const glossOf = (d) => {
+    const G = {}; const put = (a, i, w) => { if (!a || !i || !w) return; G[a] = G[a] || {}; if (!G[a][i] && (w.fr || w.en)) G[a][i] = { fr: w.fr || '', en: w.en || '' }; };
+    const walkN = (ns) => (ns || []).forEach((nd) => {
+      (nd.words || []).forEach((w) => w.pos && put(w.pos[0], w.pos[1], w));
+      if (nd.is_refrain && nd.ayah && d.refrain) (d.refrain.words || []).forEach((w, i) => put(nd.ayah, i + 1, w));
+      walkN(nd.children);
+    });
+    (d.sections || []).forEach((sec) => walkN(sec.nodes));
+    return G;
+  };
+  W.route(/^\/lc\/(\d+)$/, async (tok, n) => {
+    n = +n;
+    const list = (await W.load('surahlist')) || [];
+    const info = list.find((x) => x[0] === n); if (!info) return W.go('#/t/surah');
+    const s = SURAHS.find((x) => x.n === n);
+    let G = {};
+    const d = s && (await W.load(s.data));
+    if (d) { if (!d._prep) d._prep = await W.mmPrepare(d); if (d._prep) G = glossOf(d); }
+    const view = W.renderReading(n, info, G);
+    await view._ready;
+    if (view._fail) return W.mount(h('div.page', null, appbar({ back: '#/t/surah', title: info[1] }), emptyState('surah', t('surahsTitle'), W.lang === 'en' ? 'Connect to the internet once to load this surah.' : 'Connecte-toi une première fois à Internet pour charger cette sourate.')), tok);
+    W.markOpened('surah:' + n); pushRecentSurah(n);
+    W.setLast('surah', { href: '#/lc/' + n, label: info[1], sub: t('surahN', { n }) });
+    W.mount(h('div.page', null, appbar({ back: '#/t/surah', title: info[1], sub: t('surahN', { n }) + ' · ' + info[5] + ' ' + (W.lang === 'en' ? 'verses' : 'versets') }), view), tok) && view._attach();
   });
   W.route(/^\/mm\/(\d+)$/, async (tok, n) => {
     const s = SURAHS.find((x) => x.n === +n); if (!s) return W.go('#/t/surah');
@@ -414,6 +439,13 @@
     W.setLast('surah', { href: '#/mm/' + n, label: name.split(' (')[0], sub: t('surahN', { n }) });
     let tab = 'visual'; try { tab = sessionStorage.getItem('wakf.mmtab') || 'visual'; } catch (e) {}
     W.mount(h('div.page.wide', null, appbar({ back: '#/t/surah', title: name, sub: t('surahN', { n }) }), W.renderMindmap(d, tab)), tok);
+    let go = null; try { go = sessionStorage.getItem('wakf.mm2.goto'); sessionStorage.removeItem('wakf.mm2.goto'); } catch (e) {}
+    if (go) setTimeout(() => {
+      const sec = [...document.querySelectorAll('.mm2-sec:not(.sub)')].find((x) => (x.dataset.mm2Ayat || '').split(',').includes(go));
+      if (!sec) return;
+      if (!sec.classList.contains('open')) sec.querySelector('.mm2-head').click();
+      sec.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }, 60);
   });
 
   /* ---------- review ---------- */

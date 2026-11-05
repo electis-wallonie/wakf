@@ -81,6 +81,7 @@
     bub.style.setProperty('--ax', (r.left + r.width / 2 - x) + 'px');
     clearTimeout(showMeaning.tm); showMeaning.tm = setTimeout(hideMeaning, 4000);
   };
+  W.mmShowMeaning = showMeaning; W.mmHideMeaning = hideMeaning;
   if (!W._mmBubBound) { W._mmBubBound = true; document.addEventListener('click', (e) => { if (!e.target.closest('.w')) hideMeaning(); }); window.addEventListener('hashchange', hideMeaning); }
 
   /* ---------- éléments ---------- */
@@ -258,6 +259,7 @@
     }
     return V;
   })().catch((e) => { delete qcCache[n]; throw e; }));
+  W.qcChapter = loadChapter; W.qcTr = loadTr;
   const skel = (x) => String(x).normalize('NFC').replace(/[آأإٱ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').replace(/\u0640/g, '').replace(/[^\u0621-\u064A]/g, '');
   W.mmPrepare = async (data) => {
     const n = data.surah.number;

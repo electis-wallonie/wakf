@@ -3,7 +3,7 @@
 import hashlib, os, json
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 files, h = [], hashlib.sha1()
-for d in ['', 'css', 'js', 'data', 'fonts', 'icons', 'assets/reading']:
+for d in ['', 'css', 'js', 'data', 'fonts', 'icons', 'img', 'assets/reading']:
     p = os.path.join(ROOT, d)
     if not os.path.isdir(p): continue
     for f in sorted(os.listdir(p)):
